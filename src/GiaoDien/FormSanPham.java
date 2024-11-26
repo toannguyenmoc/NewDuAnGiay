@@ -4,6 +4,22 @@
  */
 package GiaoDien;
 
+import com.sales.DAO.BrandDAO;
+import com.sales.DAO.CategoriesDAO;
+import com.sales.DAO.ColorDAO;
+import com.sales.DAO.Product_VariantDAO;
+import com.sales.DAO.SizeDAO;
+import com.sales.Entity.Brand;
+import com.sales.Entity.Categories;
+import com.sales.Entity.Color;
+import com.sales.Entity.Product_Variant;
+import com.sales.Entity.Size;
+import com.sales.Utils.XImage;
+import java.util.ArrayList;
+import java.util.List;
+import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author NganTTK_PC09494
@@ -13,8 +29,25 @@ public class FormSanPham extends javax.swing.JFrame {
     /**
      * Creates new form FormSanPham
      */
+     ColorDAO colorDao = new ColorDAO();
+    Color color = new Color();
+    SizeDAO sizeDao = new SizeDAO();
+    Size size = new Size();
+    BrandDAO brandDao = new BrandDAO();
+    Brand brand = new Brand();
+    CategoriesDAO categoriesDao = new CategoriesDAO();
+    Categories categories = new Categories();
+    Product_VariantDAO productVariantDao = new Product_VariantDAO();
+    int index = 0;
+    DefaultTableModel model = new DefaultTableModel();
+    List<Product_Variant> list = new ArrayList<>();
     public FormSanPham() {
         initComponents();
+         setLocationRelativeTo(null);
+        setIconImage(XImage.XImage());
+        setTableTitle();
+        setTitle("PHẦN MỀM QUẢN LÝ GIÀY THỂ THAO");
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
     }
 
     /**
@@ -406,7 +439,21 @@ public class FormSanPham extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+public void setTableTitle() {
+        model.addColumn("Mã Sản Phẩm");
+        model.addColumn("Tên Sản Phẩm");
+        model.addColumn("Màu Sắc");
+        model.addColumn("Kích Thước");
+        model.addColumn("Loại Sản Phẩm");
+        model.addColumn("Thương Hiệu");
+        model.addColumn("Số Lượng");
+        model.addColumn("Giá");
+        model.addColumn("Mô Tả");
+        model.addColumn("Trạng Thái");
+        model.addColumn("Mã Code");
+        model.addColumn("Hình Ảnh");
+        tblSanPham.setModel(model);
+    }
 
     private void txtGiaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtGiaActionPerformed
         // TODO add your handling code here:

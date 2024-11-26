@@ -24,6 +24,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JOptionPane;
 /**
  *
  * @author NganTTK_PC09494
@@ -42,6 +44,7 @@ public class FormSanPham extends javax.swing.JFrame {
     CategoriesDAO categoriesDao = new CategoriesDAO();
     Categories categories = new Categories();
     Product_VariantDAO productVariantDao = new Product_VariantDAO();
+    Product_Variant productVariant = new Product_Variant();
     int index = 0;
     DefaultTableModel model = new DefaultTableModel();
     List<Product_Variant> list = new ArrayList<>();
@@ -50,6 +53,10 @@ public class FormSanPham extends javax.swing.JFrame {
          setLocationRelativeTo(null);
         setIconImage(XImage.XImage());
         setTableTitle();
+        fillComboBoxMauSac();
+        fillComboKichThuoc();
+        fillComboLoai();
+        fillComboThuongHieu();
         loadTable();
         setTitle("PHẦN MỀM QUẢN LÝ GIÀY THỂ THAO");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -90,7 +97,7 @@ public class FormSanPham extends javax.swing.JFrame {
         spinnerSoLuong = new javax.swing.JSpinner();
         jLabel11 = new javax.swing.JLabel();
         txtGia = new javax.swing.JTextField();
-        jTextField1 = new javax.swing.JTextField();
+        txtMaCode = new javax.swing.JTextField();
         jPanel4 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         cboMauSac = new javax.swing.JComboBox<>();
@@ -122,6 +129,11 @@ public class FormSanPham extends javax.swing.JFrame {
         ));
         tblSanPham.setGridColor(new java.awt.Color(0, 0, 0));
         tblSanPham.setRowHeight(22);
+        tblSanPham.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblSanPhamMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tblSanPham);
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
@@ -215,7 +227,7 @@ public class FormSanPham extends javax.swing.JFrame {
             }
         });
 
-        jTextField1.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), "Mã code"));
+        txtMaCode.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), "Mã code"));
 
         jPanel4.setBackground(new java.awt.Color(0, 153, 153));
 
@@ -239,8 +251,6 @@ public class FormSanPham extends javax.swing.JFrame {
                 .addComponent(jLabel3)
                 .addContainerGap())
         );
-
-        cboMauSac.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         cboKichThuoc.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
@@ -332,7 +342,7 @@ public class FormSanPham extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 287, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(txtMaCode, javax.swing.GroupLayout.PREFERRED_SIZE, 287, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(170, 170, 170))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -398,7 +408,7 @@ public class FormSanPham extends javax.swing.JFrame {
                                 .addGap(38, 38, 38)
                                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
-                                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(txtMaCode, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGap(42, 42, 42)
@@ -444,7 +454,59 @@ public class FormSanPham extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-public void setTableTitle() {
+  void fillComboBoxMauSac() {
+        DefaultComboBoxModel modelColor = (DefaultComboBoxModel) cboMauSac.getModel();
+        modelColor.removeAllElements();
+        try {
+            List<Color> listColor = colorDao.selectAll();
+            System.out.println(listColor);
+            for (Color cd : listColor) {
+                modelColor.addElement(cd.getName());
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Lỗi truy vấn dữ liệu!");
+        }
+    }
+  void fillComboKichThuoc() {
+        DefaultComboBoxModel modelKichThuoc = (DefaultComboBoxModel) cboKichThuoc.getModel();
+        modelKichThuoc.removeAllElements();
+        try {
+            List<Size> listSize = sizeDao.selectAll();
+            System.out.println(listSize);
+            for (Size cd : listSize) {
+                modelKichThuoc.addElement(cd.getName());
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Lỗi truy vấn dữ liệu!");
+        }
+    }
+  void fillComboLoai() {
+        DefaultComboBoxModel modelLoai = (DefaultComboBoxModel) cboLoaiSanPham.getModel();
+        modelLoai.removeAllElements();
+        try {
+            List<Categories> listCategories = categoriesDao.selectAll();
+            System.out.println(listCategories);
+            for (Categories cd : listCategories) {
+                modelLoai.addElement(cd.getName());
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Lỗi truy vấn dữ liệu!");
+        }
+    }
+  void fillComboThuongHieu() {
+        DefaultComboBoxModel modelThuongHieu = (DefaultComboBoxModel) cboThuongHieu.getModel();
+        modelThuongHieu.removeAllElements();
+        try {
+            List<Brand> listBrand = brandDao.selectAll();
+            System.out.println(listBrand);
+            for (Brand cd : listBrand) {
+                modelThuongHieu.addElement(cd.getName());
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Lỗi truy vấn dữ liệu!");
+        }
+    }
+    public void setTableTitle() {
         model.addColumn("Mã Sản Phẩm");
         model.addColumn("Tên Sản Phẩm");
         model.addColumn("Màu Sắc");
@@ -458,7 +520,8 @@ public void setTableTitle() {
         model.addColumn("Mã Code");
         model.addColumn("Hình Ảnh");
         tblSanPham.setModel(model);
-    }public void loadTable() throws SQLException {
+    }
+public void loadTable() throws SQLException {
     String sql = "SELECT D.ID AS ProductVariantID, " +
             "B.NAME AS ProductName, " +
                  "F.NAME AS ColorName, " +
@@ -506,11 +569,36 @@ public void setTableTitle() {
 
     tblSanPham.setModel(model); // Gán lại model mới vào bảng
 }
+public void getFrom(int index){
+    
+    txtTenSanPham.setText((String) tblSanPham.getValueAt(index, 1));
+    cboMauSac.setSelectedItem((String) tblSanPham.getValueAt(index, 2));
+    cboKichThuoc.setSelectedItem((String) tblSanPham.getValueAt(index, 3));
+    cboLoaiSanPham.setSelectedItem((String) tblSanPham.getValueAt(index, 4));
+    cboThuongHieu.setSelectedItem((String) tblSanPham.getValueAt(index, 5));
+    spinnerSoLuong.setValue(tblSanPham.getValueAt(index, 6));
+    txtGia.setText((String) tblSanPham.getValueAt(index, 7).toString());
+    txtMoTa.setText((String) tblSanPham.getValueAt(index, 8).toString());
+    
+    boolean kt = tblSanPham.getValueAt(index,9).toString() == cknHoatDongKichThuoc.getText() ?true:false;
+    if(kt ==true){
+        cknHoatDongKichThuoc.setSelected(true);
+    }else{
+        cknNgungHoatDongKickThuoc.setSelected(true);
+    }
+    txtMaCode.setText((String) tblSanPham.getValueAt(index, 10).toString());
+}
 
 
     private void txtGiaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtGiaActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtGiaActionPerformed
+
+    private void tblSanPhamMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblSanPhamMouseClicked
+        // TODO add your handling code here:
+       index = tblSanPham.getSelectedRow();
+        getFrom(index);
+    }//GEN-LAST:event_tblSanPhamMouseClicked
 
     /**
      * @param args the command line arguments
@@ -583,10 +671,10 @@ public void setTableTitle() {
     private javax.swing.JPanel jPanel5;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTextField jTextField1;
     private javax.swing.JSpinner spinnerSoLuong;
     private javax.swing.JTable tblSanPham;
     private javax.swing.JTextField txtGia;
+    private javax.swing.JTextField txtMaCode;
     private javax.swing.JTextArea txtMoTa;
     private javax.swing.JTextField txtTenSanPham;
     private javax.swing.JTextField txtTimKiem;

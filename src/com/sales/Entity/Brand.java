@@ -55,5 +55,7 @@ public class Brand {
     public void setImage(String image) {
         this.image = image;
     }
-    
+     public String toString() {
+        return name;  
+    }
 }

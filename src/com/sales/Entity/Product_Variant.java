@@ -104,6 +104,10 @@ public class Product_Variant {
     public void setCode(String code) {
         this.code = code;
     }
+
+    public String getString(String productName) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
     
     
 }

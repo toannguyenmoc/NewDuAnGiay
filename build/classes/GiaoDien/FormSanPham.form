@@ -108,7 +108,7 @@
                           <EmptySpace max="32767" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Component id="jPanel2" min="-2" max="-2" attributes="0"/>
-                              <Component id="jTextField1" min="-2" pref="287" max="-2" attributes="0"/>
+                              <Component id="txtMaCode" min="-2" pref="287" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace min="-2" pref="170" max="-2" attributes="0"/>
                       </Group>
@@ -194,7 +194,7 @@
                                   <EmptySpace min="-2" pref="38" max="-2" attributes="0"/>
                                   <Component id="jPanel2" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace type="separate" max="-2" attributes="0"/>
-                                  <Component id="jTextField1" min="-2" pref="49" max="-2" attributes="0"/>
+                                  <Component id="txtMaCode" min="-2" pref="49" max="-2" attributes="0"/>
                               </Group>
                           </Group>
                           <Group type="103" groupAlignment="0" attributes="0">
@@ -270,6 +270,9 @@
                 </Property>
                 <Property name="rowHeight" type="int" value="22"/>
               </Properties>
+              <Events>
+                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="tblSanPhamMouseClicked"/>
+              </Events>
             </Component>
           </SubComponents>
         </Container>
@@ -521,7 +524,7 @@
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtGiaActionPerformed"/>
           </Events>
         </Component>
-        <Component class="javax.swing.JTextField" name="jTextField1">
+        <Component class="javax.swing.JTextField" name="txtMaCode">
           <Properties>
             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
               <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
@@ -578,12 +581,7 @@
         <Component class="javax.swing.JComboBox" name="cboMauSac">
           <Properties>
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-              <StringArray count="4">
-                <StringItem index="0" value="Item 1"/>
-                <StringItem index="1" value="Item 2"/>
-                <StringItem index="2" value="Item 3"/>
-                <StringItem index="3" value="Item 4"/>
-              </StringArray>
+              <StringArray count="0"/>
             </Property>
           </Properties>
           <AuxValues>

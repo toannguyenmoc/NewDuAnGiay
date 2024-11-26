@@ -14,12 +14,16 @@ import com.sales.Entity.Categories;
 import com.sales.Entity.Color;
 import com.sales.Entity.Product_Variant;
 import com.sales.Entity.Size;
+import com.sales.Utils.JdbcHelper;
 import com.sales.Utils.XImage;
 import java.util.ArrayList;
 import java.util.List;
 import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
 import javax.swing.table.DefaultTableModel;
-
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 /**
  *
  * @author NganTTK_PC09494
@@ -41,11 +45,12 @@ public class FormSanPham extends javax.swing.JFrame {
     int index = 0;
     DefaultTableModel model = new DefaultTableModel();
     List<Product_Variant> list = new ArrayList<>();
-    public FormSanPham() {
+    public FormSanPham() throws SQLException {
         initComponents();
          setLocationRelativeTo(null);
         setIconImage(XImage.XImage());
         setTableTitle();
+        loadTable();
         setTitle("PHẦN MỀM QUẢN LÝ GIÀY THỂ THAO");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
     }
@@ -453,7 +458,55 @@ public void setTableTitle() {
         model.addColumn("Mã Code");
         model.addColumn("Hình Ảnh");
         tblSanPham.setModel(model);
-    }
+    }public void loadTable() throws SQLException {
+    String sql = "SELECT D.ID AS ProductVariantID, " +
+            "B.NAME AS ProductName, " +
+                 "F.NAME AS ColorName, " +
+                 "E.NAME AS SizeName, " +
+                 "A.NAME AS CategoryName, " +
+                 "C.NAME AS BrandName, " +
+                 "D.QUANTITY, " +
+                 "D.PRICE, " +
+                 "B.DESCRIPTION , " +
+                 "D.ACTIVE, " +
+                 "D.CODE, " +
+                 "D.IMAGE " +
+                 "FROM CATEGORIES A " +
+                 "JOIN PRODUCTS B ON A.ID = B.CATEGORY_ID " +
+                 "JOIN BRANDS C ON B.BRAND_ID = C.ID " +
+                 "JOIN PRODUCT_VARIANTS D ON B.ID = D.PRODUCT_ID " +
+                 "JOIN SIZES E ON D.SIZE_ID = E.ID " +
+                 "JOIN COLORS F ON D.COLOR_ID = F.ID";
+
+   
+ 
+        ResultSet rs = JdbcHelper.query(sql); // Thực hiện truy vấn
+        while (rs.next()) {
+            Object[] row = {
+                rs.getInt("ProductVariantID"),
+                rs.getString("ProductName"),
+                rs.getString("ColorName"),
+                rs.getString("SizeName"),
+                rs.getString("CategoryName"),
+                rs.getString("BrandName"),
+                rs.getInt("QUANTITY"),
+                rs.getDouble("PRICE"),
+                rs.getString("DESCRIPTION"),
+                 rs.getBoolean("ACTIVE") ? "Hoạt Động" : "Ngừng Hoạt Động",
+                
+                rs.getString("CODE"),
+               rs.getString("IMAGE")
+            
+            };
+            model.addRow(row); // Thêm dữ liệu vào model
+        }
+        rs.getStatement().getConnection().close(); // Đóng kết nối
+   
+    
+
+    tblSanPham.setModel(model); // Gán lại model mới vào bảng
+}
+
 
     private void txtGiaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtGiaActionPerformed
         // TODO add your handling code here:
@@ -489,7 +542,11 @@ public void setTableTitle() {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new FormSanPham().setVisible(true);
+                try {
+                    new FormSanPham().setVisible(true);
+                } catch (SQLException ex) {
+                    Logger.getLogger(FormSanPham.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
     }

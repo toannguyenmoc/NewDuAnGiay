@@ -284,7 +284,7 @@ public class FormDoiMatKhau extends javax.swing.JFrame {
         }
         if (validate.checkMatKhau(txtMatKhauMoi, txtXacNhanMatKhau)) {
             user.setPassword(matKhauMoi);
-            userDAO.update(user);
+            userDAO.updatePassword(user);
             JOptionPane.showMessageDialog(this, "Mật khẩu đã được cập nhật thành công.");
         }
     }

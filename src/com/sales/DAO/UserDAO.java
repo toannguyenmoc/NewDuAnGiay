@@ -25,6 +25,7 @@ public class UserDAO extends SaleDAO<User, Integer> {
     String SELECT_ALL_SQL = "SELECT * FROM USERS";
     String SELECT_BYID_SQL = "SELECT * FROM USERS WHERE ID = ?";
     //String SELECT_BYSQL_SQL = "EXEX UserLogin @Email = ?, @PlainPassword = ?";
+    String UPDATE_PASS = "UPDATE USERS SET PASSWORD = ? WHERE ID = ?";
 
     @Override
     public void insert(User entity) {
@@ -37,18 +38,24 @@ public class UserDAO extends SaleDAO<User, Integer> {
                 entity.getAddress(),
                 entity.getActive());
     }
-    
+
     @Override
     public void update(User entity) {
-            JdbcHelper.update(UPDATE_SQL, entity.getFullName(),
-                    entity.getPassword(),
-                    entity.getRole(),
-                    entity.getGender(),
-                    entity.getPhone(),
-                    entity.getEmail(),
-                    entity.getAddress(),
-                    entity.getActive(),
-                    entity.getId());
+        JdbcHelper.update(UPDATE_SQL, entity.getFullName(),
+                entity.getPassword(),
+                entity.getRole(),
+                entity.getGender(),
+                entity.getPhone(),
+                entity.getEmail(),
+                entity.getAddress(),
+                entity.getActive(),
+                entity.getId());
+    }
+
+    public void updatePassword(User entity) {
+        JdbcHelper.update(UPDATE_PASS,
+                entity.getPassword(),
+                entity.getId());
     }
 
     @Override
@@ -69,10 +76,10 @@ public class UserDAO extends SaleDAO<User, Integer> {
         }
         return list.get(0);
     }
-    
+
     public User userLogin(String email, String pass) {
-        String sql = "{CALL SP_UserLogin(?, ?)}";  
-        List<User> list = this.selectBySQL(sql, email, pass);  
+        String sql = "{CALL SP_UserLogin(?, ?)}";
+        List<User> list = this.selectBySQL(sql, email, pass);
         if (!list.isEmpty()) {
             return list.get(0);
         }

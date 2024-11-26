@@ -430,6 +430,11 @@ public class FormManHinhChinh extends javax.swing.JFrame {
         lblDoiMatKhau.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         lblDoiMatKhau.setForeground(new java.awt.Color(255, 255, 255));
         lblDoiMatKhau.setText("Đổi mật khẩu");
+        lblDoiMatKhau.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lblDoiMatKhauMouseClicked(evt);
+            }
+        });
 
         lblNhanVien.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         lblNhanVien.setForeground(new java.awt.Color(255, 255, 255));
@@ -568,6 +573,11 @@ public class FormManHinhChinh extends javax.swing.JFrame {
         FormNguoiDung formNguoiDung = new FormNguoiDung();
         formNguoiDung.setVisible(true);
     }//GEN-LAST:event_lblNhanVienMouseClicked
+
+    private void lblDoiMatKhauMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblDoiMatKhauMouseClicked
+        FormDoiMatKhau formDoiMatKhau = new FormDoiMatKhau();
+        formDoiMatKhau.setVisible(true);
+    }//GEN-LAST:event_lblDoiMatKhauMouseClicked
 
     /**
      * @param args the command line arguments

@@ -34,7 +34,7 @@ public class FormDoiMatKhau extends javax.swing.JFrame {
         setTitle("PHẦN MỀM QUẢN LÝ GIÀY THỂ THAO");
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         txtEmail.setEditable(false);
-        //txtEmail.setText(user.getFullName());
+        txtEmail.setText(user.getFullName());
     }
 
     /**
@@ -212,7 +212,7 @@ public class FormDoiMatKhau extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnDoiMatKhauActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDoiMatKhauActionPerformed
-        // TODO add your handling code here:
+        update();
     }//GEN-LAST:event_btnDoiMatKhauActionPerformed
 
     /**

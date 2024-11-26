@@ -26,6 +26,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
+
 /**
  *
  * @author NganTTK_PC09494
@@ -35,7 +36,7 @@ public class FormSanPham extends javax.swing.JFrame {
     /**
      * Creates new form FormSanPham
      */
-     ColorDAO colorDao = new ColorDAO();
+    ColorDAO colorDao = new ColorDAO();
     Color color = new Color();
     SizeDAO sizeDao = new SizeDAO();
     Size size = new Size();
@@ -48,9 +49,10 @@ public class FormSanPham extends javax.swing.JFrame {
     int index = 0;
     DefaultTableModel model = new DefaultTableModel();
     List<Product_Variant> list = new ArrayList<>();
+
     public FormSanPham() throws SQLException {
         initComponents();
-         setLocationRelativeTo(null);
+        setLocationRelativeTo(null);
         setIconImage(XImage.XImage());
         setTableTitle();
         fillComboBoxMauSac();
@@ -467,7 +469,8 @@ public class FormSanPham extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Lỗi truy vấn dữ liệu!");
         }
     }
-  void fillComboKichThuoc() {
+
+    void fillComboKichThuoc() {
         DefaultComboBoxModel modelKichThuoc = (DefaultComboBoxModel) cboKichThuoc.getModel();
         modelKichThuoc.removeAllElements();
         try {
@@ -480,7 +483,8 @@ public class FormSanPham extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Lỗi truy vấn dữ liệu!");
         }
     }
-  void fillComboLoai() {
+
+    void fillComboLoai() {
         DefaultComboBoxModel modelLoai = (DefaultComboBoxModel) cboLoaiSanPham.getModel();
         modelLoai.removeAllElements();
         try {
@@ -493,7 +497,8 @@ public class FormSanPham extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Lỗi truy vấn dữ liệu!");
         }
     }
-  void fillComboThuongHieu() {
+
+    void fillComboThuongHieu() {
         DefaultComboBoxModel modelThuongHieu = (DefaultComboBoxModel) cboThuongHieu.getModel();
         modelThuongHieu.removeAllElements();
         try {
@@ -506,6 +511,7 @@ public class FormSanPham extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Lỗi truy vấn dữ liệu!");
         }
     }
+
     public void setTableTitle() {
         model.addColumn("Mã Sản Phẩm");
         model.addColumn("Tên Sản Phẩm");
@@ -521,28 +527,27 @@ public class FormSanPham extends javax.swing.JFrame {
         model.addColumn("Hình Ảnh");
         tblSanPham.setModel(model);
     }
-public void loadTable() throws SQLException {
-    String sql = "SELECT D.ID AS ProductVariantID, " +
-            "B.NAME AS ProductName, " +
-                 "F.NAME AS ColorName, " +
-                 "E.NAME AS SizeName, " +
-                 "A.NAME AS CategoryName, " +
-                 "C.NAME AS BrandName, " +
-                 "D.QUANTITY, " +
-                 "D.PRICE, " +
-                 "B.DESCRIPTION , " +
-                 "D.ACTIVE, " +
-                 "D.CODE, " +
-                 "D.IMAGE " +
-                 "FROM CATEGORIES A " +
-                 "JOIN PRODUCTS B ON A.ID = B.CATEGORY_ID " +
-                 "JOIN BRANDS C ON B.BRAND_ID = C.ID " +
-                 "JOIN PRODUCT_VARIANTS D ON B.ID = D.PRODUCT_ID " +
-                 "JOIN SIZES E ON D.SIZE_ID = E.ID " +
-                 "JOIN COLORS F ON D.COLOR_ID = F.ID";
 
-   
- 
+    public void loadTable() throws SQLException {
+        String sql = "SELECT D.ID AS ProductVariantID, "
+                + "B.NAME AS ProductName, "
+                + "F.NAME AS ColorName, "
+                + "E.NAME AS SizeName, "
+                + "A.NAME AS CategoryName, "
+                + "C.NAME AS BrandName, "
+                + "D.QUANTITY, "
+                + "D.PRICE, "
+                + "B.DESCRIPTION , "
+                + "D.ACTIVE, "
+                + "D.CODE, "
+                + "D.IMAGE "
+                + "FROM CATEGORIES A "
+                + "JOIN PRODUCTS B ON A.ID = B.CATEGORY_ID "
+                + "JOIN BRANDS C ON B.BRAND_ID = C.ID "
+                + "JOIN PRODUCT_VARIANTS D ON B.ID = D.PRODUCT_ID "
+                + "JOIN SIZES E ON D.SIZE_ID = E.ID "
+                + "JOIN COLORS F ON D.COLOR_ID = F.ID";
+
         ResultSet rs = JdbcHelper.query(sql); // Thực hiện truy vấn
         while (rs.next()) {
             Object[] row = {
@@ -555,39 +560,37 @@ public void loadTable() throws SQLException {
                 rs.getInt("QUANTITY"),
                 rs.getDouble("PRICE"),
                 rs.getString("DESCRIPTION"),
-                 rs.getBoolean("ACTIVE") ? "Hoạt Động" : "Ngừng Hoạt Động",
-                
+                rs.getBoolean("ACTIVE") ? "Hoạt Động" : "Ngừng Hoạt Động",
                 rs.getString("CODE"),
-               rs.getString("IMAGE")
-            
+                rs.getString("IMAGE")
+
             };
             model.addRow(row); // Thêm dữ liệu vào model
         }
         rs.getStatement().getConnection().close(); // Đóng kết nối
-   
-    
 
-    tblSanPham.setModel(model); // Gán lại model mới vào bảng
-}
-public void getFrom(int index){
-    
-    txtTenSanPham.setText((String) tblSanPham.getValueAt(index, 1));
-    cboMauSac.setSelectedItem((String) tblSanPham.getValueAt(index, 2));
-    cboKichThuoc.setSelectedItem((String) tblSanPham.getValueAt(index, 3));
-    cboLoaiSanPham.setSelectedItem((String) tblSanPham.getValueAt(index, 4));
-    cboThuongHieu.setSelectedItem((String) tblSanPham.getValueAt(index, 5));
-    spinnerSoLuong.setValue(tblSanPham.getValueAt(index, 6));
-    txtGia.setText((String) tblSanPham.getValueAt(index, 7).toString());
-    txtMoTa.setText((String) tblSanPham.getValueAt(index, 8).toString());
-    
-    boolean kt = tblSanPham.getValueAt(index,9).toString() == cknHoatDongKichThuoc.getText() ?true:false;
-    if(kt ==true){
-        cknHoatDongKichThuoc.setSelected(true);
-    }else{
-        cknNgungHoatDongKickThuoc.setSelected(true);
+        tblSanPham.setModel(model); // Gán lại model mới vào bảng
     }
-    txtMaCode.setText((String) tblSanPham.getValueAt(index, 10).toString());
-}
+
+    public void getFrom(int index) {
+
+        txtTenSanPham.setText((String) tblSanPham.getValueAt(index, 1));
+        cboMauSac.setSelectedItem((String) tblSanPham.getValueAt(index, 2));
+        cboKichThuoc.setSelectedItem((String) tblSanPham.getValueAt(index, 3));
+        cboLoaiSanPham.setSelectedItem((String) tblSanPham.getValueAt(index, 4));
+        cboThuongHieu.setSelectedItem((String) tblSanPham.getValueAt(index, 5));
+        spinnerSoLuong.setValue(tblSanPham.getValueAt(index, 6));
+        txtGia.setText((String) tblSanPham.getValueAt(index, 7).toString());
+        txtMoTa.setText((String) tblSanPham.getValueAt(index, 8).toString());
+
+        boolean kt = tblSanPham.getValueAt(index, 9).toString() == cknHoatDongKichThuoc.getText() ? true : false;
+        if (kt == true) {
+            cknHoatDongKichThuoc.setSelected(true);
+        } else {
+            cknNgungHoatDongKickThuoc.setSelected(true);
+        }
+        txtMaCode.setText((String) tblSanPham.getValueAt(index, 10).toString());
+    }
 
 
     private void txtGiaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtGiaActionPerformed
@@ -596,7 +599,7 @@ public void getFrom(int index){
 
     private void tblSanPhamMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblSanPhamMouseClicked
         // TODO add your handling code here:
-       index = tblSanPham.getSelectedRow();
+        index = tblSanPham.getSelectedRow();
         getFrom(index);
     }//GEN-LAST:event_tblSanPhamMouseClicked
 

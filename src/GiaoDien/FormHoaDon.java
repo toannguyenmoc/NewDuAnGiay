@@ -7,6 +7,7 @@ package GiaoDien;
 import com.sales.DAO.OrderDAO;
 import com.sales.DAO.Order_DetailDAO;
 import com.sales.Entity.Order;
+import com.sales.Utils.XImage;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -34,7 +35,10 @@ public class FormHoaDon extends javax.swing.JFrame {
         dateChooserNgayTao.setDateFormatString("MM/dd/yyyy");
         fillTable();
         fillCombobox();
-        
+        setTitle("PHẦN MỀM QUẢN LÝ GIÀY THỂ THAO");
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        setLocationRelativeTo(null);
+        setIconImage(XImage.XImage());
     }
     
     public void clearForm() {

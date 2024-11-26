@@ -60,7 +60,6 @@ public class FormSanPham extends javax.swing.JFrame {
         fillComboKichThuoc();
         fillComboLoai();
         fillComboThuongHieu();
-        loadTable();
         setTitle("PHẦN MỀM QUẢN LÝ GIÀY THỂ THAO");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
     }
@@ -529,49 +528,7 @@ public class FormSanPham extends javax.swing.JFrame {
         tblSanPham.setModel(model);
     }
 
-    public void loadTable() throws SQLException {
-        String sql = "SELECT D.ID AS ProductVariantID, "
-                + "B.NAME AS ProductName, "
-                + "F.NAME AS ColorName, "
-                + "E.NAME AS SizeName, "
-                + "A.NAME AS CategoryName, "
-                + "C.NAME AS BrandName, "    
-                + "D.QUANTITY, "
-                + "D.PRICE, "
-                + "B.DESCRIPTION , "
-                + "D.ACTIVE, "
-                + "D.CODE, "
-                + "D.IMAGE "
-                + "FROM CATEGORIES A "
-                + "JOIN PRODUCTS B ON A.ID = B.CATEGORY_ID "
-                + "JOIN BRANDS C ON B.BRAND_ID = C.ID "
-                + "JOIN PRODUCT_VARIANTS D ON B.ID = D.PRODUCT_ID "
-                + "JOIN SIZES E ON D.SIZE_ID = E.ID "
-                + "JOIN COLORS F ON D.COLOR_ID = F.ID";
 
-        ResultSet rs = JdbcHelper.query(sql); // Thực hiện truy vấn
-        while (rs.next()) {
-            Object[] row = {
-                rs.getInt("ProductVariantID"),
-                rs.getString("ProductName"),
-                rs.getString("ColorName"),
-                rs.getString("SizeName"),
-                rs.getString("CategoryName"),
-                rs.getString("BrandName"),
-                rs.getInt("QUANTITY"),
-                rs.getDouble("PRICE"),
-                rs.getString("DESCRIPTION"),
-                rs.getBoolean("ACTIVE") ? cknHoatDongKichThuoc.getText() : cknNgungHoatDongKickThuoc.getText(),
-                rs.getString("CODE"),
-                rs.getString("IMAGE")
-
-            };
-            model.addRow(row); // Thêm dữ liệu vào model
-        }
-        rs.getStatement().getConnection().close(); // Đóng kết nối
-
-        tblSanPham.setModel(model); // Gán lại model mới vào bảng
-    }
 
     public void getFrom(int index) {
 

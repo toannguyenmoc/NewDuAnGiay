@@ -560,7 +560,7 @@ public class FormSanPham extends javax.swing.JFrame {
                 rs.getInt("QUANTITY"),
                 rs.getDouble("PRICE"),
                 rs.getString("DESCRIPTION"),
-                rs.getBoolean("ACTIVE") ? "Hoạt Động" : "Ngừng Hoạt Động",
+                rs.getBoolean("ACTIVE") ? cknHoatDongKichThuoc.getText() : cknNgungHoatDongKickThuoc.getText(),
                 rs.getString("CODE"),
                 rs.getString("IMAGE")
 

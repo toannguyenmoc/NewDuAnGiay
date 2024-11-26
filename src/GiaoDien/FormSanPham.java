@@ -48,6 +48,7 @@ public class FormSanPham extends javax.swing.JFrame {
     Product_Variant productVariant = new Product_Variant();
     int index = 0;
     DefaultTableModel model = new DefaultTableModel();
+    
     List<Product_Variant> list = new ArrayList<>();
 
     public FormSanPham() throws SQLException {
@@ -534,7 +535,7 @@ public class FormSanPham extends javax.swing.JFrame {
                 + "F.NAME AS ColorName, "
                 + "E.NAME AS SizeName, "
                 + "A.NAME AS CategoryName, "
-                + "C.NAME AS BrandName, "
+                + "C.NAME AS BrandName, "    
                 + "D.QUANTITY, "
                 + "D.PRICE, "
                 + "B.DESCRIPTION , "

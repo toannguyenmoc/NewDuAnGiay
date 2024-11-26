@@ -16,19 +16,21 @@ public class Order {
     private int customersId;
     private Date createDate;
     private int total;
-    private Boolean status;
+    private int status;
 
     public Order() {
     }
 
-    public Order(int id, int userId, int customerId, Date createDate, int total, Boolean status) {
+    public Order(int id, int userId, int customersId, Date createDate, int total, int status) {
         this.id = id;
         this.userId = userId;
-        this.customersId = customerId;
+        this.customersId = customersId;
         this.createDate = createDate;
         this.total = total;
         this.status = status;
     }
+
+    
 
     public int getId() {
         return id;
@@ -70,11 +72,11 @@ public class Order {
         this.total = total;
     }
 
-    public Boolean getStatus() {
+    public int getStatus() {
         return status;
     }
 
-    public void setStatus(Boolean status) {
+    public void setStatus(int status) {
         this.status = status;
     }
     

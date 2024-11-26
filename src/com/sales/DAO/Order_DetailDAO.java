@@ -19,12 +19,12 @@ import java.util.logging.Logger;
  */
 public class Order_DetailDAO extends SaleDAO<Order_Detail, Integer> {
 
-    String INSERT_SQL = "INSERT INTO ORDER_DETAILS(ORDER_ID, PRODUCT_VARIANT_ID, QUANTITY, PRICE) VALUES(?,?,?,?)";
+     String INSERT_SQL = "INSERT INTO ORDER_DETAILS(ORDER_ID, PRODUCT_VARIANT_ID, QUANTITY, PRICE) VALUES(?,?,?,?)";
     String UPDATE_SQL = "UPDATE ORDER_DETAILS SET ORDER_ID = ?, PRODUCT_VARIANT_ID = ?, QUANTITY = ?, PRICE = ? WHERE ID = ?";
     String DELETE_SQL = "DELETE FROM ORDER_DETAILS WHERE ID = ?";
     String SELECT_ALL_SQL = "SELECT * FROM ORDER_DETAILS";
     String SELECT_BYID_SQL = "SELECT * FROM ORDER_DETAILS WHERE ID = ?";
-    String SELECT_BYSQL_SQL = "";
+    String SELECT_BY_ID_ORDER_SQL = "EXEC GetOderDetailByIdOrder ?";
 
     @Override
     public void insert(Order_Detail entity) {
@@ -76,6 +76,24 @@ public class Order_DetailDAO extends SaleDAO<Order_Detail, Integer> {
                 order_detail.setPrice(resultSet.getInt("PRICE"));
 
                 list.add(order_detail);
+            }
+            return list;
+        } catch (SQLException ex) {
+            Logger.getLogger(Order_Detail.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+    
+    public List<Object[]> selectByIDOrder(Integer id) {
+        List<Object[]> list = new ArrayList<>();
+        ResultSet rs = JdbcHelper.query(SELECT_BY_ID_ORDER_SQL, id);
+        try {
+            while (rs.next() == true) {
+                Object[] ob = new Object[3];
+                ob[0] = rs.getString("ProductName");
+                ob[1] = rs.getInt("Qty");
+                ob[2] = rs.getInt("Price");
+                list.add(ob);
             }
             return list;
         } catch (SQLException ex) {

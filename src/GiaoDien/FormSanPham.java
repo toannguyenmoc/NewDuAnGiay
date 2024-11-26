@@ -7,11 +7,13 @@ package GiaoDien;
 import com.sales.DAO.BrandDAO;
 import com.sales.DAO.CategoriesDAO;
 import com.sales.DAO.ColorDAO;
+import com.sales.DAO.ProductDAO;
 import com.sales.DAO.Product_VariantDAO;
 import com.sales.DAO.SizeDAO;
 import com.sales.Entity.Brand;
 import com.sales.Entity.Categories;
 import com.sales.Entity.Color;
+import com.sales.Entity.Product;
 import com.sales.Entity.Product_Variant;
 import com.sales.Entity.Size;
 import com.sales.Utils.JdbcHelper;
@@ -26,6 +28,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
+import org.apache.poi.hpsf.Variant;
 
 /**
  *
@@ -46,9 +49,16 @@ public class FormSanPham extends javax.swing.JFrame {
     Categories categories = new Categories();
     Product_VariantDAO productVariantDao = new Product_VariantDAO();
     Product_Variant productVariant = new Product_Variant();
+    ProductDAO productDAO = new ProductDAO();
+    Product product = new Product();
     int index = 0;
     DefaultTableModel model = new DefaultTableModel();
-    List<Product_Variant> list = new ArrayList<>();
+    List<Product_Variant> list = productVariantDao.selectAll();
+    List<Size> listSize = sizeDao.selectAll();
+    List<Color> listColor = colorDao.selectAll();
+    List<Categories> listCategories = categoriesDao.selectAll();
+    List<Brand> listBrand = brandDao.selectAll();
+    List<Product> listProduct = productDAO.selectAll();
 
     public FormSanPham() throws SQLException {
         initComponents();
@@ -59,7 +69,7 @@ public class FormSanPham extends javax.swing.JFrame {
         fillComboKichThuoc();
         fillComboLoai();
         fillComboThuongHieu();
-        loadTable();
+        load();
         setTitle("PHẦN MỀM QUẢN LÝ GIÀY THỂ THAO");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
     }
@@ -460,7 +470,7 @@ public class FormSanPham extends javax.swing.JFrame {
         DefaultComboBoxModel modelColor = (DefaultComboBoxModel) cboMauSac.getModel();
         modelColor.removeAllElements();
         try {
-            List<Color> listColor = colorDao.selectAll();
+
             System.out.println(listColor);
             for (Color cd : listColor) {
                 modelColor.addElement(cd.getName());
@@ -474,7 +484,7 @@ public class FormSanPham extends javax.swing.JFrame {
         DefaultComboBoxModel modelKichThuoc = (DefaultComboBoxModel) cboKichThuoc.getModel();
         modelKichThuoc.removeAllElements();
         try {
-            List<Size> listSize = sizeDao.selectAll();
+
             System.out.println(listSize);
             for (Size cd : listSize) {
                 modelKichThuoc.addElement(cd.getName());
@@ -488,7 +498,7 @@ public class FormSanPham extends javax.swing.JFrame {
         DefaultComboBoxModel modelLoai = (DefaultComboBoxModel) cboLoaiSanPham.getModel();
         modelLoai.removeAllElements();
         try {
-            List<Categories> listCategories = categoriesDao.selectAll();
+
             System.out.println(listCategories);
             for (Categories cd : listCategories) {
                 modelLoai.addElement(cd.getName());
@@ -502,7 +512,7 @@ public class FormSanPham extends javax.swing.JFrame {
         DefaultComboBoxModel modelThuongHieu = (DefaultComboBoxModel) cboThuongHieu.getModel();
         modelThuongHieu.removeAllElements();
         try {
-            List<Brand> listBrand = brandDao.selectAll();
+
             System.out.println(listBrand);
             for (Brand cd : listBrand) {
                 modelThuongHieu.addElement(cd.getName());
@@ -528,51 +538,137 @@ public class FormSanPham extends javax.swing.JFrame {
         tblSanPham.setModel(model);
     }
 
-    public void loadTable() throws SQLException {
-        String sql = "SELECT D.ID AS ProductVariantID, "
-                + "B.NAME AS ProductName, "
-                + "F.NAME AS ColorName, "
-                + "E.NAME AS SizeName, "
-                + "A.NAME AS CategoryName, "
-                + "C.NAME AS BrandName, "
-                + "D.QUANTITY, "
-                + "D.PRICE, "
-                + "B.DESCRIPTION , "
-                + "D.ACTIVE, "
-                + "D.CODE, "
-                + "D.IMAGE "
-                + "FROM CATEGORIES A "
-                + "JOIN PRODUCTS B ON A.ID = B.CATEGORY_ID "
-                + "JOIN BRANDS C ON B.BRAND_ID = C.ID "
-                + "JOIN PRODUCT_VARIANTS D ON B.ID = D.PRODUCT_ID "
-                + "JOIN SIZES E ON D.SIZE_ID = E.ID "
-                + "JOIN COLORS F ON D.COLOR_ID = F.ID";
+    public void load() {
+        for (Product_Variant productVariant : list) {
 
-        ResultSet rs = JdbcHelper.query(sql); // Thực hiện truy vấn
-        while (rs.next()) {
-            Object[] row = {
-                rs.getInt("ProductVariantID"),
-                rs.getString("ProductName"),
-                rs.getString("ColorName"),
-                rs.getString("SizeName"),
-                rs.getString("CategoryName"),
-                rs.getString("BrandName"),
-                rs.getInt("QUANTITY"),
-                rs.getDouble("PRICE"),
-                rs.getString("DESCRIPTION"),
-                rs.getBoolean("ACTIVE") ? cknHoatDongKichThuoc.getText() : cknNgungHoatDongKickThuoc.getText(),
-                rs.getString("CODE"),
-                rs.getString("IMAGE")
+            Object row[] = {productVariant.getId(),
+                ProductName(productVariant.getProductId()),
+                ColorName(productVariant.getColorId()),
+                SizeName(productVariant.getSizeId()),
+                CategoriesName(productVariant.getProductId()),
+                BrandName(productVariant.getProductId()),
+                productVariant.getQuantity(),
+                productVariant.getPrice(),
+                ProductMoTa(productVariant.getProductId()),
+                productVariant.getActive() ? cknHoatDongKichThuoc.getText() : cknNgungHoatDongKickThuoc.getText(),
+                productVariant.getCode(),
+                productVariant.getImage()
 
             };
-            model.addRow(row); // Thêm dữ liệu vào model
-        }
-        rs.getStatement().getConnection().close(); // Đóng kết nối
+            model.addRow(row);
 
-        tblSanPham.setModel(model); // Gán lại model mới vào bảng
+        }
+
+        tblSanPham.setModel(model);
+
     }
 
-    public void getFrom(int index) {
+    public int ProductID() {
+        String tenSanPham = txtTenSanPham.getText();
+        for (Product pr : listProduct) {
+            if (tenSanPham.equals(pr.getName())) {
+                return pr.getId();
+            }
+        }
+        return -1;
+    }
+
+    public String ProductName(int id) {
+        for (Product pr : listProduct) {
+            if (id == pr.getId()) {
+                return pr.getName();
+            }
+        }
+        return "";
+    }
+
+    public String ProductMoTa(int ProductId) {
+        for (Product pr : listProduct) {
+            if (ProductId == pr.getId()) {
+                return pr.getDescription();
+            }
+        }
+        return "";
+    }
+
+    public int SizeID() {
+        String tenKichThuoc = cboKichThuoc.getSelectedItem().toString();
+        for (Size size : listSize) {
+            if (tenKichThuoc.equals(size.getName())) {
+                return size.getId();
+            }
+        }
+        return -1;
+    }
+
+    public String SizeName(int id) {
+        for (Size size : listSize) {
+            if (id == size.getId()) {
+                return size.getName();
+            }
+        }
+        return "";
+    }
+
+    public int ColorID() {
+        String tenMauSac = cboMauSac.getSelectedItem().toString();
+        for (Color color : listColor) {
+            if (tenMauSac.equals(color.getName())) {
+                return color.getId();
+            }
+        }
+        return -1;
+    }
+
+    public String ColorName(int id) {
+        for (Color color : listColor) {
+            if (id == color.getId()) {
+                return color.getName();
+            }
+        }
+        return "";
+    }
+
+    public int BrandID() {
+        String tenNhanHang = cboThuongHieu.getSelectedItem().toString();
+        for (Brand brand : listBrand) {
+            if (tenNhanHang.equals(brand.getName())) {
+                return brand.getId();
+            }
+        }
+        return -1;
+    }
+
+    public String CategoriesName(int ProductId) {
+        for (Categories categories : listCategories) {
+            if (ProductId == categories.getId()) {
+                return categories.getName();
+            }
+        }
+        return "";
+    }
+
+    public String BrandName(int ProductId) {
+
+        for (Brand brand : listBrand) {
+            if (ProductId == brand.getId()) {
+                return brand.getName();
+            }
+        }
+        return "";
+    }
+
+    public int CatagoriesID() {
+        String tenLoaiSanPham = cboLoaiSanPham.getSelectedItem().toString();
+        for (Categories categories : listCategories) {
+            if (tenLoaiSanPham.equals(categories.getName())) {
+                return categories.getId();
+            }
+        }
+        return -1;
+    }
+
+    public void setFrom() {
 
         txtTenSanPham.setText((String) tblSanPham.getValueAt(index, 1));
         cboMauSac.setSelectedItem((String) tblSanPham.getValueAt(index, 2));
@@ -592,6 +688,38 @@ public class FormSanPham extends javax.swing.JFrame {
         txtMaCode.setText((String) tblSanPham.getValueAt(index, 10).toString());
     }
 
+    public Product_Variant getFromPV() {
+        Product_Variant prova = new Product_Variant();
+        prova.setColorId(ColorID());
+        prova.setSizeId(SizeID());
+        prova.setProductId(ProductID());
+        prova.setPrice(Integer.parseInt(txtGia.getText()));
+        prova.setQuantity((Integer) spinnerSoLuong.getValue());
+        prova.setImage("");
+        prova.setCode(txtMaCode.getText());
+        if (cknHoatDongKichThuoc.isSelected()) {
+            prova.setActive(true);
+        } else {
+            prova.setActive(false);
+        }
+        return prova;
+    }
+
+    public Product getFromPD() {
+        Product pd = new Product();
+        pd.setCategoryId(CatagoriesID());
+        pd.setBrandId(BrandID());
+        pd.setName(txtTenSanPham.getText());
+        pd.setDescription(txtMoTa.getText());
+        pd.setImage("");
+        if (cknHoatDongKichThuoc.isSelected()) {
+            pd.setActive(true);
+        } else {
+            pd.setActive(false);
+        }
+        return pd;
+    }
+
 
     private void txtGiaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtGiaActionPerformed
         // TODO add your handling code here:
@@ -600,7 +728,7 @@ public class FormSanPham extends javax.swing.JFrame {
     private void tblSanPhamMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblSanPhamMouseClicked
         // TODO add your handling code here:
         index = tblSanPham.getSelectedRow();
-        getFrom(index);
+        setFrom();
     }//GEN-LAST:event_tblSanPhamMouseClicked
 
     /**

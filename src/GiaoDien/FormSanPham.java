@@ -60,6 +60,7 @@ public class FormSanPham extends javax.swing.JFrame {
     List<Brand> listBrand = brandDao.selectAll();
     List<Product> listProduct = productDAO.selectAll();
 
+
     public FormSanPham() throws SQLException {
         initComponents();
         setLocationRelativeTo(null);
@@ -538,8 +539,10 @@ public class FormSanPham extends javax.swing.JFrame {
         tblSanPham.setModel(model);
     }
 
+
     public void load() {
         for (Product_Variant productVariant : list) {
+
 
             Object row[] = {productVariant.getId(),
                 ProductName(productVariant.getProductId()),

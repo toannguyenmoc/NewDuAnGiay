@@ -4,7 +4,6 @@
  */
 package GiaoDien;
 
-
 import com.chart.ModelChart;
 import com.sales.DAO.StatisticDAO;
 import com.sales.Entity.User;
@@ -13,15 +12,16 @@ import com.sales.Utils.DateHelper;
 import com.sales.Utils.XImage;
 import java.awt.Color;
 import java.util.List;
-
+import javax.swing.JFrame;
 
 /**
  *
  * @author NganTTK_PC09494
  */
 public class FormManHinhChinh extends javax.swing.JFrame {
-    
+
     User user = Auth.user;
+
     /**
      * Creates new form FormManHinhChinh
      */
@@ -39,48 +39,49 @@ public class FormManHinhChinh extends javax.swing.JFrame {
         BieuDo();
     }
 
-    public void BieuDo(){
+    public void BieuDo() {
         chart.addLegend("Toàn", new Color(245, 189, 135));
         chart.addLegend("Ngân", new Color(135, 189, 245));
         chart.addLegend("Minh", new Color(189, 135, 245));
         chart.addLegend("Tài", new Color(139, 229, 222));
         chart.addLegend("An", new Color(120, 200, 222));
-        chart.addData(new ModelChart("January", new double[]{500, 200, 800,890,500}));
-        chart.addData(new ModelChart("February", new double[]{600, 750, 90,150,350}));
-        chart.addData(new ModelChart("March", new double[]{200, 350, 460,900,150}));
-        chart.addData(new ModelChart("April", new double[]{480, 150, 750,700,250}));
-        chart.addData(new ModelChart("May", new double[]{350, 540, 300,150,500}));
-        chart.addData(new ModelChart("June", new double[]{190, 280, 81,200,150}));
-        chart.addData(new ModelChart("July", new double[]{190, 280, 81,200,50}));
+        chart.addData(new ModelChart("January", new double[]{500, 200, 800, 890, 500}));
+        chart.addData(new ModelChart("February", new double[]{600, 750, 90, 150, 350}));
+        chart.addData(new ModelChart("March", new double[]{200, 350, 460, 900, 150}));
+        chart.addData(new ModelChart("April", new double[]{480, 150, 750, 700, 250}));
+        chart.addData(new ModelChart("May", new double[]{350, 540, 300, 150, 500}));
+        chart.addData(new ModelChart("June", new double[]{190, 280, 81, 200, 150}));
+        chart.addData(new ModelChart("July", new double[]{190, 280, 81, 200, 50}));
     }
 
-    public void BieuDoDoanhThu(){
+    public void BieuDoDoanhThu() {
         StatisticDAO thongKe = new StatisticDAO();
         List<Object[]> list = thongKe.getDoanhThuTheoNam(2024);
         chart.addLegend("Tổng Doanh Thu", new Color(245, 189, 135));
-        for(Object[] dt : list){
-            chart.addData(new ModelChart("Tháng "+dt[0], new double[]{Integer.parseInt(dt[1].toString())}));
+        for (Object[] dt : list) {
+            chart.addData(new ModelChart("Tháng " + dt[0], new double[]{Integer.parseInt(dt[1].toString())}));
         }
     }
-    
-    public void BieuDoSanPham(){
+
+    public void BieuDoSanPham() {
         StatisticDAO thongKe = new StatisticDAO();
-        List<Object[]> list = thongKe.getSanPhamBanChayNhatTuNgayDenNgay(DateHelper.toDate("01-11-2024"),DateHelper.toDate("02-11-2024"));
+        List<Object[]> list = thongKe.getSanPhamBanChayNhatTuNgayDenNgay(DateHelper.toDate("01-11-2024"), DateHelper.toDate("02-11-2024"));
         chart.addLegend("Số lượng", new Color(245, 189, 135));
-        for(Object[] dt : list){
-            chart.addData(new ModelChart(dt[0]+"", new double[]{Integer.parseInt(dt[2].toString())}));
+        for (Object[] dt : list) {
+            chart.addData(new ModelChart(dt[0] + "", new double[]{Integer.parseInt(dt[2].toString())}));
         }
     }
-    
-    public void BieuDoKhachHang(){
+
+    public void BieuDoKhachHang() {
         StatisticDAO thongKe = new StatisticDAO();
-        List<Object[]> list = thongKe.getKhachHangThanThietTuNgayDenNgay(DateHelper.toDate("01-11-2024"),DateHelper.toDate("02-11-2024"));
+        List<Object[]> list = thongKe.getKhachHangThanThietTuNgayDenNgay(DateHelper.toDate("01-11-2024"), DateHelper.toDate("02-11-2024"));
         chart.addLegend("Đơn Hàng", new Color(245, 189, 135));
         chart.addLegend("Sản Phẩm", new Color(135, 189, 245));
-        for(Object[] dt : list){
-            chart.addData(new ModelChart(dt[0]+"", new double[]{Integer.parseInt(dt[2].toString()),Integer.parseInt(dt[3].toString())}));
+        for (Object[] dt : list) {
+            chart.addData(new ModelChart(dt[0] + "", new double[]{Integer.parseInt(dt[2].toString()), Integer.parseInt(dt[3].toString())}));
         }
     }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -419,12 +420,22 @@ public class FormManHinhChinh extends javax.swing.JFrame {
         lblKhachHang.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icon/customer (1).png"))); // NOI18N
         lblKhachHang.setText("Khách hàng");
         lblKhachHang.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        lblKhachHang.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lblKhachHangMouseClicked(evt);
+            }
+        });
 
         lblSanPham.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         lblSanPham.setForeground(new java.awt.Color(255, 255, 255));
         lblSanPham.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icon/best-product.png"))); // NOI18N
         lblSanPham.setText("Sản phẩm");
         lblSanPham.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        lblSanPham.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lblSanPhamMouseClicked(evt);
+            }
+        });
 
         lblHoaDon.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         lblHoaDon.setForeground(new java.awt.Color(255, 255, 255));
@@ -469,11 +480,21 @@ public class FormManHinhChinh extends javax.swing.JFrame {
         lblLoaiSanPham.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icon/categories.png"))); // NOI18N
         lblLoaiSanPham.setText("Loại sản phẩm");
         lblLoaiSanPham.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        lblLoaiSanPham.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lblLoaiSanPhamMouseClicked(evt);
+            }
+        });
 
         lblThoat.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         lblThoat.setForeground(new java.awt.Color(255, 255, 255));
         lblThoat.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icon/exit (1).png"))); // NOI18N
         lblThoat.setText("Thoát");
+        lblThoat.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lblThoatMouseClicked(evt);
+            }
+        });
 
         lblThuocTinh.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         lblThuocTinh.setForeground(new java.awt.Color(255, 255, 255));
@@ -589,12 +610,37 @@ public class FormManHinhChinh extends javax.swing.JFrame {
     private void lblNhanVienMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblNhanVienMouseClicked
         FormNguoiDung formNguoiDung = new FormNguoiDung();
         formNguoiDung.setVisible(true);
+        closing(formNguoiDung);
     }//GEN-LAST:event_lblNhanVienMouseClicked
 
     private void lblDoiMatKhauMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblDoiMatKhauMouseClicked
         FormDoiMatKhau formDoiMatKhau = new FormDoiMatKhau();
         formDoiMatKhau.setVisible(true);
+        closing(formDoiMatKhau);
     }//GEN-LAST:event_lblDoiMatKhauMouseClicked
+
+    private void lblThoatMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblThoatMouseClicked
+        new FormDangNhap().setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_lblThoatMouseClicked
+
+    private void lblKhachHangMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblKhachHangMouseClicked
+        FormKhachHang formKhachHang = new FormKhachHang();
+        formKhachHang.setVisible(true);
+        closing(formKhachHang);
+    }//GEN-LAST:event_lblKhachHangMouseClicked
+
+    private void lblLoaiSanPhamMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblLoaiSanPhamMouseClicked
+        FormLoaiSanPham formLoaiSanPham = new FormLoaiSanPham();
+        formLoaiSanPham.setVisible(true);
+        closing(formLoaiSanPham);
+    }//GEN-LAST:event_lblLoaiSanPhamMouseClicked
+
+    private void lblSanPhamMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblSanPhamMouseClicked
+        FormSanPham formSanPham = new FormSanPham();
+        formSanPham.setVisible(true);
+        closing(formSanPham);
+    }//GEN-LAST:event_lblSanPhamMouseClicked
 
     /**
      * @param args the command line arguments
@@ -682,4 +728,27 @@ public class FormManHinhChinh extends javax.swing.JFrame {
     private javax.swing.JLabel lblTrangChu;
     private javax.swing.JPanel pnlBieuDo;
     // End of variables declaration//GEN-END:variables
+
+    public void kiemtra() {
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                if (Auth.user == null) {
+                    new FormDangNhap().setVisible(true);
+                    dispose();
+                }
+            }
+        });
+    }
+
+    public void closing(JFrame F) {
+        FormManHinhChinh.this.setVisible(false);
+        F.addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent e) {
+                FormManHinhChinh.this.setVisible(true);
+                F.dispose();
+            }
+        });
+    }
+
 }

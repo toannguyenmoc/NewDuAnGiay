@@ -736,6 +736,9 @@
                   <Color id="Hand Cursor"/>
                 </Property>
               </Properties>
+              <Events>
+                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="lblKhachHangMouseClicked"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JLabel" name="lblSanPham">
               <Properties>
@@ -753,6 +756,9 @@
                   <Color id="Hand Cursor"/>
                 </Property>
               </Properties>
+              <Events>
+                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="lblSanPhamMouseClicked"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JLabel" name="lblHoaDon">
               <Properties>
@@ -855,6 +861,9 @@
                   <Color id="Hand Cursor"/>
                 </Property>
               </Properties>
+              <Events>
+                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="lblLoaiSanPhamMouseClicked"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JLabel" name="lblThoat">
               <Properties>
@@ -869,6 +878,9 @@
                 </Property>
                 <Property name="text" type="java.lang.String" value="Tho&#xe1;t"/>
               </Properties>
+              <Events>
+                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="lblThoatMouseClicked"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JLabel" name="lblThuocTinh">
               <Properties>

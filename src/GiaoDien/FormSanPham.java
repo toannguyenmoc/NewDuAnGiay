@@ -66,7 +66,7 @@ public class FormSanPham extends javax.swing.JFrame {
     List<Brand> listBrand = brandDao.selectAll();
     List<Product> listProduct = productDAO.selectAll();
 
-    public FormSanPham() throws SQLException {
+    public FormSanPham(){
         initComponents();
         Init();
     }
@@ -992,11 +992,7 @@ public class FormSanPham extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                try {
-                    new FormSanPham().setVisible(true);
-                } catch (SQLException ex) {
-                    Logger.getLogger(FormSanPham.class.getName()).log(Level.SEVERE, null, ex);
-                }
+                    new FormSanPham().setVisible(true);            
             }
         });
     }

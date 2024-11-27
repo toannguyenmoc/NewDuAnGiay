@@ -170,6 +170,11 @@ public class FormSanPham extends javax.swing.JFrame {
         jButton1.setForeground(new java.awt.Color(0, 102, 102));
         jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icon/add.png"))); // NOI18N
         jButton1.setText("Thêm");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jButton2.setBackground(new java.awt.Color(255, 204, 0));
         jButton2.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
@@ -541,8 +546,9 @@ public class FormSanPham extends javax.swing.JFrame {
 
 
     public void load() {
+        List<Product_Variant> list = productVariantDao.selectAll();
+        
         for (Product_Variant productVariant : list) {
-
 
             Object row[] = {productVariant.getId(),
                 ProductName(productVariant.getProductId()),
@@ -556,8 +562,11 @@ public class FormSanPham extends javax.swing.JFrame {
                 productVariant.getActive() ? cknHoatDongKichThuoc.getText() : cknNgungHoatDongKickThuoc.getText(),
                 productVariant.getCode(),
                 productVariant.getImage()
+                
+                
 
             };
+            System.out.println(productVariant.getProductId());
             model.addRow(row);
 
         }
@@ -568,6 +577,7 @@ public class FormSanPham extends javax.swing.JFrame {
 
     public int ProductID() {
         String tenSanPham = txtTenSanPham.getText();
+        List<Product> listProduct = productDAO.selectAll();
         for (Product pr : listProduct) {
             if (tenSanPham.equals(pr.getName())) {
                 return pr.getId();
@@ -577,6 +587,7 @@ public class FormSanPham extends javax.swing.JFrame {
     }
 
     public String ProductName(int id) {
+        List<Product> listProduct = productDAO.selectAll();
         for (Product pr : listProduct) {
             if (id == pr.getId()) {
                 return pr.getName();
@@ -586,6 +597,7 @@ public class FormSanPham extends javax.swing.JFrame {
     }
 
     public String ProductMoTa(int ProductId) {
+        List<Product> listProduct = productDAO.selectAll();
         for (Product pr : listProduct) {
             if (ProductId == pr.getId()) {
                 return pr.getDescription();
@@ -642,19 +654,37 @@ public class FormSanPham extends javax.swing.JFrame {
         return -1;
     }
 
-    public String CategoriesName(int ProductId) {
+    public String CategoriesName(int ProductId /*11*/) {
+        List<Product> listProduct = productDAO.selectAll();
+        int cateID = -1;
+        for(Product product : listProduct){
+            if(ProductId == product.getId()){
+                cateID = product.getCategoryId();
+                break;
+            }      
+        }
+        List<Categories> listCategories = categoriesDao.selectAll();
+    
         for (Categories categories : listCategories) {
-            if (ProductId == categories.getId()) {
+            if (cateID == categories.getId()) {
                 return categories.getName();
             }
         }
         return "";
     }
-
+        
     public String BrandName(int ProductId) {
-
+        List<Product> listProduct = productDAO.selectAll();
+        int brandID = -1;
+        for(Product product : listProduct){
+            if(ProductId == product.getId()){
+                brandID = product.getBrandId();
+                break;
+            }      
+        }
+        List<Brand> listBrand = brandDao.selectAll();
         for (Brand brand : listBrand) {
-            if (ProductId == brand.getId()) {
+            if (brandID == brand.getId()) {
                 return brand.getName();
             }
         }
@@ -692,6 +722,7 @@ public class FormSanPham extends javax.swing.JFrame {
     }
 
     public Product_Variant getFromPV() {
+        
         Product_Variant prova = new Product_Variant();
         prova.setColorId(ColorID());
         prova.setSizeId(SizeID());
@@ -715,13 +746,34 @@ public class FormSanPham extends javax.swing.JFrame {
         pd.setName(txtTenSanPham.getText());
         pd.setDescription(txtMoTa.getText());
         pd.setImage("");
-        if (cknHoatDongKichThuoc.isSelected()) {
-            pd.setActive(true);
-        } else {
-            pd.setActive(false);
-        }
+        pd.setActive(true);
+        
         return pd;
     }
+    
+public boolean insertPr(){
+    try {
+        Product pr = getFromPD();  
+        productDAO.insert(pr);
+        JOptionPane.showMessageDialog(this, "tc");
+        return true;
+    } catch (Exception e) {
+        return false;
+    } 
+}
+
+    public void insert(){
+        if(insertPr() == true){
+                Product_Variant pv = getFromPV();
+                productVariantDao.insert(pv);
+                load();        
+        }else{
+            JOptionPane.showMessageDialog(this, "loi");
+        }
+    }
+
+
+
 
 
     private void txtGiaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtGiaActionPerformed
@@ -733,6 +785,11 @@ public class FormSanPham extends javax.swing.JFrame {
         index = tblSanPham.getSelectedRow();
         setFrom();
     }//GEN-LAST:event_tblSanPhamMouseClicked
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        insert();
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments

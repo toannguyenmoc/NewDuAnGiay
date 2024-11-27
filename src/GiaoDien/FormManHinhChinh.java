@@ -36,7 +36,7 @@ public class FormManHinhChinh extends javax.swing.JFrame {
         setIconImage(XImage.XImage());  // XImage là một lớp tùy chỉnh bạn có thể thay thế
         setTitle("PHẦN MỀM QUẢN LÝ GIÀY THỂ THAO");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        BieuDoDoanhThu();
+        BieuDo();
     }
 
     public void BieuDo(){

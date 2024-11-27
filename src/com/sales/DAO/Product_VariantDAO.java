@@ -26,15 +26,8 @@ public class Product_VariantDAO extends SaleDAO<Product_Variant, Integer> {
     String SELECT_BYID_SQL = "SELECT * FROM PRODUCT_VARIANTS WHERE ID = ?";
     String SELECT_BYSQL_SQL = "";
     String SELECT_BY_OBJECT = "EXEC sp_SearchSanPham ?";
-    String SELECTPRODUCTVARIANT_SQL = "SELECT D.ID,F.NAME,E.NAME,B.NAME,C.NAME,A.NAME,D.PRICE,B.DESCRIPTION,D.QUANTITY,D.IMAGE,D.CODE,D.ACTIVE\n"
-            + "FROM CATEGORIES A Join PRODUCTS B On A.ID=b.ID\n"
-            + "join BRANDS C on b.ID=C.ID \n"
-            + "join PRODUCT_VARIANTS D on C.ID=d.ID\n"
-            + "join SIZES E on D.ID=e.ID\n"
-            + "join COLORS F on E.ID=F.ID";
-    
-    
-    
+  
+     
     
     public List<Product_Variant> selectByObject(String chuoi) {
         List<Product_Variant> list = this.selectBySQL(SELECT_BY_OBJECT,'%' + chuoi + '%');
@@ -43,10 +36,7 @@ public class Product_VariantDAO extends SaleDAO<Product_Variant, Integer> {
         }
         return list;
     }
-    public List<Product_Variant> selectProduct() {
-        return this.selectBySQL(SELECTPRODUCTVARIANT_SQL);
-    }
-
+  
     @Override
     public void insert(Product_Variant entity) {
         JdbcHelper.update(INSERT_SQL,

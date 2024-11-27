@@ -25,7 +25,16 @@ public class ProductDAO extends SaleDAO<Product, Integer> {
     String SELECT_ALL_SQL = "SELECT * FROM PRODUCTS";
     String SELECT_BYID_SQL = "SELECT * FROM PRODUCTS WHERE ID = ?";
     String SELECT_BYSQL_SQL = "";
-
+    String SELECT_BYNAME_SQL = "SELECT * FROM PRODUCTS WHERE NAME = ?";
+    
+    
+     public Product selectByNAME(String id) {
+        List<Product> list = selectBySQL(SELECT_BYNAME_SQL, id);
+        if (list.isEmpty()) {
+            return null;
+        }
+        return list.get(0);
+    }
     @Override
     public void insert(Product entity) {
             JdbcHelper.update(INSERT_SQL,

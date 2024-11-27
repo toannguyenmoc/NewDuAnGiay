@@ -19,6 +19,7 @@ import com.sales.Entity.Product_Variant;
 import com.sales.Entity.Size;
 import com.sales.Utils.JdbcHelper;
 import com.sales.Utils.XImage;
+import com.sales.Utils.XValidate;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,7 +35,6 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
-
 
 /**
  *
@@ -68,10 +68,11 @@ public class FormSanPham extends javax.swing.JFrame {
 
     public FormSanPham() throws SQLException {
         initComponents();
-       Init();
+        Init();
     }
-public void Init(){
-     setLocationRelativeTo(null);
+
+    public void Init() {
+        setLocationRelativeTo(null);
         setIconImage(XImage.XImage());
         setTableTitle();
         fillComboBoxMauSac();
@@ -82,7 +83,8 @@ public void Init(){
         refresh();
         setTitle("PHẦN MỀM QUẢN LÝ GIÀY THỂ THAO");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-}
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -735,7 +737,7 @@ public void Init(){
     }
 
     public void setFrom() {
-        Product_Variant pv =new Product_Variant();
+        Product_Variant pv = new Product_Variant();
         txtTenSanPham.setText((String) tblSanPham.getValueAt(index, 1));
         cboMauSac.setSelectedItem((String) tblSanPham.getValueAt(index, 2));
         cboKichThuoc.setSelectedItem((String) tblSanPham.getValueAt(index, 3));
@@ -752,16 +754,16 @@ public void Init(){
             cknNgungHoatDongKickThuoc.setSelected(true);
         }
         txtMaCode.setText((String) tblSanPham.getValueAt(index, 10).toString());
-        String hinhAnh = (String)tblSanPham.getValueAt(index, 11);
-        
+        String hinhAnh = (String) tblSanPham.getValueAt(index, 11);
+
         if (hinhAnh != null) {
             lblHinhAnh.setToolTipText(hinhAnh);
             ImageIcon img = (XImage.read(hinhAnh, lblHinhAnh.getWidth(), lblHinhAnh.getHeight()));
-            lblHinhAnh.setIcon(img);  
-        }else{
+            lblHinhAnh.setIcon(img);
+        } else {
             lblHinhAnh.setIcon(null);
         }
-        
+
     }
 
     public Product_Variant getFromPV() {
@@ -815,10 +817,10 @@ public void Init(){
         }
     }
 
-    public void OP() {
-        Product pr = getFromPD();  
+    public void update() {
+        Product pr = getFromPD();
         productDAO.update(pr, indexPR(index));
-        
+
         Product_Variant pv = getFromPV();
         int indexPv = (Integer) tblSanPham.getValueAt(index, 0);
         productVariantDao.update(pv, indexPv);
@@ -847,23 +849,22 @@ public void Init(){
         }
         return -1;
     }
-    public void search(){
-       DefaultTableModel model = (DefaultTableModel) tblSanPham.getModel();
+
+    public void search() {
+        DefaultTableModel model = (DefaultTableModel) tblSanPham.getModel();
         StatisticDAO thongKe = new StatisticDAO();
         model.setRowCount(0);
-       List<Object[]> list = thongKe.timKiemSanPham(txtTimKiem.getText());
-       for(Object[] dong :list){
-           Object row[] = {dong[0],dong[1],dong[2],dong[3],dong[4],dong[5],
-               dong[6],dong[7],dong[8],dong[9].toString().equalsIgnoreCase("true")?cknHoatDongKichThuoc.getText():cknNgungHoatDongKickThuoc.getText(),dong[10],dong[11]
+        List<Object[]> list = thongKe.timKiemSanPham(txtTimKiem.getText());
+        for (Object[] dong : list) {
+            Object row[] = {dong[0], dong[1], dong[2], dong[3], dong[4], dong[5],
+                dong[6], dong[7], dong[8], dong[9].toString().equalsIgnoreCase("true") ? cknHoatDongKichThuoc.getText() : cknNgungHoatDongKickThuoc.getText(), dong[10], dong[11]
 
             };
-           model.addRow(row);
-       }
-       
-       
-        
+            model.addRow(row);
+        }
+
     }
-      JFileChooser fileChooser = new JFileChooser();
+    JFileChooser fileChooser = new JFileChooser();
 
     public void ChonAnh() {
         if (fileChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
@@ -874,7 +875,8 @@ public void Init(){
             lblHinhAnh.setToolTipText(file.getName());
         }
     }
-    public void refresh(){
+
+    public void refresh() {
         txtTenSanPham.setText("");
         txtGia.setText("");
         txtMoTa.setText("");
@@ -887,20 +889,25 @@ public void Init(){
         cboThuongHieu.setSelectedIndex(0);
         cknHoatDongKichThuoc.setSelected(true);
         lblHinhAnh.setIcon(null);
-        
+
     }
-  
-    
-    
+
+    XValidate validate = new XValidate();
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
+        if(validate.checkTenSanPham(txtTenSanPham)
+         &&validate.checkGia(txtGia)){
         insert();
+        }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
-     
-        OP();
+
+       if(validate.checkTenSanPham(txtTenSanPham)
+         &&validate.checkGia(txtGia)){
+        update();
+        }
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void btnTimKiemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTimKiemActionPerformed
@@ -910,7 +917,7 @@ public void Init(){
 
     private void txtTimKiemKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtTimKiemKeyReleased
         // TODO add your handling code here:
-        if(txtTimKiem.getText().isEmpty()){
+        if (txtTimKiem.getText().isEmpty()) {
             model.setRowCount(0);
             load();
         }

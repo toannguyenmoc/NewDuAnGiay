@@ -6,10 +6,14 @@ package com.sales.Utils;
 
 import com.sales.DAO.BrandDAO;
 import com.sales.DAO.ColorDAO;
+import com.sales.DAO.ProductDAO;
+import com.sales.DAO.Product_VariantDAO;
 import com.sales.DAO.SizeDAO;
 import com.sales.DAO.UserDAO;
 import com.sales.Entity.Brand;
 import com.sales.Entity.Color;
+import com.sales.Entity.Product;
+import com.sales.Entity.Product_Variant;
 import com.sales.Entity.Size;
 import com.sales.Entity.User;
 import java.util.List;
@@ -206,7 +210,8 @@ public class XValidate {
             return false;
         }
         return true;
-    }public boolean checkTrangThaiThuongHieu(JCheckBox checkBox1, JCheckBox checkBox2) {
+    }
+     public boolean checkTrangThaiThuongHieu(JCheckBox checkBox1, JCheckBox checkBox2) {
         
         if (!checkBox1.isSelected() && !checkBox2.isSelected()) {
             JOptionPane.showMessageDialog(null, "Chưa chọn hoạt động");
@@ -214,5 +219,49 @@ public class XValidate {
         }
         return true;  
     }
+      ProductDAO productDao =new ProductDAO();
+     public boolean checkTenSanPham(JTextField text)
+    {
+        String rgx = "[a-zA-Z0-9ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚÝàáâãèéêìíòóôõùúýĂăĐđĨĩŨũƠơƯưẠ-ỹ ]+$";
+        String tenSanPham = text.getText().trim();
+        Product product = productDao.selectByNAME(tenSanPham);
+        if(tenSanPham.length()== 0)
+        {
+            JOptionPane.showMessageDialog(text.getRootPane(), "Chưa nhập tên Sản Phẩm!");
+            
+            return false;
+        }
+        if(tenSanPham.matches(rgx)== false)
+        {
+            JOptionPane.showMessageDialog(text.getRootPane(), "Họ tên chỉ chứa alphabet và ký tự trắng");
+            return false;
+        }
+         if(product != null)
+        {
+            JOptionPane.showMessageDialog(text.getRootPane(),"Tên thương hiệu đã tồn tại!");
+            return false;
+        }
+        return true;
+    }
    
+ 
+    public boolean checkGia(JTextField text){
+        String txt = text.getText().trim();
+        if(txt.isEmpty()){
+            JOptionPane.showMessageDialog(text.getRootPane(), "Vui Lòng Nhập Giá");
+            return false;
+        }
+        try {
+             int gia = (Integer.parseInt(txt));
+            if(gia <=0){
+                JOptionPane.showMessageDialog(text.getRootPane(), "Giá Phải Là Số Dương");
+                return false;
+            }
+             
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(text.getRootPane(), "Giá Không Phải Là Chữ");
+            return false;
+        }
+        return true;
+    }
 }

@@ -4,8 +4,10 @@
  */
 package GiaoDien;
 
-import com.sales.Utils.XImage;
-import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.Timer;
 
 /**
  *
@@ -23,8 +25,29 @@ public class FormManHinhChao extends javax.swing.JFrame {
 
     public void init() {
         setLocationRelativeTo(null);
+        autoLoading();
     }
 
+     Timer time;
+
+    public void autoLoading() {
+        time = new Timer(15, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                int present = prbDownLoad.getValue();
+                present = present + 1;
+                prbDownLoad.setValue(present);
+                if (present > 100) {
+                    time.stop();
+                    dispose();
+                    FormDangNhap frm = new FormDangNhap();
+                    frm.setVisible(true);
+                   
+                }
+            }
+        });
+        time.start();
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always

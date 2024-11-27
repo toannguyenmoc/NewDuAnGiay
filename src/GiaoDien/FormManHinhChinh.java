@@ -9,6 +9,7 @@ import com.chart.ModelChart;
 import com.sales.DAO.StatisticDAO;
 import com.sales.Entity.User;
 import com.sales.Utils.Auth;
+import com.sales.Utils.DateHelper;
 import com.sales.Utils.XImage;
 import java.awt.Color;
 import java.util.List;
@@ -35,7 +36,7 @@ public class FormManHinhChinh extends javax.swing.JFrame {
         setIconImage(XImage.XImage());  // XImage là một lớp tùy chỉnh bạn có thể thay thế
         setTitle("PHẦN MỀM QUẢN LÝ GIÀY THỂ THAO");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        BieuDoDoanhThu();
+        BieuDo();
     }
 
     public void BieuDo(){
@@ -44,12 +45,12 @@ public class FormManHinhChinh extends javax.swing.JFrame {
         chart.addLegend("Minh", new Color(189, 135, 245));
         chart.addLegend("Tài", new Color(139, 229, 222));
         chart.addLegend("An", new Color(120, 200, 222));
-        chart.addData(new ModelChart("January", new double[]{5000, 200, 800,890,500}));
-        chart.addData(new ModelChart("February", new double[]{600, 750, 90,150,50}));
-        chart.addData(new ModelChart("March", new double[]{200, 350, 460,900,50}));
-        chart.addData(new ModelChart("April", new double[]{480, 150, 750,700,50}));
-        chart.addData(new ModelChart("May", new double[]{350, 540, 300,150,50}));
-        chart.addData(new ModelChart("June", new double[]{190, 280, 81,200,50}));
+        chart.addData(new ModelChart("January", new double[]{500, 200, 800,890,500}));
+        chart.addData(new ModelChart("February", new double[]{600, 750, 90,150,350}));
+        chart.addData(new ModelChart("March", new double[]{200, 350, 460,900,150}));
+        chart.addData(new ModelChart("April", new double[]{480, 150, 750,700,250}));
+        chart.addData(new ModelChart("May", new double[]{350, 540, 300,150,500}));
+        chart.addData(new ModelChart("June", new double[]{190, 280, 81,200,150}));
         chart.addData(new ModelChart("July", new double[]{190, 280, 81,200,50}));
     }
 
@@ -59,6 +60,25 @@ public class FormManHinhChinh extends javax.swing.JFrame {
         chart.addLegend("Tổng Doanh Thu", new Color(245, 189, 135));
         for(Object[] dt : list){
             chart.addData(new ModelChart("Tháng "+dt[0], new double[]{Integer.parseInt(dt[1].toString())}));
+        }
+    }
+    
+    public void BieuDoSanPham(){
+        StatisticDAO thongKe = new StatisticDAO();
+        List<Object[]> list = thongKe.getSanPhamBanChayNhatTuNgayDenNgay(DateHelper.toDate("01-11-2024"),DateHelper.toDate("02-11-2024"));
+        chart.addLegend("Số lượng", new Color(245, 189, 135));
+        for(Object[] dt : list){
+            chart.addData(new ModelChart(dt[0]+"", new double[]{Integer.parseInt(dt[2].toString())}));
+        }
+    }
+    
+    public void BieuDoKhachHang(){
+        StatisticDAO thongKe = new StatisticDAO();
+        List<Object[]> list = thongKe.getKhachHangThanThietTuNgayDenNgay(DateHelper.toDate("01-11-2024"),DateHelper.toDate("02-11-2024"));
+        chart.addLegend("Đơn Hàng", new Color(245, 189, 135));
+        chart.addLegend("Sản Phẩm", new Color(135, 189, 245));
+        for(Object[] dt : list){
+            chart.addData(new ModelChart(dt[0]+"", new double[]{Integer.parseInt(dt[2].toString()),Integer.parseInt(dt[3].toString())}));
         }
     }
     /**

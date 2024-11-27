@@ -36,25 +36,25 @@ public class StatisticDAO {
 
     public List<Object[]> getThongKeTonKho(Boolean sapXep) { // 0: tăng dần, 1: giảm dần
         String sql = "{CALL SP_ThongKeTonKho(?)}";
-        String[] cols = {"Tên Sản Phẩm", "Biến Thể Sản Phẩm", "Số Lượng", "Đơn Giá"};
+        String[] cols = {"TenSanPham", "BienTheSanPham", "SoLuongTon", "DonGia"};
         return getListofArray(sql, cols, sapXep);
     }
 
     public List<Object[]> getDoanhThuTuNgayDenNgay(Date tuNgay, Date denNgay) {
         String sql = "{CALL SP_ThongKeDoanhThuTuNgayDenNgay(?,?)}";
-        String[] cols = {"Tên Sản Phẩm", "Biến Thể Sản Phẩm", "Số Lượng Bán", "Doanh Thu"};
+        String[] cols = {"TenSanPham", "BienTheSanPham", "SoLuongBan", "DoanhThu"};
         return getListofArray(sql, cols, tuNgay, denNgay);
     }
 
     public List<Object[]> getSanPhamBanChayNhatTuNgayDenNgay(Date tuNgay, Date denNgay) {
         String sql = "{CALL SP_ThongKeSanPhamBanChayNhatTuNgayDenNgay(?,?)}";
-        String[] cols = {"Tên Sản Phẩm", "Biến Thể Sản Phẩm", "Số Lượng Bán", "Đơn Giá"};
+        String[] cols = {"TenSanPham", "BienTheSanPham", "SoLuongBan", "DonGia"};
         return getListofArray(sql, cols, tuNgay, denNgay);
     }
 
     public List<Object[]> getKhachHangThanThietTuNgayDenNgay(Date tuNgay, Date denNgay) {
-        String sql = "{CALL SP_ThongKeDoanhThuTuNgayDenNgay(?,?)}";
-        String[] cols = {"Tên Khách Hàng", "Giới Tính", "Tổng Đơn Hàng", "Tổng Sản Phẩm", "Tổng Tiền"};
+        String sql = "{CALL SP_ThongKeKhachHangThanThietTuNgayDenNgay(?,?)}";
+        String[] cols = {"TenKhachHang","GioiTinh","SoLuongDonHangDaMua","SoLuongSanPhamDaMua","TongTien"};
         return getListofArray(sql, cols, tuNgay, denNgay);
     }
 

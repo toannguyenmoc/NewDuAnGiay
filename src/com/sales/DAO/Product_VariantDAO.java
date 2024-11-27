@@ -31,6 +31,7 @@ public class Product_VariantDAO extends SaleDAO<Product_Variant, Integer> {
             + "join PRODUCT_VARIANTS D on C.ID=d.ID\n"
             + "join SIZES E on D.ID=e.ID\n"
             + "join COLORS F on E.ID=F.ID";
+    
 
     public List<Product_Variant> selectProduct() {
         return this.selectBySQL(SELECTPRODUCTVARIANT_SQL);
@@ -61,6 +62,19 @@ public class Product_VariantDAO extends SaleDAO<Product_Variant, Integer> {
                 entity.getCode(),
                 entity.getActive(),
                 entity.getId());
+    }
+    
+    public void update(Product_Variant entity,int id) {
+        JdbcHelper.update(UPDATE_SQL,
+                entity.getColorId(),
+                entity.getSizeId(),
+                entity.getProductId(),
+                entity.getPrice(),
+                entity.getQuantity(),
+                entity.getImage(),
+                entity.getCode(),
+                entity.getActive(),
+                id);
     }
 
     @Override

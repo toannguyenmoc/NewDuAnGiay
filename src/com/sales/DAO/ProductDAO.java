@@ -49,6 +49,17 @@ public class ProductDAO extends SaleDAO<Product, Integer> {
                     entity.getId());
     }
 
+    public void update(Product entity, int id) {
+            JdbcHelper.update(UPDATE_SQL,
+                    entity.getCategoryId(),
+                    entity.getBrandId(),
+                    entity.getName(),
+                    entity.getDescription(),
+                    entity.getImage(),
+                    entity.getActive(),
+                    id);
+    }
+    
     @Override
     public void delete(Integer id) {
             JdbcHelper.update(DELETE_SQL, id);

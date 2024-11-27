@@ -60,7 +60,6 @@ public class FormSanPham extends javax.swing.JFrame {
     List<Brand> listBrand = brandDao.selectAll();
     List<Product> listProduct = productDAO.selectAll();
 
-
     public FormSanPham() throws SQLException {
         initComponents();
         setLocationRelativeTo(null);
@@ -181,6 +180,11 @@ public class FormSanPham extends javax.swing.JFrame {
         jButton2.setForeground(new java.awt.Color(0, 102, 102));
         jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icon/edit.png"))); // NOI18N
         jButton2.setText("Sửa");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         jButton3.setBackground(new java.awt.Color(255, 204, 0));
         jButton3.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
@@ -544,10 +548,9 @@ public class FormSanPham extends javax.swing.JFrame {
         tblSanPham.setModel(model);
     }
 
-
     public void load() {
         List<Product_Variant> list = productVariantDao.selectAll();
-        
+
         for (Product_Variant productVariant : list) {
 
             Object row[] = {productVariant.getId(),
@@ -562,8 +565,6 @@ public class FormSanPham extends javax.swing.JFrame {
                 productVariant.getActive() ? cknHoatDongKichThuoc.getText() : cknNgungHoatDongKickThuoc.getText(),
                 productVariant.getCode(),
                 productVariant.getImage()
-                
-                
 
             };
             System.out.println(productVariant.getProductId());
@@ -657,14 +658,14 @@ public class FormSanPham extends javax.swing.JFrame {
     public String CategoriesName(int ProductId /*11*/) {
         List<Product> listProduct = productDAO.selectAll();
         int cateID = -1;
-        for(Product product : listProduct){
-            if(ProductId == product.getId()){
+        for (Product product : listProduct) {
+            if (ProductId == product.getId()) {
                 cateID = product.getCategoryId();
                 break;
-            }      
+            }
         }
         List<Categories> listCategories = categoriesDao.selectAll();
-    
+
         for (Categories categories : listCategories) {
             if (cateID == categories.getId()) {
                 return categories.getName();
@@ -672,15 +673,15 @@ public class FormSanPham extends javax.swing.JFrame {
         }
         return "";
     }
-        
+
     public String BrandName(int ProductId) {
         List<Product> listProduct = productDAO.selectAll();
         int brandID = -1;
-        for(Product product : listProduct){
-            if(ProductId == product.getId()){
+        for (Product product : listProduct) {
+            if (ProductId == product.getId()) {
                 brandID = product.getBrandId();
                 break;
-            }      
+            }
         }
         List<Brand> listBrand = brandDao.selectAll();
         for (Brand brand : listBrand) {
@@ -722,7 +723,7 @@ public class FormSanPham extends javax.swing.JFrame {
     }
 
     public Product_Variant getFromPV() {
-        
+
         Product_Variant prova = new Product_Variant();
         prova.setColorId(ColorID());
         prova.setSizeId(SizeID());
@@ -747,33 +748,40 @@ public class FormSanPham extends javax.swing.JFrame {
         pd.setDescription(txtMoTa.getText());
         pd.setImage("");
         pd.setActive(true);
-        
+
         return pd;
     }
-    
-public boolean insertPr(){
-    try {
-        Product pr = getFromPD();  
-        productDAO.insert(pr);
-        JOptionPane.showMessageDialog(this, "tc");
-        return true;
-    } catch (Exception e) {
-        return false;
-    } 
-}
 
-    public void insert(){
-        if(insertPr() == true){
-                Product_Variant pv = getFromPV();
-                productVariantDao.insert(pv);
-                load();        
-        }else{
+    public boolean insertPr() {
+        try {
+            Product pr = getFromPD();
+            productDAO.insert(pr);
+            JOptionPane.showMessageDialog(this, "tc");
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    public void insert() {
+        if (insertPr() == true) {
+            Product_Variant pv = getFromPV();
+            productVariantDao.insert(pv);
+            load();
+        } else {
             JOptionPane.showMessageDialog(this, "loi");
         }
     }
 
-
-
+    public void OP() {
+        Product pr = getFromPD();  
+        productDAO.update(pr, indexPR(index));
+        
+        Product_Variant pv = getFromPV();
+        int indexPv = (Integer) tblSanPham.getValueAt(index, 0);
+        productVariantDao.update(pv, indexPv);
+        load();
+    }
 
 
     private void txtGiaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtGiaActionPerformed
@@ -786,10 +794,26 @@ public boolean insertPr(){
         setFrom();
     }//GEN-LAST:event_tblSanPhamMouseClicked
 
+    public int indexPR(int row) {
+        int indexPv = (Integer) tblSanPham.getValueAt(row, 0);
+        List<Product_Variant> list = productVariantDao.selectAll();
+        for (Product_Variant pv : list) {
+            if (indexPv == pv.getId()) {
+                return pv.getProductId();
+            }
+        }
+        return -1;
+    }
+    
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
         insert();
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+        OP();
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments

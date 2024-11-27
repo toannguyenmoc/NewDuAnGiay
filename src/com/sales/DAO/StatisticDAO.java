@@ -4,7 +4,6 @@
  */
 package com.sales.DAO;
 
-import com.sales.Entity.StatisticDoanhThu;
 import com.sales.Utils.JdbcHelper;
 import java.util.ArrayList;
 import java.util.List;
@@ -59,22 +58,15 @@ public class StatisticDAO {
         return getListofArray(sql, cols, tuNgay, denNgay);
     }
 
-    public List<StatisticDoanhThu> getDoanhThuTheoNam(Integer nam) {
+    public List<Object[]> getDoanhThuTheoNam(Integer nam) {
         String sql = "{CALL SP_ThongKeDoanhThuTheoNam(?)}";
         String[] cols = {"Thang", "TongDoanhThu"};
-        List<Object[]> list = getListofArray(sql, cols, nam);
-
-        List<StatisticDoanhThu> doanhThuList = new ArrayList<>();
-        for (Object[] row : list) {
-            int thang = (int) row[0];
-            int tongDoanhThu = (int) row[1];
-            doanhThuList.add(new StatisticDoanhThu(thang, tongDoanhThu));
-        }
-        return doanhThuList;
+        return getListofArray(sql, cols, nam);
     }
-     public List<Object[]> timKiemSanPham(String name) { // 0: tăng dần, 1: giảm dần
+
+    public List<Object[]> timKiemSanPham(String name) { // 0: tăng dần, 1: giảm dần
         String sql = "{CALL SP_SearchSanPham (?)}";
-        String[] cols = {"ID","TENSP","TENMAU","SIZE","LOAISP","THUONGHIEU","QUANTITY","PRICE","MOTA","ACTIVE","CODE","IMAGE"};
+        String[] cols = {"ID", "TENSP", "TENMAU", "SIZE", "LOAISP", "THUONGHIEU", "QUANTITY", "PRICE", "MOTA", "ACTIVE", "CODE", "IMAGE"};
         return getListofArray(sql, cols, name);
     }
 }

@@ -7,7 +7,6 @@ package GiaoDien;
 
 import com.chart.ModelChart;
 import com.sales.DAO.StatisticDAO;
-import com.sales.Entity.StatisticDoanhThu;
 import com.sales.Entity.User;
 import com.sales.Utils.Auth;
 import com.sales.Utils.XImage;
@@ -36,7 +35,7 @@ public class FormManHinhChinh extends javax.swing.JFrame {
         setIconImage(XImage.XImage());  // XImage là một lớp tùy chỉnh bạn có thể thay thế
         setTitle("PHẦN MỀM QUẢN LÝ GIÀY THỂ THAO");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        BieuDo();
+        BieuDoDoanhThu();
     }
 
     public void BieuDo(){
@@ -56,13 +55,11 @@ public class FormManHinhChinh extends javax.swing.JFrame {
 
     public void BieuDoDoanhThu(){
         StatisticDAO thongKe = new StatisticDAO();
-        List<StatisticDoanhThu> doanhThuList = thongKe.getDoanhThuTheoNam(2024);
-        
+        List<Object[]> list = thongKe.getDoanhThuTheoNam(2024);
         chart.addLegend("Tổng Doanh Thu", new Color(245, 189, 135));
-        for(StatisticDoanhThu doanhThu : doanhThuList){
-            chart.addData(new ModelChart("Tháng "+doanhThu.getThang(), new double[]{doanhThu.getDoanhThu()}));
+        for(Object[] dt : list){
+            chart.addData(new ModelChart("Tháng "+dt[0], new double[]{Integer.parseInt(dt[1].toString())}));
         }
-        
     }
     /**
      * This method is called from within the constructor to initialize the form.

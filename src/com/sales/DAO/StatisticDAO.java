@@ -72,4 +72,9 @@ public class StatisticDAO {
         }
         return doanhThuList;
     }
+     public List<Object[]> timKiemSanPham(String name) { // 0: tăng dần, 1: giảm dần
+        String sql = "{CALL SP_SearchSanPham (?)}";
+        String[] cols = {"ID","TENSP","TENMAU","SIZE","LOAISP","THUONGHIEU","QUANTITY","PRICE","MOTA","ACTIVE","CODE","IMAGE"};
+        return getListofArray(sql, cols, name);
+    }
 }

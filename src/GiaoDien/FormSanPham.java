@@ -10,6 +10,7 @@ import com.sales.DAO.ColorDAO;
 import com.sales.DAO.ProductDAO;
 import com.sales.DAO.Product_VariantDAO;
 import com.sales.DAO.SizeDAO;
+import com.sales.DAO.StatisticDAO;
 import com.sales.Entity.Brand;
 import com.sales.Entity.Categories;
 import com.sales.Entity.Color;
@@ -18,6 +19,7 @@ import com.sales.Entity.Product_Variant;
 import com.sales.Entity.Size;
 import com.sales.Utils.JdbcHelper;
 import com.sales.Utils.XImage;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
@@ -27,8 +29,10 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.ImageIcon;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
-import org.apache.poi.hpsf.Variant;
+
 
 /**
  *
@@ -101,7 +105,7 @@ public class FormSanPham extends javax.swing.JFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         txtMoTa = new javax.swing.JTextArea();
         jPanel2 = new javax.swing.JPanel();
-        jLabel6 = new javax.swing.JLabel();
+        lblHinhAnh = new javax.swing.JLabel();
         txtTenSanPham = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
@@ -212,23 +216,28 @@ public class FormSanPham extends javax.swing.JFrame {
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
         jPanel2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
-        jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icon/photo-camera.png"))); // NOI18N
+        lblHinhAnh.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icon/photo-camera.png"))); // NOI18N
+        lblHinhAnh.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lblHinhAnhMouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(138, Short.MAX_VALUE)
-                .addComponent(jLabel6)
-                .addGap(123, 123, 123))
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lblHinhAnh, javax.swing.GroupLayout.DEFAULT_SIZE, 273, Short.MAX_VALUE)
+                .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(77, 77, 77)
-                .addComponent(jLabel6)
-                .addContainerGap(90, Short.MAX_VALUE))
+                .addContainerGap()
+                .addComponent(lblHinhAnh, javax.swing.GroupLayout.DEFAULT_SIZE, 179, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         jLabel7.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
@@ -299,10 +308,21 @@ public class FormSanPham extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
+        txtTimKiem.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtTimKiemKeyReleased(evt);
+            }
+        });
+
         btnTimKiem.setBackground(new java.awt.Color(0, 102, 102));
         btnTimKiem.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         btnTimKiem.setForeground(new java.awt.Color(255, 255, 255));
         btnTimKiem.setText("Tìm kiếm");
+        btnTimKiem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnTimKiemActionPerformed(evt);
+            }
+        });
 
         buttonGroup1.add(cknHoatDongKichThuoc);
         cknHoatDongKichThuoc.setText("Hoạt Động");
@@ -703,7 +723,7 @@ public class FormSanPham extends javax.swing.JFrame {
     }
 
     public void setFrom() {
-
+        Product_Variant pv =new Product_Variant();
         txtTenSanPham.setText((String) tblSanPham.getValueAt(index, 1));
         cboMauSac.setSelectedItem((String) tblSanPham.getValueAt(index, 2));
         cboKichThuoc.setSelectedItem((String) tblSanPham.getValueAt(index, 3));
@@ -720,6 +740,12 @@ public class FormSanPham extends javax.swing.JFrame {
             cknNgungHoatDongKickThuoc.setSelected(true);
         }
         txtMaCode.setText((String) tblSanPham.getValueAt(index, 10).toString());
+        if (pv.getImage() != null) {
+            lblHinhAnh.setToolTipText(pv.getImage());
+            ImageIcon img = (XImage.read(pv.getImage(), lblHinhAnh.getWidth(), lblHinhAnh.getHeight()));
+           
+            lblHinhAnh.setIcon(img);
+        }
     }
 
     public Product_Variant getFromPV() {
@@ -730,7 +756,7 @@ public class FormSanPham extends javax.swing.JFrame {
         prova.setProductId(ProductID());
         prova.setPrice(Integer.parseInt(txtGia.getText()));
         prova.setQuantity((Integer) spinnerSoLuong.getValue());
-        prova.setImage("");
+        prova.setImage(lblHinhAnh.getToolTipText());
         prova.setCode(txtMaCode.getText());
         if (cknHoatDongKichThuoc.isSelected()) {
             prova.setActive(true);
@@ -780,6 +806,7 @@ public class FormSanPham extends javax.swing.JFrame {
         Product_Variant pv = getFromPV();
         int indexPv = (Integer) tblSanPham.getValueAt(index, 0);
         productVariantDao.update(pv, indexPv);
+        model.setRowCount(0);
         load();
     }
 
@@ -804,7 +831,33 @@ public class FormSanPham extends javax.swing.JFrame {
         }
         return -1;
     }
-    
+    public void search(){
+       DefaultTableModel model = (DefaultTableModel) tblSanPham.getModel();
+        StatisticDAO thongKe = new StatisticDAO();
+        model.setRowCount(0);
+       List<Object[]> list = thongKe.timKiemSanPham(txtTimKiem.getText());
+       for(Object[] dong :list){
+           Object row[] = {dong[0],dong[1],dong[2],dong[3],dong[4],dong[5],
+               dong[6],dong[7],dong[8],dong[9].toString().equalsIgnoreCase("true")?cknHoatDongKichThuoc.getText():cknNgungHoatDongKickThuoc.getText(),dong[10],dong[11]
+
+            };
+           model.addRow(row);
+       }
+       
+       
+        
+    }
+      JFileChooser fileChooser = new JFileChooser();
+
+    public void ChonAnh() {
+        if (fileChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
+            File file = fileChooser.getSelectedFile();
+            XImage.save(file);
+            ImageIcon img = XImage.read(file.getName(), lblHinhAnh.getWidth(), lblHinhAnh.getHeight());
+            lblHinhAnh.setIcon(img);
+            lblHinhAnh.setToolTipText(file.getName());
+        }
+    }
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
         insert();
@@ -812,8 +865,27 @@ public class FormSanPham extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
+     
         OP();
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void btnTimKiemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTimKiemActionPerformed
+        // TODO add your handling code here:
+        search();
+    }//GEN-LAST:event_btnTimKiemActionPerformed
+
+    private void txtTimKiemKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtTimKiemKeyReleased
+        // TODO add your handling code here:
+        if(txtTimKiem.getText().isEmpty()){
+            model.setRowCount(0);
+            load();
+        }
+    }//GEN-LAST:event_txtTimKiemKeyReleased
+
+    private void lblHinhAnhMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblHinhAnhMouseClicked
+        // TODO add your handling code here:
+        ChonAnh();
+    }//GEN-LAST:event_lblHinhAnhMouseClicked
 
     /**
      * @param args the command line arguments
@@ -876,7 +948,6 @@ public class FormSanPham extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
@@ -886,6 +957,7 @@ public class FormSanPham extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel5;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JLabel lblHinhAnh;
     private javax.swing.JSpinner spinnerSoLuong;
     private javax.swing.JTable tblSanPham;
     private javax.swing.JTextField txtGia;

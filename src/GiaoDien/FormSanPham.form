@@ -462,30 +462,33 @@
           <Layout>
             <DimensionLayout dim="0">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" alignment="1" attributes="0">
-                      <EmptySpace pref="138" max="32767" attributes="0"/>
-                      <Component id="jLabel6" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="123" max="-2" attributes="0"/>
+                  <Group type="102" alignment="0" attributes="0">
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="lblHinhAnh" pref="273" max="32767" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
             <DimensionLayout dim="1">
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace min="-2" pref="77" max="-2" attributes="0"/>
-                      <Component id="jLabel6" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace pref="90" max="32767" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="lblHinhAnh" pref="179" max="32767" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
           </Layout>
           <SubComponents>
-            <Component class="javax.swing.JLabel" name="jLabel6">
+            <Component class="javax.swing.JLabel" name="lblHinhAnh">
               <Properties>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/Icon/photo-camera.png"/>
                 </Property>
               </Properties>
+              <Events>
+                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="lblHinhAnhMouseClicked"/>
+              </Events>
             </Component>
           </SubComponents>
         </Container>
@@ -651,6 +654,9 @@
           </SubComponents>
         </Container>
         <Component class="javax.swing.JTextField" name="txtTimKiem">
+          <Events>
+            <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txtTimKiemKeyReleased"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="btnTimKiem">
           <Properties>
@@ -665,6 +671,9 @@
             </Property>
             <Property name="text" type="java.lang.String" value="T&#xec;m ki&#x1ebf;m"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnTimKiemActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JCheckBox" name="cknHoatDongKichThuoc">
           <Properties>

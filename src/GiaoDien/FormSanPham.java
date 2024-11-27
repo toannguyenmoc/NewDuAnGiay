@@ -32,6 +32,8 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.JSpinner;
+import javax.swing.SpinnerNumberModel;
 
 
 /**
@@ -66,7 +68,10 @@ public class FormSanPham extends javax.swing.JFrame {
 
     public FormSanPham() throws SQLException {
         initComponents();
-        setLocationRelativeTo(null);
+       Init();
+    }
+public void Init(){
+     setLocationRelativeTo(null);
         setIconImage(XImage.XImage());
         setTableTitle();
         fillComboBoxMauSac();
@@ -74,10 +79,10 @@ public class FormSanPham extends javax.swing.JFrame {
         fillComboLoai();
         fillComboThuongHieu();
         load();
+        refresh();
         setTitle("PHẦN MỀM QUẢN LÝ GIÀY THỂ THAO");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-    }
-
+}
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -201,6 +206,11 @@ public class FormSanPham extends javax.swing.JFrame {
         jButton5.setForeground(new java.awt.Color(0, 102, 102));
         jButton5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icon/clear.png"))); // NOI18N
         jButton5.setText("Mới");
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
+            }
+        });
 
         cboThuongHieu.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         cboThuongHieu.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
@@ -248,6 +258,8 @@ public class FormSanPham extends javax.swing.JFrame {
 
         jLabel10.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel10.setText("Kích thước:");
+
+        spinnerSoLuong.setModel(new javax.swing.SpinnerNumberModel(0, 0, 1000, 1));
 
         jLabel11.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel11.setText("Giá");
@@ -740,12 +752,16 @@ public class FormSanPham extends javax.swing.JFrame {
             cknNgungHoatDongKickThuoc.setSelected(true);
         }
         txtMaCode.setText((String) tblSanPham.getValueAt(index, 10).toString());
-        if (pv.getImage() != null) {
-            lblHinhAnh.setToolTipText(pv.getImage());
-            ImageIcon img = (XImage.read(pv.getImage(), lblHinhAnh.getWidth(), lblHinhAnh.getHeight()));
-           
-            lblHinhAnh.setIcon(img);
+        String hinhAnh = (String)tblSanPham.getValueAt(index, 11);
+        
+        if (hinhAnh != null) {
+            lblHinhAnh.setToolTipText(hinhAnh);
+            ImageIcon img = (XImage.read(hinhAnh, lblHinhAnh.getWidth(), lblHinhAnh.getHeight()));
+            lblHinhAnh.setIcon(img);  
+        }else{
+            lblHinhAnh.setIcon(null);
         }
+        
     }
 
     public Product_Variant getFromPV() {
@@ -858,6 +874,24 @@ public class FormSanPham extends javax.swing.JFrame {
             lblHinhAnh.setToolTipText(file.getName());
         }
     }
+    public void refresh(){
+        txtTenSanPham.setText("");
+        txtGia.setText("");
+        txtMoTa.setText("");
+        txtMaCode.setText("");
+        spinnerSoLuong.setValue(0);
+        txtTimKiem.setText("");
+        cboKichThuoc.setSelectedIndex(0);
+        cboLoaiSanPham.setSelectedIndex(0);
+        cboMauSac.setSelectedIndex(0);
+        cboThuongHieu.setSelectedIndex(0);
+        cknHoatDongKichThuoc.setSelected(true);
+        lblHinhAnh.setIcon(null);
+        
+    }
+  
+    
+    
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
         insert();
@@ -886,6 +920,11 @@ public class FormSanPham extends javax.swing.JFrame {
         // TODO add your handling code here:
         ChonAnh();
     }//GEN-LAST:event_lblHinhAnhMouseClicked
+
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        // TODO add your handling code here:
+        refresh();
+    }//GEN-LAST:event_jButton5ActionPerformed
 
     /**
      * @param args the command line arguments

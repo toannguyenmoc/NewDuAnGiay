@@ -238,7 +238,7 @@ public class XValidate {
         }
          if(product != null)
         {
-            JOptionPane.showMessageDialog(text.getRootPane(),"Tên thương hiệu đã tồn tại!");
+            JOptionPane.showMessageDialog(text.getRootPane(),"Tên Sản Phẩm đã tồn tại!");
             return false;
         }
         return true;

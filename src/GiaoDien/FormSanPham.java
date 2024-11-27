@@ -202,6 +202,11 @@ public class FormSanPham extends javax.swing.JFrame {
         jButton3.setForeground(new java.awt.Color(0, 102, 102));
         jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icon/delete.png"))); // NOI18N
         jButton3.setText("Xóa");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
         jButton5.setBackground(new java.awt.Color(255, 204, 0));
         jButton5.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
@@ -241,7 +246,7 @@ public class FormSanPham extends javax.swing.JFrame {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(lblHinhAnh, javax.swing.GroupLayout.DEFAULT_SIZE, 273, Short.MAX_VALUE)
+                .addComponent(lblHinhAnh, javax.swing.GroupLayout.DEFAULT_SIZE, 196, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -397,8 +402,10 @@ public class FormSanPham extends javax.swing.JFrame {
                             .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 350, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtMaCode, javax.swing.GroupLayout.PREFERRED_SIZE, 287, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(txtMaCode, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 287, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(34, 34, 34)))
                         .addGap(170, 170, 170))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -827,6 +834,23 @@ public class FormSanPham extends javax.swing.JFrame {
         model.setRowCount(0);
         load();
     }
+    public void delete(){
+       
+        Product_Variant pv = getFromPV();
+        int confirm = JOptionPane.showConfirmDialog(this, "Bạn có chắc chắn Xóa Không","Xác Nhân",JOptionPane.YES_NO_OPTION);
+        if(confirm==0){
+            try {
+                int indexPv = (Integer) tblSanPham.getValueAt(index, 0);
+                productVariantDao.delete(indexPv);
+                model.setRowCount(0);
+                load();
+                refresh();
+                JOptionPane.showMessageDialog(this, "Xóa Thành Công");
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(this, "Xóa Thất bại");
+            }
+        }
+    }
 
 
     private void txtGiaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtGiaActionPerformed
@@ -932,6 +956,11 @@ public class FormSanPham extends javax.swing.JFrame {
         // TODO add your handling code here:
         refresh();
     }//GEN-LAST:event_jButton5ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // TODO add your handling code here:
+        delete();
+    }//GEN-LAST:event_jButton3ActionPerformed
 
     /**
      * @param args the command line arguments

@@ -36,7 +36,12 @@ public class FormManHinhChinh extends javax.swing.JFrame {
         setIconImage(XImage.XImage());  // XImage là một lớp tùy chỉnh bạn có thể thay thế
         setTitle("PHẦN MỀM QUẢN LÝ GIÀY THỂ THAO");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
+        kiemtra();
         BieuDo();
+        if (Auth.user != null) {
+            lblTenNhanVien.setText(user.getFullName());
+            lblQuyen.setText(user.getRole() ? "Quản Lý" : "Nhân Viên");
+        }
     }
 
     public void BieuDo() {
@@ -117,8 +122,8 @@ public class FormManHinhChinh extends javax.swing.JFrame {
         jLabel28 = new javax.swing.JLabel();
         chart = new com.chart.Chart();
         jPanel2 = new javax.swing.JPanel();
-        jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
+        lblTenNhanVien = new javax.swing.JLabel();
+        lblQuyen = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
         jLabel6 = new javax.swing.JLabel();
@@ -378,14 +383,14 @@ public class FormManHinhChinh extends javax.swing.JFrame {
         jPanel2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jLabel3.setText("User name");
-        jPanel2.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(1010, 10, 90, -1));
+        lblTenNhanVien.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        lblTenNhanVien.setText("User name");
+        jPanel2.add(lblTenNhanVien, new org.netbeans.lib.awtextra.AbsoluteConstraints(970, 20, 90, 20));
 
-        jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
-        jLabel4.setForeground(new java.awt.Color(153, 153, 153));
-        jLabel4.setText("Admin");
-        jPanel2.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(1040, 60, -1, -1));
+        lblQuyen.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
+        lblQuyen.setForeground(new java.awt.Color(153, 153, 153));
+        lblQuyen.setText("Admin");
+        jPanel2.add(lblQuyen, new org.netbeans.lib.awtextra.AbsoluteConstraints(970, 48, 60, 20));
 
         jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icon/bell (2).png"))); // NOI18N
         jLabel5.setToolTipText("");
@@ -442,18 +447,33 @@ public class FormManHinhChinh extends javax.swing.JFrame {
         lblHoaDon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icon/invoice (1).png"))); // NOI18N
         lblHoaDon.setText("Hóa đơn");
         lblHoaDon.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        lblHoaDon.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lblHoaDonMouseClicked(evt);
+            }
+        });
 
         lblTaoHoaDon.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         lblTaoHoaDon.setForeground(new java.awt.Color(255, 255, 255));
         lblTaoHoaDon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icon/sales.png"))); // NOI18N
         lblTaoHoaDon.setText("Tạo hóa đơn");
         lblTaoHoaDon.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        lblTaoHoaDon.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lblTaoHoaDonMouseClicked(evt);
+            }
+        });
 
         lblThongKe.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         lblThongKe.setForeground(new java.awt.Color(255, 255, 255));
         lblThongKe.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icon/analytics.png"))); // NOI18N
         lblThongKe.setText("Thống kê");
         lblThongKe.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        lblThongKe.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lblThongKeMouseClicked(evt);
+            }
+        });
 
         lblDoiMatKhau.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         lblDoiMatKhau.setForeground(new java.awt.Color(255, 255, 255));
@@ -501,6 +521,11 @@ public class FormManHinhChinh extends javax.swing.JFrame {
         lblThuocTinh.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icon/colored-pencils.png"))); // NOI18N
         lblThuocTinh.setText("Thuộc tính");
         lblThuocTinh.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        lblThuocTinh.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lblThuocTinhMouseClicked(evt);
+            }
+        });
 
         jLabel29.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel29.setText("LoGo");
@@ -514,18 +539,33 @@ public class FormManHinhChinh extends javax.swing.JFrame {
         lblThuongHieu.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icon/brand-image.png"))); // NOI18N
         lblThuongHieu.setText("Thương hiệu");
         lblThuongHieu.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        lblThuongHieu.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lblThuongHieuMouseClicked(evt);
+            }
+        });
 
         lblGioiThieu.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         lblGioiThieu.setForeground(new java.awt.Color(255, 255, 255));
         lblGioiThieu.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icon/training.png"))); // NOI18N
         lblGioiThieu.setText("Giới thiệu");
         lblGioiThieu.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        lblGioiThieu.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lblGioiThieuMouseClicked(evt);
+            }
+        });
 
         lblHuongDan.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         lblHuongDan.setForeground(new java.awt.Color(255, 255, 255));
         lblHuongDan.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icon/guidebook.png"))); // NOI18N
         lblHuongDan.setText("Hướng dẫn");
         lblHuongDan.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        lblHuongDan.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lblHuongDanMouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel9Layout = new javax.swing.GroupLayout(jPanel9);
         jPanel9.setLayout(jPanel9Layout);
@@ -642,6 +682,48 @@ public class FormManHinhChinh extends javax.swing.JFrame {
         closing(formSanPham);
     }//GEN-LAST:event_lblSanPhamMouseClicked
 
+    private void lblHoaDonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblHoaDonMouseClicked
+        FormHoaDon formHoaDon = new FormHoaDon();
+        formHoaDon.setVisible(true);
+        closing(formHoaDon);
+    }//GEN-LAST:event_lblHoaDonMouseClicked
+
+    private void lblTaoHoaDonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblTaoHoaDonMouseClicked
+        FormTaoHoaDon formTaoHoaDon = new FormTaoHoaDon();
+        formTaoHoaDon.setVisible(true);
+        closing(formTaoHoaDon);
+    }//GEN-LAST:event_lblTaoHoaDonMouseClicked
+
+    private void lblThongKeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblThongKeMouseClicked
+        FormTongHopThongKe formThongKe = new FormTongHopThongKe();
+        formThongKe.setVisible(true);
+        closing(formThongKe);
+    }//GEN-LAST:event_lblThongKeMouseClicked
+
+    private void lblThuocTinhMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblThuocTinhMouseClicked
+        FormThuocTinh formThuocTinh = new FormThuocTinh();
+        formThuocTinh.setVisible(true);
+        closing(formThuocTinh);
+    }//GEN-LAST:event_lblThuocTinhMouseClicked
+
+    private void lblThuongHieuMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblThuongHieuMouseClicked
+        FormThuongHieu formThuongHieu = new FormThuongHieu();
+        formThuongHieu.setVisible(true);
+        closing(formThuongHieu);
+    }//GEN-LAST:event_lblThuongHieuMouseClicked
+
+    private void lblGioiThieuMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblGioiThieuMouseClicked
+        FormGioiThieu formGioiThieu = new FormGioiThieu();
+        formGioiThieu.setVisible(true);
+        closing(formGioiThieu);
+    }//GEN-LAST:event_lblGioiThieuMouseClicked
+
+    private void lblHuongDanMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblHuongDanMouseClicked
+        FormHuongDan formHuongDan = new FormHuongDan();
+        formHuongDan.setVisible(true);
+        closing(formHuongDan);
+    }//GEN-LAST:event_lblHuongDanMouseClicked
+
     /**
      * @param args the command line arguments
      */
@@ -692,12 +774,10 @@ public class FormManHinhChinh extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel25;
     private javax.swing.JLabel jLabel28;
     private javax.swing.JLabel jLabel29;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel30;
     private javax.swing.JLabel jLabel34;
     private javax.swing.JLabel jLabel35;
     private javax.swing.JLabel jLabel36;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
@@ -719,8 +799,10 @@ public class FormManHinhChinh extends javax.swing.JFrame {
     private javax.swing.JLabel lblKhachHang;
     private javax.swing.JLabel lblLoaiSanPham;
     private javax.swing.JLabel lblNhanVien;
+    private javax.swing.JLabel lblQuyen;
     private javax.swing.JLabel lblSanPham;
     private javax.swing.JLabel lblTaoHoaDon;
+    private javax.swing.JLabel lblTenNhanVien;
     private javax.swing.JLabel lblThoat;
     private javax.swing.JLabel lblThongKe;
     private javax.swing.JLabel lblThuocTinh;

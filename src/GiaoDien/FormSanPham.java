@@ -82,7 +82,7 @@ public class FormSanPham extends javax.swing.JFrame {
         load();
         refresh();
         setTitle("PHẦN MỀM QUẢN LÝ GIÀY THỂ THAO");
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
     }
 
     /**

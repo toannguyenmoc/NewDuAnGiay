@@ -807,7 +807,7 @@ public class FormSanPham extends javax.swing.JFrame {
         try {
             Product pr = getFromPD();
             productDAO.insert(pr);
-            JOptionPane.showMessageDialog(this, "tc");
+            
             return true;
         } catch (Exception e) {
             return false;
@@ -818,6 +818,7 @@ public class FormSanPham extends javax.swing.JFrame {
         if (insertPr() == true) {
             Product_Variant pv = getFromPV();
             productVariantDao.insert(pv);
+            JOptionPane.showMessageDialog(this, "Thêm Sản Phẩm Thành Công");
             load();
         } else {
             JOptionPane.showMessageDialog(this, "loi");
@@ -831,6 +832,7 @@ public class FormSanPham extends javax.swing.JFrame {
         Product_Variant pv = getFromPV();
         int indexPv = (Integer) tblSanPham.getValueAt(index, 0);
         productVariantDao.update(pv, indexPv);
+        JOptionPane.showMessageDialog(this, "Cập Nhật Sản Phẩm Thành Công");
         model.setRowCount(0);
         load();
     }

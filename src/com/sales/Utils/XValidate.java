@@ -148,6 +148,24 @@ public class XValidate {
         }
         return true;
     }
+    public boolean checkUpdateTenMau(JTextField text)
+    {
+        String rgx = "[a-zA-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚÝàáâãèéêìíòóôõùúýĂăĐđĨĩŨũƠơƯưẠ-ỹ ]+$";
+        String tenMau = text.getText().trim();
+        Color color = colorDao.selectByName(tenMau);
+        if(tenMau.length()== 0)
+        {
+            JOptionPane.showMessageDialog(text.getRootPane(), "Chưa nhập tên màu!");
+            return false;
+        }
+        if(tenMau.matches(rgx)== false)
+        {
+            JOptionPane.showMessageDialog(text.getRootPane(), "Họ tên chỉ chứa alphabet và ký tự trắng");
+            return false;
+        }
+       
+        return true;
+    }
     SizeDAO sizeDao = new SizeDAO();
         public boolean checkKichThuoc(JTextField text)
     {
@@ -169,6 +187,24 @@ public class XValidate {
             JOptionPane.showMessageDialog(text.getRootPane(),"Kích thước đã tồn tại!");
             return false;
         }
+         return true;
+    }
+            public boolean checkUpdateKichThuoc(JTextField text)
+    {
+        String rgx = "^(3[6-9]|4[0-9]|50)$";
+        String tenSize = text.getText().trim();
+        Size size =sizeDao.selectByNAME(tenSize);
+        if(tenSize.length()== 0)
+        {
+            JOptionPane.showMessageDialog(text.getRootPane(), "Chưa nhập kích thước!");
+            return false;
+        }
+        if(tenSize.matches(rgx)== false)
+        {
+            JOptionPane.showMessageDialog(text.getRootPane(), "Size chỉ từ 36 - 50");
+            return false;
+        }
+       
          return true;
     }
         
@@ -210,6 +246,23 @@ public class XValidate {
             return false;
         }
         return true;
+    }public boolean checkUpdateTenThuongHieu(JTextField text)
+    {
+        String rgx = "[a-zA-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚÝàáâãèéêìíòóôõùúýĂăĐđĨĩŨũƠơƯưẠ-ỹ ]+$";
+        String tenThuongHieu = text.getText().trim();
+        Brand brand = brandDao.selectByName(tenThuongHieu);
+        if(tenThuongHieu.length()== 0)
+        {
+            JOptionPane.showMessageDialog(text.getRootPane(), "Chưa nhập tên thương Hiệu!");
+            return false;
+        }
+        if(tenThuongHieu.matches(rgx)== false)
+        {
+            JOptionPane.showMessageDialog(text.getRootPane(), "Họ tên chỉ chứa alphabet và ký tự trắng");
+            return false;
+        }
+        
+        return true;
     }
      public boolean checkTrangThaiThuongHieu(JCheckBox checkBox1, JCheckBox checkBox2) {
         
@@ -241,6 +294,25 @@ public class XValidate {
             JOptionPane.showMessageDialog(text.getRootPane(),"Tên Sản Phẩm đã tồn tại!");
             return false;
         }
+        return true;
+    }
+      public boolean checkUpdateTenSanPham(JTextField text)
+    {
+        String rgx = "[a-zA-Z0-9ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚÝàáâãèéêìíòóôõùúýĂăĐđĨĩŨũƠơƯưẠ-ỹ ]+$";
+        String tenSanPham = text.getText().trim();
+        Product product = productDao.selectByNAME(tenSanPham);
+        if(tenSanPham.length()== 0)
+        {
+            JOptionPane.showMessageDialog(text.getRootPane(), "Chưa nhập tên Sản Phẩm!");
+            
+            return false;
+        }
+        if(tenSanPham.matches(rgx)== false)
+        {
+            JOptionPane.showMessageDialog(text.getRootPane(), "Họ tên chỉ chứa alphabet và ký tự trắng");
+            return false;
+        }
+         
         return true;
     }
    

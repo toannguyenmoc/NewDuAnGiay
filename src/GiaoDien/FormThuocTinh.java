@@ -30,6 +30,7 @@ public class FormThuocTinh extends javax.swing.JFrame {
     Color color = new Color();
     SizeDAO sizeDao = new SizeDAO();
     Size size = new Size();
+    int index = 0;
     /**
      * Creates new form FormMauSac
      */
@@ -713,6 +714,7 @@ public class FormThuocTinh extends javax.swing.JFrame {
     public void updateColor() {
         color = getFormColor();
         try {
+            int ind = (Integer) tblMauSac.getValueAt(index, 0);
             colorDao.update(color);
             loadTableColor();
             clearFormColor();
@@ -882,7 +884,7 @@ public class FormThuocTinh extends javax.swing.JFrame {
 
     private void btnSuaKichThuocActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSuaKichThuocActionPerformed
         // TODO add your handling code here:
-        if (vaildate.checkKichThuoc(txtSize)
+        if (vaildate.checkUpdateKichThuoc(txtSize)
                 && vaildate.checkTrangThaiSize(cknHoatDongKichThuoc, cknNgungHoatDongKickThuoc)) {
             updateSize();
         }
@@ -898,7 +900,7 @@ public class FormThuocTinh extends javax.swing.JFrame {
 
     private void btnSuaMauSacActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSuaMauSacActionPerformed
         // TODO add your handling code here:
-         if (vaildate.checkTenMau(txtMauSac)
+         if (vaildate.checkUpdateTenMau(txtMauSac)
                 && vaildate.checkTrangThaiColor(cknHoatDong, cknNgungHoatDong)) {
             updateColor();
         }

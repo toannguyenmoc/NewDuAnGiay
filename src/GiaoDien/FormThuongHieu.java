@@ -365,7 +365,7 @@ public void loadTable() {
 
     private void btnSuaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSuaActionPerformed
         // TODO add your handling code here:
-        if (vaildate.checkTenThuongHieu(txtThuongHieu)
+        if (vaildate.checkUpdateTenThuongHieu(txtThuongHieu)
                 && vaildate.checkTrangThaiThuongHieu(cknHoatDong, cknNgungHoatDong)) {
             update();
         }

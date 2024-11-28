@@ -4,7 +4,11 @@
  */
 package GiaoDien;
 
+import com.sales.Utils.MailHelper;
 import com.sales.Utils.XImage;
+import com.sales.Utils.XValidate;
+import java.util.Timer;
+import java.util.TimerTask;
 import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
 
 /**
@@ -12,7 +16,8 @@ import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
  * @author NganTTK_PC09494
  */
 public class FormQuenMatKhau extends javax.swing.JFrame {
-
+    String maXacNhan = null;
+    XValidate validate = new XValidate();
     /**
      * Creates new form FormQuenMatKhau
      */
@@ -49,7 +54,7 @@ public class FormQuenMatKhau extends javax.swing.JFrame {
         lblAnMatKhauMoi = new javax.swing.JLabel();
         lblAnXacNhanMatKhau = new javax.swing.JLabel();
         jTextField1 = new javax.swing.JTextField();
-        jLabel1 = new javax.swing.JLabel();
+        lblDemNguoc = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -92,6 +97,11 @@ public class FormQuenMatKhau extends javax.swing.JFrame {
         btnGuiMa.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnGuiMa.setForeground(new java.awt.Color(255, 255, 255));
         btnGuiMa.setText("Gửi mã");
+        btnGuiMa.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGuiMaActionPerformed(evt);
+            }
+        });
 
         lblAnMatKhauMoi.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icon/AnMatKhau.png"))); // NOI18N
 
@@ -99,8 +109,8 @@ public class FormQuenMatKhau extends javax.swing.JFrame {
 
         jTextField1.setBorder(javax.swing.BorderFactory.createTitledBorder("Mã Xác Nhận"));
 
-        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jLabel1.setText("30 giây");
+        lblDemNguoc.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        lblDemNguoc.setText("30 giây");
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
@@ -114,7 +124,7 @@ public class FormQuenMatKhau extends javax.swing.JFrame {
                         .addGroup(jPanel5Layout.createSequentialGroup()
                             .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGap(18, 18, 18)
-                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblDemNguoc, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(btnGuiMa))
                         .addComponent(btnDoiMatKhau, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 378, Short.MAX_VALUE)
@@ -155,7 +165,7 @@ public class FormQuenMatKhau extends javax.swing.JFrame {
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnGuiMa)
-                    .addComponent(jLabel1))
+                    .addComponent(lblDemNguoc))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 12, Short.MAX_VALUE)
                 .addComponent(btnDoiMatKhau, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
@@ -209,6 +219,15 @@ public class FormQuenMatKhau extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_btnDoiMatKhauActionPerformed
 
+    private void btnGuiMaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuiMaActionPerformed
+        MailHelper mh = new MailHelper();
+        maXacNhan = mh.generateCode(6);
+        if (true) {
+            mh.sendEmail(txtEmail.getText(), maXacNhan,"Mã Xác Nhận Quên Mật Khẩu","Mã Xác Nhận Email của bạn là: ");
+            demNguoc();
+        }
+    }//GEN-LAST:event_btnGuiMaActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -248,7 +267,6 @@ public class FormQuenMatKhau extends javax.swing.JFrame {
     private javax.swing.JButton btnDoiMatKhau;
     private javax.swing.JButton btnGuiMa;
     private javax.swing.JButton btnThoat;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel3;
@@ -256,8 +274,36 @@ public class FormQuenMatKhau extends javax.swing.JFrame {
     private javax.swing.JTextField jTextField1;
     private javax.swing.JLabel lblAnMatKhauMoi;
     private javax.swing.JLabel lblAnXacNhanMatKhau;
+    private javax.swing.JLabel lblDemNguoc;
     private javax.swing.JTextField txtEmail;
     private javax.swing.JPasswordField txtMatKhauMoi;
     private javax.swing.JPasswordField txtXacNhanMatKhau;
     // End of variables declaration//GEN-END:variables
+
+    public void demNguoc() {
+        Timer timer = new Timer();
+        TimerTask timerTask = new TimerTask() {
+            int thoigian = 60;
+
+            @Override
+            public void run() {
+                if (thoigian > 0) {
+                    thoigian--;
+                    // Tính phút và giây 
+                    int phut = thoigian / 60;
+                    int giay = thoigian % 60;
+
+                    // Định dạng thời gian thành "mm:ss"
+                    String timeFormatted = String.format("%02d:%02d", phut, giay);
+                    lblDemNguoc.setText(timeFormatted);
+                } else {
+                    timer.cancel();
+                    lblDemNguoc.setText("00:00");
+                    //MailHelper mh = new MailHelper();
+                    maXacNhan = null;
+                }
+            }
+        };
+        timer.scheduleAtFixedRate(timerTask, 0, 1000);
+    }
 }

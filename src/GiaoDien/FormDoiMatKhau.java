@@ -9,6 +9,8 @@ import com.sales.Entity.User;
 import com.sales.Utils.Auth;
 import com.sales.Utils.XImage;
 import com.sales.Utils.XValidate;
+import java.net.URL;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
 /**
@@ -74,15 +76,12 @@ public class FormDoiMatKhau extends javax.swing.JFrame {
         txtEmail.setText("Email");
 
         txtMatKhauCu.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        txtMatKhauCu.setText("jPasswordField3");
         txtMatKhauCu.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), "Mật khẩu cũ"));
 
         txtMatKhauMoi.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        txtMatKhauMoi.setText("jPasswordField4");
         txtMatKhauMoi.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), "Mật khẩu mới")));
 
         txtXacNhanMatKhau.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        txtXacNhanMatKhau.setText("jPasswordField5");
         txtXacNhanMatKhau.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), "Xác nhận lại mật khẩu")));
 
         btnDoiMatKhau.setBackground(new java.awt.Color(0, 102, 102));
@@ -101,10 +100,25 @@ public class FormDoiMatKhau extends javax.swing.JFrame {
         btnThoat.setText("Thoát");
 
         lblAnMatKhauCu.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icon/AnMatKhau.png"))); // NOI18N
+        lblAnMatKhauCu.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lblAnMatKhauCuMouseClicked(evt);
+            }
+        });
 
         lblAnMatKhauMoi.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icon/AnMatKhau.png"))); // NOI18N
+        lblAnMatKhauMoi.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lblAnMatKhauMoiMouseClicked(evt);
+            }
+        });
 
         lblAnXacNhanMatKhau.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icon/AnMatKhau.png"))); // NOI18N
+        lblAnXacNhanMatKhau.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lblAnXacNhanMatKhauMouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -215,6 +229,39 @@ public class FormDoiMatKhau extends javax.swing.JFrame {
         update();
     }//GEN-LAST:event_btnDoiMatKhauActionPerformed
 
+    private void lblAnMatKhauMoiMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblAnMatKhauMoiMouseClicked
+        if (matKhauMoi) {
+            txtMatKhauMoi.setEchoChar('*');
+            lblAnMatKhauMoi.setIcon(new ImageIcon(eyeHide));
+        } else {
+            txtMatKhauMoi.setEchoChar((char) 0);
+            lblAnMatKhauMoi.setIcon(new ImageIcon(eyeShow));
+        }
+        matKhauMoi = !matKhauMoi;
+    }//GEN-LAST:event_lblAnMatKhauMoiMouseClicked
+
+    private void lblAnMatKhauCuMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblAnMatKhauCuMouseClicked
+        if (matKhauCu) {
+            txtMatKhauCu.setEchoChar('*');
+            lblAnMatKhauCu.setIcon(new ImageIcon(eyeHide));
+        } else {
+            txtMatKhauCu.setEchoChar((char) 0);
+            lblAnMatKhauCu.setIcon(new ImageIcon(eyeShow));
+        }
+        matKhauCu = !matKhauCu;
+    }//GEN-LAST:event_lblAnMatKhauCuMouseClicked
+
+    private void lblAnXacNhanMatKhauMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblAnXacNhanMatKhauMouseClicked
+        if (xacNhan) {
+            txtXacNhanMatKhau.setEchoChar('*');
+            lblAnXacNhanMatKhau.setIcon(new ImageIcon(eyeHide));
+        } else {
+            txtXacNhanMatKhau.setEchoChar((char) 0);
+            lblAnXacNhanMatKhau.setIcon(new ImageIcon(eyeShow));
+        }
+        xacNhan = !xacNhan;
+    }//GEN-LAST:event_lblAnXacNhanMatKhauMouseClicked
+
     /**
      * @param args the command line arguments
      */
@@ -288,4 +335,12 @@ public class FormDoiMatKhau extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Mật khẩu đã được cập nhật thành công.");
         }
     }
+    
+    URL eyeHide = XImage.class.getResource("/Icon/AnMatKhau.png");
+    URL eyeShow = XImage.class.getResource("/Icon/HienMatKhau.png");
+    private boolean matKhauMoi = false;
+    private boolean matKhauCu = false;
+    private boolean xacNhan = false;
+    
+    
 }

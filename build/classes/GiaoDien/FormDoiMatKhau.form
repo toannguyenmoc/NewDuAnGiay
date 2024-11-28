@@ -186,7 +186,6 @@
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Segoe UI" size="14" style="0"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="jPasswordField3"/>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                   <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
                     <TitledBorder title="M&#x1ead;t kh&#x1ea9;u c&#x169;">
@@ -203,7 +202,6 @@
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Segoe UI" size="14" style="0"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="jPasswordField4"/>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                   <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
                     <TitledBorder>
@@ -224,7 +222,6 @@
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Segoe UI" size="14" style="0"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="jPasswordField5"/>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                   <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
                     <TitledBorder>
@@ -277,6 +274,9 @@
                   <Image iconType="3" name="/Icon/AnMatKhau.png"/>
                 </Property>
               </Properties>
+              <Events>
+                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="lblAnMatKhauCuMouseClicked"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JLabel" name="lblAnMatKhauMoi">
               <Properties>
@@ -284,6 +284,9 @@
                   <Image iconType="3" name="/Icon/AnMatKhau.png"/>
                 </Property>
               </Properties>
+              <Events>
+                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="lblAnMatKhauMoiMouseClicked"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JLabel" name="lblAnXacNhanMatKhau">
               <Properties>
@@ -291,6 +294,9 @@
                   <Image iconType="3" name="/Icon/AnMatKhau.png"/>
                 </Property>
               </Properties>
+              <Events>
+                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="lblAnXacNhanMatKhauMouseClicked"/>
+              </Events>
             </Component>
           </SubComponents>
         </Container>

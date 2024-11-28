@@ -5,12 +5,14 @@
 package com.sales.Utils;
 
 import com.sales.DAO.BrandDAO;
+import com.sales.DAO.CategoriesDAO;
 import com.sales.DAO.ColorDAO;
 import com.sales.DAO.ProductDAO;
 import com.sales.DAO.Product_VariantDAO;
 import com.sales.DAO.SizeDAO;
 import com.sales.DAO.UserDAO;
 import com.sales.Entity.Brand;
+import com.sales.Entity.Categories;
 import com.sales.Entity.Color;
 import com.sales.Entity.Product;
 import com.sales.Entity.Product_Variant;
@@ -334,6 +336,47 @@ public class XValidate {
             JOptionPane.showMessageDialog(text.getRootPane(), "Giá Không Phải Là Chữ");
             return false;
         }
+        return true;
+    }
+     CategoriesDAO cateDao = new CategoriesDAO();
+    public boolean checkLoaiSanPham(JTextField text)
+    {
+        String rgx = "[a-zA-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚÝàáâãèéêìíòóôõùúýĂăĐđĨĩŨũƠơƯưẠ-ỹ ]+$";
+        String tenLoai = text.getText().trim();
+        Categories ctg = cateDao.selectByName(tenLoai);
+        if(tenLoai.length()== 0)
+        {
+            JOptionPane.showMessageDialog(text.getRootPane(), "Chưa nhập tên màu!");
+            return false;
+        }
+        if(tenLoai.matches(rgx)== false)
+        {
+            JOptionPane.showMessageDialog(text.getRootPane(), "Họ tên chỉ chứa alphabet và ký tự trắng");
+            return false;
+        }
+         if(ctg != null)
+        {
+            JOptionPane.showMessageDialog(text.getRootPane(),"Tên màu đã tồn tại!");
+            return false;
+        }
+        return true;
+    }
+    public boolean checkUpdateLoaiSanPham(JTextField text)
+    {
+        String rgx = "[a-zA-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚÝàáâãèéêìíòóôõùúýĂăĐđĨĩŨũƠơƯưẠ-ỹ ]+$";
+        String tenLoai = text.getText().trim();
+        
+        if(tenLoai.length()== 0)
+        {
+            JOptionPane.showMessageDialog(text.getRootPane(), "Chưa nhập tên màu!");
+            return false;
+        }
+        if(tenLoai.matches(rgx)== false)
+        {
+            JOptionPane.showMessageDialog(text.getRootPane(), "Họ tên chỉ chứa alphabet và ký tự trắng");
+            return false;
+        }
+       
         return true;
     }
 }

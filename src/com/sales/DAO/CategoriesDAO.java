@@ -24,8 +24,18 @@ public class CategoriesDAO extends SaleDAO<Categories, Integer> {
     String DELETE_SQL = "DELETE FROM CATEGORIES WHERE ID = ?";
     String SELECT_ALL_SQL = "SELECT * FROM CATEGORIES";
     String SELECT_BYID_SQL = "SELECT * FROM CATEGORIES WHERE ID = ?";
+    String SELECT_BYNAME_SQL = "SELECT * FROM CATEGORIES WHERE NAME = ?";
     String SELECT_BYSQL_SQL = "";
 
+    
+    public Categories selectByName(String name) {
+        List<Categories> list = selectBySQL(SELECT_BYNAME_SQL, name);
+        if (list.isEmpty()) {
+            return null;
+        }
+        return list.get(0);
+    }
+    
     @Override
     public void insert(Categories entity) {
             JdbcHelper.update(INSERT_SQL,

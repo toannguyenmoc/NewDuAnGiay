@@ -4,6 +4,9 @@
  */
 package GiaoDien;
 
+import com.sales.Utils.XImage;
+import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
+
 /**
  *
  * @author NganTTK_PC09494
@@ -15,6 +18,13 @@ public class FormHuongDan extends javax.swing.JFrame {
      */
     public FormHuongDan() {
         initComponents();
+    }
+
+    public void init() {
+        setLocationRelativeTo(null);
+        setIconImage(XImage.XImage());
+        setTitle("PHẦN MỀM QUẢN LÝ GIÀY THỂ THAO");
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
     }
 
     /**

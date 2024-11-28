@@ -32,8 +32,6 @@ public class FormThuongHieu extends javax.swing.JFrame {
     public FormThuongHieu() {
         initComponents();
         init();
-        setTitle("Thương Hiệu");
-        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         loadTable();
 
     }
@@ -45,7 +43,7 @@ public class FormThuongHieu extends javax.swing.JFrame {
         setLocationRelativeTo(null);
         setIconImage(XImage.XImage());
         setTitle("PHẦN MỀM QUẢN LÝ GIÀY THỂ THAO");
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
     }
 
     /**

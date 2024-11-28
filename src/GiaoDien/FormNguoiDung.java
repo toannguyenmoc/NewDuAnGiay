@@ -40,7 +40,7 @@ public class FormNguoiDung extends javax.swing.JFrame {
         setLocationRelativeTo(null);
         setIconImage(XImage.XImage());
         setTitle("PHẦN MỀM QUẢN LÝ GIÀY THỂ THAO");
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
     }
 
     public void search() {

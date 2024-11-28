@@ -37,8 +37,11 @@ public class FormLoaiSanPham extends javax.swing.JFrame {
         setIconImage(XImage.XImage());
         setTitle("PHẦN MỀM QUẢN LÝ GIÀY THỂ THAO");
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        btnXoa.setEnabled(false);
+        btnSua.setEnabled(false);
         setTableTitle();
         loadTable();
+        
     }
 
     /**
@@ -259,6 +262,7 @@ public class FormLoaiSanPham extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    
     public void loadTable() {
 
         model.setRowCount(0);
@@ -362,6 +366,8 @@ public class FormLoaiSanPham extends javax.swing.JFrame {
         int index = tblLoaiSanPham.getSelectedRow();
         ctg = list.get(index);
         setModel(ctg);
+        btnSua.setEnabled(true);
+        btnXoa.setEnabled(true);
     }//GEN-LAST:event_tblLoaiSanPhamMouseClicked
 
     private void btnSuaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSuaActionPerformed
@@ -383,6 +389,8 @@ public class FormLoaiSanPham extends javax.swing.JFrame {
     private void btnMoiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMoiActionPerformed
         // TODO add your handling code here:
         clearForm();
+        btnSua.setEnabled(false);
+        btnXoa.setEnabled(false);
     }//GEN-LAST:event_btnMoiActionPerformed
 XValidate vaildate = new XValidate();
     /**

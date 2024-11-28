@@ -7,6 +7,7 @@ package GiaoDien;
 import com.sales.Utils.MailHelper;
 import com.sales.Utils.XImage;
 import com.sales.Utils.XValidate;
+import java.net.URL;
 import java.util.Timer;
 import java.util.TimerTask;
 import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
@@ -18,6 +19,10 @@ import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
 public class FormQuenMatKhau extends javax.swing.JFrame {
     String maXacNhan = null;
     XValidate validate = new XValidate();
+    URL eyeHide = XImage.class.getResource("/Icon/AnMatKhau.png");
+    URL eyeShow = XImage.class.getResource("/Icon/HienMatKhau.png");
+    private boolean matKhauMoi = false;
+    private boolean xacNhan = false;
     /**
      * Creates new form FormQuenMatKhau
      */

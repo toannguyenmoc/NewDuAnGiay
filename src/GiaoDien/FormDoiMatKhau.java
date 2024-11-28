@@ -21,6 +21,11 @@ public class FormDoiMatKhau extends javax.swing.JFrame {
 
     User user = Auth.user;
     XValidate validate = new XValidate();
+    URL eyeHide = XImage.class.getResource("/Icon/AnMatKhau.png");
+    URL eyeShow = XImage.class.getResource("/Icon/HienMatKhau.png");
+    private boolean matKhauMoi = false;
+    private boolean matKhauCu = false;
+    private boolean xacNhan = false;
 
     /**
      * Creates new form FormDoiMatKhau
@@ -335,12 +340,6 @@ public class FormDoiMatKhau extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Mật khẩu đã được cập nhật thành công.");
         }
     }
-    
-    URL eyeHide = XImage.class.getResource("/Icon/AnMatKhau.png");
-    URL eyeShow = XImage.class.getResource("/Icon/HienMatKhau.png");
-    private boolean matKhauMoi = false;
-    private boolean matKhauCu = false;
-    private boolean xacNhan = false;
-    
+   
     
 }

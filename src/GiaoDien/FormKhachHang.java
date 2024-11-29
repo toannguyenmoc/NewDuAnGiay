@@ -481,7 +481,6 @@ public class FormKhachHang extends javax.swing.JFrame {
         if (txtTimKiem.getText().isEmpty()) {
             txtTimKiem.setText("Tìm kiếm......");
             txtTimKiem.setForeground(new Color(204, 204, 204));
-
         }
     }//GEN-LAST:event_txtTimKiemMouseEntered
 

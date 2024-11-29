@@ -37,7 +37,7 @@ public class FormTongHopThongKe extends javax.swing.JFrame {
         setLocationRelativeTo(null);
         setIconImage(XImage.XImage());
         setTitle("PHẦN MỀM QUẢN LÝ GIÀY THỂ THAO");
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         thongKeSanPham("1999-02-02", DateHelper.toString(new Date(), "yyyy-MM-dd"));
         chkThongKeSanPhamGiam.setSelected(true);
         chkTonKhoTang.setSelected(true);

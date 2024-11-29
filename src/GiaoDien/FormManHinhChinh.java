@@ -63,7 +63,7 @@ public class FormManHinhChinh extends javax.swing.JFrame {
     public void BieuDoDoanhThuNhanVien() {
         // Lấy dữ liệu thống kê doanh thu theo năm 2024
         StatisticDAO thongKe = new StatisticDAO();
-        List<Object[]> list = thongKe.getThongKeDoanhThu(2024); // Lấy doanh thu theo năm
+        List<Object[]> list = thongKe.getThongKeDoanhThu(2023); // Lấy doanh thu theo năm
 
         // Tạo danh sách để lưu tên nhân viên và doanh thu của từng nhân viên cho từng tháng
         List<String> danhSachTenNhanVien = new ArrayList<>();

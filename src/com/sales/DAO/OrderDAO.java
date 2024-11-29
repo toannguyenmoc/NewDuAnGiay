@@ -30,7 +30,7 @@ public class OrderDAO extends SaleDAO<Order, Integer> {
     String SELECT_CUSTOMER_BY_PHONE = "EXEC GetCustomerByPhone ?";
     static String SELECT_BY_STATUS = "SELECT * FROM ORDERS WHERE STATUS = ?";
     String SELECT_PRODUCT_BY_ID = "EXEC GetProductByID @ID_PRODUCT= ?, @ID_ORDER_DETAIL = ?";
-
+    
     @Override
     public void insert(Order entity) {
 
@@ -49,25 +49,11 @@ public class OrderDAO extends SaleDAO<Order, Integer> {
                 entity.getId());
     }
 
-    @Override
-    public void delete(Integer key) {
-        JdbcHelper.update(DELETE_SQL, key);
-
-    }
+    
 
     @Override
     public List<Order> selectAll() {
         return this.selectBySQL(SELECTALL_SQL);
-    }
-
-    @Override
-    public Order selectByID(Integer id) {
-        List<Order> list = this.selectBySQL(SELECTBYID_SQL, id);
-        if (list.isEmpty()) // ko co phan tu nao thi return null
-        {
-            return null;
-        }
-        return list.get(0); //Con co lay gia tri dau tien
     }
 
     @Override
@@ -77,14 +63,12 @@ public class OrderDAO extends SaleDAO<Order, Integer> {
         try {
             while (rs.next()) {
                 Order order = new Order();
-
                 order.setId(rs.getInt("ID"));
                 order.setUserId(rs.getInt("USER_ID"));
                 order.setCustomersId(rs.getInt("CUSTOMER_ID"));
                 order.setCreateDate(rs.getDate("CREATE_DATE"));
                 order.setTotal(rs.getInt("TOTAL"));
                 order.setStatus(rs.getInt("STATUS"));
-
                 list.add(order);
             }
             return list;
@@ -92,6 +76,15 @@ public class OrderDAO extends SaleDAO<Order, Integer> {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
+    }
+
+    @Override
+    public Order selectByID(Integer id) {
+        List<Order> list = this.selectBySQL(SELECTBYID_SQL, id);
+        if (list.isEmpty()) {
+            return null;
+        }
+        return list.get(0);
     }
 
     public List<Object[]> selectByDate(Date startDate, Date endDate) {
@@ -147,7 +140,7 @@ public class OrderDAO extends SaleDAO<Order, Integer> {
                 return null;
             }
     }
-    
+
     public Object[] selectProductById(Integer idPro, Integer idOrd) {
         try {
             List<Object[]> list = new ArrayList<>();
@@ -196,4 +189,12 @@ public class OrderDAO extends SaleDAO<Order, Integer> {
             return null;
         }
     }
+
+    @Override
+    public void delete(Integer id) {
+        JdbcHelper.update(DELETE_SQL, id);
+    }
+
+    
+
 }

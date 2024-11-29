@@ -27,7 +27,6 @@ public class Order_DetailDAO extends SaleDAO<Order_Detail, Integer> {
     String SELECT_BY_ID_ORDER_SQL = "EXEC GetOderDetailByIdOrder ?";
     String UPDATE_SO_LUONG_SQL = "UPDATE ORDER_DETAILS SET QUANTITY = ? WHERE ORDER_ID = ? AND PRODUCT_VARIANT_ID = ?";
 
-
     @Override
     public void insert(Order_Detail entity) {
             JdbcHelper.update(INSERT_SQL, entity.getOrderId(),
@@ -57,7 +56,7 @@ public class Order_DetailDAO extends SaleDAO<Order_Detail, Integer> {
 
     @Override
     public Order_Detail selectByID(Integer id) {
-        List<Order_Detail> list = selectBySQL(SELECT_BY_ID_ORDER_SQL, id);
+        List<Order_Detail> list = selectBySQL(SELECT_BY_ID_ORDER, id);
         if (list.isEmpty()) {
             return null;
         }

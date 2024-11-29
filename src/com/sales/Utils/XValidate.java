@@ -7,6 +7,7 @@ package com.sales.Utils;
 import com.sales.DAO.BrandDAO;
 import com.sales.DAO.CategoriesDAO;
 import com.sales.DAO.ColorDAO;
+import com.sales.DAO.CustomerDAO;
 import com.sales.DAO.ProductDAO;
 import com.sales.DAO.Product_VariantDAO;
 import com.sales.DAO.SizeDAO;
@@ -14,6 +15,7 @@ import com.sales.DAO.UserDAO;
 import com.sales.Entity.Brand;
 import com.sales.Entity.Categories;
 import com.sales.Entity.Color;
+import com.sales.Entity.Customer;
 import com.sales.Entity.Product;
 import com.sales.Entity.Product_Variant;
 import com.sales.Entity.Size;
@@ -373,6 +375,56 @@ public class XValidate {
         if (user == null) {
             JOptionPane.showMessageDialog(text.getRootPane(), "Email không tồn tại");
             return false;
+        }
+        return true;
+    }
+    
+    
+    CustomerDAO customerDAO = new CustomerDAO();
+
+    public boolean checkSoDienThoaiKhachHang(JTextField text, String maKH) {
+        String dienThoai = text.getText();
+        String rgx = "0[0-9]{8,10}";
+        Customer customer = customerDAO.selectByPhone(dienThoai);
+        if (dienThoai.isEmpty()) {
+            JOptionPane.showMessageDialog(text.getRootPane(), "Vui lòng nhập số điện thoại");
+            return false;
+        }
+  if      (!dienThoai.matches(rgx)) {
+            JOptionPane.showMessageDialog(text.getRootPane(), "Số điện thoại không đúng");
+            return false;
+        }
+        CustomerDAO customerDAO = new CustomerDAO();
+        List<Customer> list = customerDAO.selectAll();
+        for (Customer customer1 : list) {
+            if (!String.valueOf(customer1.getId()).equals(maKH) && customer1.getPhone().equalsIgnoreCase(dienThoai)) {
+                JOptionPane.showMessageDialog(text.getRootPane(), "Số điện thoại đã tồn tại");
+                return false;
+            }
+        }
+        return true;
+
+    }
+    
+    
+    public static boolean checkEmailKhachHang(JTextField text, String maKH) {
+        String email = text.getText();
+        String rgx = "^[a-zA-Z0-9]{5,50}@(gmail.com|fpt.edu.vn)$";
+        if (email.isEmpty()) {
+            JOptionPane.showMessageDialog(text.getRootPane(), "Email không được để trống");
+            return false;
+        }
+        if (!email.matches(rgx)) {
+            JOptionPane.showMessageDialog(text.getRootPane(), "Email không đúng địng dạng @gmail.com hoặc @fpt.edu.vn");
+            return false;
+        }
+        CustomerDAO customerDAO = new CustomerDAO();
+        List<Customer> list = customerDAO.selectAll();
+        for (Customer customer : list) {
+            if (!String.valueOf(customer.getId()).equals(maKH) && customer.getEmail().equalsIgnoreCase(email)) {
+                JOptionPane.showMessageDialog(text.getRootPane(), "Email đã tồn tại");
+                return false;
+            }
         }
         return true;
     }

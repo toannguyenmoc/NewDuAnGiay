@@ -26,6 +26,7 @@ public class UserDAO extends SaleDAO<User, Integer> {
     String SELECT_BYID_SQL = "SELECT * FROM USERS WHERE ID = ?";
     //String SELECT_BYSQL_SQL = "EXEX UserLogin @Email = ?, @PlainPassword = ?";
     String UPDATE_PASS = "UPDATE USERS SET PASSWORD = ? WHERE ID = ?";
+    String SELECT_EMAIL = "SELECT * FROM USERS WHERE EMAIL = ?";
 
     @Override
     public void insert(User entity) {
@@ -71,6 +72,14 @@ public class UserDAO extends SaleDAO<User, Integer> {
     @Override
     public User selectByID(Integer id) {
         List<User> list = selectBySQL(SELECT_BYID_SQL, id);
+        if (list.isEmpty()) {
+            return null;
+        }
+        return list.get(0);
+    }
+    
+    public User selectByEmail(String email) {
+        List<User> list = selectBySQL(SELECT_EMAIL, email);
         if (list.isEmpty()) {
             return null;
         }

@@ -243,10 +243,10 @@ public class FormQuenMatKhau extends javax.swing.JFrame {
     }//GEN-LAST:event_btnDoiMatKhauActionPerformed
 
     private void btnGuiMaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuiMaActionPerformed
-        MailHelper mh = new MailHelper();
-        maXacNhan = mh.generateCode(6);
-        if (true) {
-            mh.sendEmail(txtEmail.getText(), maXacNhan, "Mã Xác Nhận Quên Mật Khẩu", "Mã Xác Nhận Email của bạn là: ");
+        //MailHelper mh = new MailHelper();
+        maXacNhan = MailHelper.generateCode(6);
+        if (validate.checkEmail_QuenMatKhau(txtEmail)) {
+            MailHelper.sendEmail(txtEmail.getText(), maXacNhan, "Mã Xác Nhận Quên Mật Khẩu", "Mã Xác Nhận Email của bạn là: ");
             demNguoc();
         }
     }//GEN-LAST:event_btnGuiMaActionPerformed

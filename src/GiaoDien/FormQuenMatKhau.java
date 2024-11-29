@@ -10,6 +10,7 @@ import com.sales.Utils.XValidate;
 import java.net.URL;
 import java.util.Timer;
 import java.util.TimerTask;
+import javax.swing.ImageIcon;
 import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
 
 /**
@@ -17,12 +18,14 @@ import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
  * @author NganTTK_PC09494
  */
 public class FormQuenMatKhau extends javax.swing.JFrame {
+
     String maXacNhan = null;
     XValidate validate = new XValidate();
     URL eyeHide = XImage.class.getResource("/Icon/AnMatKhau.png");
     URL eyeShow = XImage.class.getResource("/Icon/HienMatKhau.png");
     private boolean matKhauMoi = false;
     private boolean xacNhan = false;
+
     /**
      * Creates new form FormQuenMatKhau
      */
@@ -97,6 +100,11 @@ public class FormQuenMatKhau extends javax.swing.JFrame {
         btnThoat.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         btnThoat.setForeground(new java.awt.Color(255, 255, 255));
         btnThoat.setText("Thoát");
+        btnThoat.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnThoatActionPerformed(evt);
+            }
+        });
 
         btnGuiMa.setBackground(new java.awt.Color(204, 0, 0));
         btnGuiMa.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -109,8 +117,18 @@ public class FormQuenMatKhau extends javax.swing.JFrame {
         });
 
         lblAnMatKhauMoi.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icon/AnMatKhau.png"))); // NOI18N
+        lblAnMatKhauMoi.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lblAnMatKhauMoiMouseClicked(evt);
+            }
+        });
 
         lblAnXacNhanMatKhau.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icon/AnMatKhau.png"))); // NOI18N
+        lblAnXacNhanMatKhau.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lblAnXacNhanMatKhauMouseClicked(evt);
+            }
+        });
 
         jTextField1.setBorder(javax.swing.BorderFactory.createTitledBorder("Mã Xác Nhận"));
 
@@ -228,10 +246,37 @@ public class FormQuenMatKhau extends javax.swing.JFrame {
         MailHelper mh = new MailHelper();
         maXacNhan = mh.generateCode(6);
         if (true) {
-            mh.sendEmail(txtEmail.getText(), maXacNhan,"Mã Xác Nhận Quên Mật Khẩu","Mã Xác Nhận Email của bạn là: ");
+            mh.sendEmail(txtEmail.getText(), maXacNhan, "Mã Xác Nhận Quên Mật Khẩu", "Mã Xác Nhận Email của bạn là: ");
             demNguoc();
         }
     }//GEN-LAST:event_btnGuiMaActionPerformed
+
+    private void btnThoatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThoatActionPerformed
+        new FormDangNhap().setVisible(true);
+        dispose();
+    }//GEN-LAST:event_btnThoatActionPerformed
+
+    private void lblAnMatKhauMoiMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblAnMatKhauMoiMouseClicked
+        if (matKhauMoi) {
+            txtMatKhauMoi.setEchoChar('*');
+            lblAnMatKhauMoi.setIcon(new ImageIcon(eyeHide));
+        } else {
+            txtMatKhauMoi.setEchoChar((char) 0);
+            lblAnMatKhauMoi.setIcon(new ImageIcon(eyeShow));
+        }
+        matKhauMoi = !matKhauMoi;
+    }//GEN-LAST:event_lblAnMatKhauMoiMouseClicked
+
+    private void lblAnXacNhanMatKhauMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblAnXacNhanMatKhauMouseClicked
+        if (xacNhan) {
+            txtXacNhanMatKhau.setEchoChar('*');
+            lblAnXacNhanMatKhau.setIcon(new ImageIcon(eyeHide));
+        } else {
+            txtXacNhanMatKhau.setEchoChar((char) 0);
+            lblAnXacNhanMatKhau.setIcon(new ImageIcon(eyeShow));
+        }
+        xacNhan = !xacNhan;
+    }//GEN-LAST:event_lblAnXacNhanMatKhauMouseClicked
 
     /**
      * @param args the command line arguments

@@ -19,12 +19,14 @@ import java.util.logging.Logger;
  */
 public class Order_DetailDAO extends SaleDAO<Order_Detail, Integer> {
 
-     String INSERT_SQL = "INSERT INTO ORDER_DETAILS(ORDER_ID, PRODUCT_VARIANT_ID, QUANTITY, PRICE) VALUES(?,?,?,?)";
+    String INSERT_SQL = "INSERT INTO ORDER_DETAILS(ORDER_ID, PRODUCT_VARIANT_ID, QUANTITY, PRICE) VALUES(?,?,?,?)";
     String UPDATE_SQL = "UPDATE ORDER_DETAILS SET ORDER_ID = ?, PRODUCT_VARIANT_ID = ?, QUANTITY = ?, PRICE = ? WHERE ID = ?";
     String DELETE_SQL = "DELETE FROM ORDER_DETAILS WHERE ID = ?";
     String SELECT_ALL_SQL = "SELECT * FROM ORDER_DETAILS";
-    String SELECT_BYID_SQL = "SELECT * FROM ORDER_DETAILS WHERE ID = ?";
+    String SELECT_BY_ID_ORDER = "SELECT * FROM ORDER_DETAILS WHERE ORDER_ID = ?";
     String SELECT_BY_ID_ORDER_SQL = "EXEC GetOderDetailByIdOrder ?";
+    String UPDATE_SO_LUONG_SQL = "UPDATE ORDER_DETAILS SET QUANTITY = ? WHERE ORDER_ID = ? AND PRODUCT_VARIANT_ID = ?";
+
 
     @Override
     public void insert(Order_Detail entity) {
@@ -55,7 +57,7 @@ public class Order_DetailDAO extends SaleDAO<Order_Detail, Integer> {
 
     @Override
     public Order_Detail selectByID(Integer id) {
-        List<Order_Detail> list = selectBySQL(SELECT_BYID_SQL, id);
+        List<Order_Detail> list = selectBySQL(SELECT_BY_ID_ORDER_SQL, id);
         if (list.isEmpty()) {
             return null;
         }
@@ -101,4 +103,20 @@ public class Order_DetailDAO extends SaleDAO<Order_Detail, Integer> {
         }
         return null;
     }
+    
+    public List<Order_Detail> selectAllByIDOrder(Integer id) {
+        List<Order_Detail> list = selectBySQL(SELECT_BY_ID_ORDER, id);
+        if (list.isEmpty()) {
+            return null;
+        }
+        return list;
+    }
+    
+    public void updateSoLuong(Object[] entity) {
+            JdbcHelper.update(UPDATE_SO_LUONG_SQL,
+                    entity[0],
+                    entity[1],
+                    entity[2]);
+    }
+
 }

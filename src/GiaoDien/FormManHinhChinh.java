@@ -11,6 +11,7 @@ import com.sales.Utils.Auth;
 import com.sales.Utils.DateHelper;
 import com.sales.Utils.XImage;
 import java.awt.Color;
+import java.awt.event.MouseListener;
 import java.util.List;
 import javax.swing.JFrame;
 
@@ -37,10 +38,24 @@ public class FormManHinhChinh extends javax.swing.JFrame {
         setTitle("PHẦN MỀM QUẢN LÝ GIÀY THỂ THAO");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         kiemtra();
-        BieuDo();
+        Quyen();
         if (Auth.user != null) {
             lblTenNhanVien.setText(user.getFullName());
             lblQuyen.setText(user.getRole() ? "Quản Lý" : "Nhân Viên");
+        }
+    }
+
+    public void Quyen() {
+        if (Auth.isLogin() && !Auth.isManager()) {
+            for (MouseListener ml : lblNhanVien.getMouseListeners()) {
+                lblNhanVien.removeMouseListener(ml);
+            }
+            for (MouseListener ml : lblThongKe.getMouseListeners()) {
+                lblThongKe.removeMouseListener(ml);
+            }
+            
+        }else{
+            BieuDo();
         }
     }
 
@@ -385,12 +400,12 @@ public class FormManHinhChinh extends javax.swing.JFrame {
 
         lblTenNhanVien.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         lblTenNhanVien.setText("User name");
-        jPanel2.add(lblTenNhanVien, new org.netbeans.lib.awtextra.AbsoluteConstraints(970, 20, 90, 20));
+        jPanel2.add(lblTenNhanVien, new org.netbeans.lib.awtextra.AbsoluteConstraints(970, 20, 120, 20));
 
         lblQuyen.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
         lblQuyen.setForeground(new java.awt.Color(153, 153, 153));
         lblQuyen.setText("Admin");
-        jPanel2.add(lblQuyen, new org.netbeans.lib.awtextra.AbsoluteConstraints(970, 48, 60, 20));
+        jPanel2.add(lblQuyen, new org.netbeans.lib.awtextra.AbsoluteConstraints(970, 48, 120, 20));
 
         jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icon/bell (2).png"))); // NOI18N
         jLabel5.setToolTipText("");

@@ -54,7 +54,7 @@ public class StatisticDAO {
 
     public List<Object[]> getKhachHangThanThietTuNgayDenNgay(Date tuNgay, Date denNgay) {
         String sql = "{CALL SP_ThongKeKhachHangThanThietTuNgayDenNgay(?,?)}";
-        String[] cols = {"TenKhachHang","GioiTinh","SoLuongDonHangDaMua","SoLuongSanPhamDaMua","TongTien"};
+        String[] cols = {"TenKhachHang", "GioiTinh", "SoLuongDonHangDaMua", "SoLuongSanPhamDaMua", "TongTien"};
         return getListofArray(sql, cols, tuNgay, denNgay);
     }
 
@@ -69,4 +69,12 @@ public class StatisticDAO {
         String[] cols = {"ID", "TENSP", "TENMAU", "SIZE", "LOAISP", "THUONGHIEU", "QUANTITY", "PRICE", "MOTA", "ACTIVE", "CODE", "IMAGE"};
         return getListofArray(sql, cols, name);
     }
+
+    public List<Object[]> getThongKeDoanhThu(int nam) {
+        String sql = "{CALL SP_ThongKeDoanhThuTheoNam_NhanVien(?)}";
+        String[] cols = {"TenNhanVien", "Thang_1", "Thang_2", "Thang_3", "Thang_4", "Thang_5", "Thang_6",
+            "Thang_7", "Thang_8", "Thang_9", "Thang_10", "Thang_11", "Thang_12"};
+        return getListofArray(sql, cols, nam);
+    }
+
 }

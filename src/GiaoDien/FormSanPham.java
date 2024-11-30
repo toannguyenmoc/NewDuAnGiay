@@ -20,7 +20,9 @@ import com.sales.Entity.Size;
 import com.sales.Utils.JdbcHelper;
 import com.sales.Utils.XImage;
 import com.sales.Utils.XValidate;
+import java.awt.Desktop;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
@@ -35,6 +37,11 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
+import org.apache.poi.ss.usermodel.CellType;
+import org.apache.poi.xssf.usermodel.XSSFCell;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 /**
  *
@@ -134,6 +141,7 @@ public class FormSanPham extends javax.swing.JFrame {
         cknHoatDongKichThuoc = new javax.swing.JCheckBox();
         jLabel13 = new javax.swing.JLabel();
         cknNgungHoatDongKickThuoc = new javax.swing.JCheckBox();
+        btnXuatExcel = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -354,6 +362,17 @@ public class FormSanPham extends javax.swing.JFrame {
         buttonGroup1.add(cknNgungHoatDongKickThuoc);
         cknNgungHoatDongKickThuoc.setText("Ngừng Hoạt Động");
 
+        btnXuatExcel.setBackground(new java.awt.Color(255, 204, 0));
+        btnXuatExcel.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        btnXuatExcel.setForeground(new java.awt.Color(0, 102, 102));
+        btnXuatExcel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icon/clear.png"))); // NOI18N
+        btnXuatExcel.setText("Xuất Excel");
+        btnXuatExcel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnXuatExcelActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -372,7 +391,9 @@ public class FormSanPham extends javax.swing.JFrame {
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(txtTimKiem, javax.swing.GroupLayout.PREFERRED_SIZE, 407, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(27, 27, 27)
-                                .addComponent(btnTimKiem)))))
+                                .addComponent(btnTimKiem)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(btnXuatExcel, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addContainerGap(158, Short.MAX_VALUE))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(130, 130, 130)
@@ -498,7 +519,8 @@ public class FormSanPham extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtTimKiem, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnTimKiem))
+                    .addComponent(btnTimKiem)
+                    .addComponent(btnXuatExcel))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(29, 29, 29))
@@ -970,6 +992,97 @@ public class FormSanPham extends javax.swing.JFrame {
         delete();
     }//GEN-LAST:event_btnXoaActionPerformed
 
+    private void btnXuatExcelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXuatExcelActionPerformed
+        // TODO add your handling code here:
+         try {
+//         
+            XSSFWorkbook workbook = new XSSFWorkbook();
+            XSSFSheet worksheet = workbook.createSheet("Chuyên đề");
+            XSSFRow row = null;
+            XSSFCell cell = null;
+            row = worksheet.createRow(0); //Tạo hàng thứ 1
+            row.setHeight((short)500); //Cài đặt chiều cao
+            cell = row.createCell(0, CellType.STRING);
+            cell.setCellValue("Danh sách sản phẩm");
+            
+            row = worksheet.createRow(1);     
+            cell = row.createCell(0, CellType.STRING);
+            cell.setCellValue("STT");
+            
+            cell = row.createCell(1, CellType.STRING);
+            cell.setCellValue("Tên Sản Phẩm");
+            
+            
+            cell = row.createCell(2, CellType.STRING);
+            cell.setCellValue("Màu Sắc");
+            
+            cell = row.createCell(3, CellType.STRING);
+            cell.setCellValue("Kích Thước");
+            
+            cell = row.createCell(4, CellType.STRING);
+            cell.setCellValue("Loại Sản Phẩm");
+            
+            cell = row.createCell(5, CellType.STRING);
+            cell.setCellValue("Thương Hiệu");
+            cell = row.createCell(6, CellType.STRING);
+            cell.setCellValue("Số Lượng");
+            cell = row.createCell(7, CellType.STRING);
+            cell.setCellValue("Giá");
+            
+            cell = row.createCell(8, CellType.STRING);
+            cell.setCellValue("Trạng Thái");
+            cell = row.createCell(9, CellType.STRING);
+            cell.setCellValue("Mã Code");
+           List<Product_Variant> list = productVariantDao.selectAll();
+int i = 2; // Khởi tạo giá trị i
+for (int j = 0; j < list.size(); j++) {
+    Product_Variant cd = list.get(j);
+                row = worksheet.createRow(i); // Tạo hàng thứ  nhất
+                //Tạo STT
+                cell = row.createCell(0, CellType.NUMERIC);
+                
+                cell.setCellValue(i-1);
+                //Tạo mã chuyên đề
+                cell = row.createCell(1, CellType.STRING);
+                cell.setCellValue(tblSanPham.getValueAt(j, 1).toString());
+                //Tạo tên chuyên đề
+                cell = row.createCell(2, CellType.NUMERIC);
+                cell.setCellValue(tblSanPham.getValueAt(j, 2).toString());
+                cell = row.createCell(3, CellType.STRING);
+                cell.setCellValue(tblSanPham.getValueAt(j, 3).toString());
+                cell = row.createCell(4, CellType.STRING);
+                cell.setCellValue(tblSanPham.getValueAt(j, 4).toString());
+                cell = row.createCell(5, CellType.STRING);
+                cell.setCellValue(tblSanPham.getValueAt(j, 5).toString());
+                cell = row.createCell(6, CellType.STRING);
+                cell.setCellValue(tblSanPham.getValueAt(j, 6).toString());
+                cell = row.createCell(7, CellType.STRING);
+                cell.setCellValue(tblSanPham.getValueAt(j, 7).toString());
+                cell = row.createCell(8, CellType.STRING);
+              
+                cell.setCellValue(tblSanPham.getValueAt(j, 9).toString());
+                cell = row.createCell(9, CellType.STRING);
+                cell.setCellValue(tblSanPham.getValueAt(j, 10).toString());
+               
+                i++;
+            }
+            File file = new File("D:/chuyende.xlsx");
+            FileOutputStream fos = new FileOutputStream(file);
+            workbook.write(fos);
+            fos.close();
+            if(Desktop.isDesktopSupported())
+            {
+                Desktop desktop = Desktop.getDesktop();
+                if(file.exists())
+                {
+                    desktop.open(file);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }//GEN-LAST:event_btnXuatExcelActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -1011,6 +1124,7 @@ public class FormSanPham extends javax.swing.JFrame {
     private javax.swing.JButton btnThem;
     private javax.swing.JButton btnTimKiem;
     private javax.swing.JButton btnXoa;
+    private javax.swing.JButton btnXuatExcel;
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JComboBox<String> cboKichThuoc;
     private javax.swing.JComboBox<String> cboLoaiSanPham;

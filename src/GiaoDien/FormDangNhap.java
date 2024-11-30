@@ -8,7 +8,6 @@ import com.sales.DAO.UserDAO;
 import com.sales.Entity.User;
 import com.sales.Utils.Auth;
 import com.sales.Utils.XImage;
-import java.awt.Color;
 import javax.swing.JOptionPane;
 
 /**

@@ -22,7 +22,7 @@ import javax.swing.table.DefaultTableModel;
 public class FormThuongHieu extends javax.swing.JFrame {
 
     BrandDAO brandDao = new BrandDAO();
-    DefaultTableModel model;
+    DefaultTableModel model = new DefaultTableModel();
     List<Brand> listBrand = new ArrayList<>();
     Brand brand = new Brand();
 
@@ -44,6 +44,9 @@ public class FormThuongHieu extends javax.swing.JFrame {
         setIconImage(XImage.XImage());
         setTitle("PHẦN MỀM QUẢN LÝ GIÀY THỂ THAO");
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        setTableTitle();
+        btnXoa.setEnabled(false);
+        btnSua.setEnabled(false);
     }
 
     /**
@@ -64,7 +67,7 @@ public class FormThuongHieu extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         btnThem = new javax.swing.JButton();
         btnSua = new javax.swing.JButton();
-        bntXoa = new javax.swing.JButton();
+        btnXoa = new javax.swing.JButton();
         btnThoat = new javax.swing.JButton();
         btnMoi = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
@@ -122,11 +125,11 @@ public class FormThuongHieu extends javax.swing.JFrame {
             }
         });
 
-        bntXoa.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        bntXoa.setText("Xóa");
-        bntXoa.addActionListener(new java.awt.event.ActionListener() {
+        btnXoa.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnXoa.setText("Xóa");
+        btnXoa.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                bntXoaActionPerformed(evt);
+                btnXoaActionPerformed(evt);
             }
         });
 
@@ -198,7 +201,7 @@ public class FormThuongHieu extends javax.swing.JFrame {
                         .addGap(36, 36, 36)
                         .addComponent(btnSua)
                         .addGap(56, 56, 56)
-                        .addComponent(bntXoa)
+                        .addComponent(btnXoa)
                         .addGap(58, 58, 58)
                         .addComponent(btnThoat)
                         .addGap(37, 37, 37)
@@ -225,7 +228,7 @@ public class FormThuongHieu extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnThoat)
-                    .addComponent(bntXoa)
+                    .addComponent(btnXoa)
                     .addComponent(btnSua)
                     .addComponent(btnThem)
                     .addComponent(btnMoi))
@@ -255,8 +258,9 @@ public class FormThuongHieu extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-public void loadTable() {
-        DefaultTableModel model = (DefaultTableModel) tblThuongHieu.getModel();
+
+    public void loadTable() {
+       
         model.setRowCount(0);
 
         try {
@@ -274,7 +278,13 @@ public void loadTable() {
         } catch (Exception e) {
         }
     }
+ public void setTableTitle() {
+        model.addColumn("Mã Số");
+        model.addColumn("Tên Thương Hiệu");
+        model.addColumn("Trạng Thái");
 
+        tblThuongHieu.setModel(model);
+    }
     void setModel(Brand model) {
 
         txtThuongHieu.setText(String.valueOf(model.getName()));
@@ -340,7 +350,8 @@ public void loadTable() {
         txtThuongHieu.setText(t);
 
         bgrTrangThai.clearSelection();
-
+btnXoa.setEnabled(false);
+        btnSua.setEnabled(false);
     }
     private void txtThuongHieuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtThuongHieuActionPerformed
         // TODO add your handling code here:
@@ -351,6 +362,8 @@ public void loadTable() {
         int index = tblThuongHieu.getSelectedRow();
         brand = listBrand.get(index);
         setModel(brand);
+        btnXoa.setEnabled(true);
+        btnSua.setEnabled(true);
     }//GEN-LAST:event_tblThuongHieuMouseClicked
 
     private void btnThemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThemActionPerformed
@@ -369,10 +382,10 @@ public void loadTable() {
         }
     }//GEN-LAST:event_btnSuaActionPerformed
 
-    private void bntXoaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bntXoaActionPerformed
+    private void btnXoaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXoaActionPerformed
         // TODO add your handling code here:
         delete();
-    }//GEN-LAST:event_bntXoaActionPerformed
+    }//GEN-LAST:event_btnXoaActionPerformed
 
     private void btnThoatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThoatActionPerformed
         // TODO add your handling code here:
@@ -422,11 +435,11 @@ public void loadTable() {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup bgrTrangThai;
-    private javax.swing.JButton bntXoa;
     private javax.swing.JButton btnMoi;
     private javax.swing.JButton btnSua;
     private javax.swing.JButton btnThem;
     private javax.swing.JButton btnThoat;
+    private javax.swing.JButton btnXoa;
     private javax.swing.JCheckBox cknHoatDong;
     private javax.swing.JCheckBox cknNgungHoatDong;
     private javax.swing.JLabel jLabel1;

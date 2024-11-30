@@ -428,4 +428,12 @@ public class XValidate {
         }
         return true;
     }
+    
+     //check tiền khách đưa
+    public boolean checkTien(String tien) {
+        // Biểu thức chính quy cho định dạng tiền tệ
+        String pattern = "^(\\d{1,3}(,\\d{3})*|\\d+)(\\.\\d{1,2})?$";
+        // Kiểm tra chuỗi có khớp với biểu thức hay không
+        return tien != null && tien.matches(pattern);
+    }
 }

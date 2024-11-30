@@ -26,7 +26,11 @@ public class OrderDAO extends SaleDAO<Order, Integer> {
     String SELECTALL_SQL = "SELECT * FROM ORDERS";
     String SELECTBYID_SQL = "SELECT * FROM ORDERS WHERE ID = ?";
     String SELECTBYDATE_SQL = "EXEC GetOrdersByDate ?, ?";
-
+    String SELECT_PRODUCT_BY_CODE = "EXEC GetProductByCode ?";
+    String SELECT_CUSTOMER_BY_PHONE = "EXEC GetCustomerByPhone ?";
+    static String SELECT_BY_STATUS = "SELECT * FROM ORDERS WHERE STATUS = ?";
+    String SELECT_PRODUCT_BY_ID = "EXEC GetProductByID @ID_PRODUCT= ?, @ID_ORDER_DETAIL = ?";
+    
     @Override
     public void insert(Order entity) {
 
@@ -45,25 +49,11 @@ public class OrderDAO extends SaleDAO<Order, Integer> {
                 entity.getId());
     }
 
-    @Override
-    public void delete(Integer key) {
-        JdbcHelper.update(DELETE_SQL, key);
-
-    }
+    
 
     @Override
     public List<Order> selectAll() {
         return this.selectBySQL(SELECTALL_SQL);
-    }
-
-    @Override
-    public Order selectByID(Integer id) {
-        List<Order> list = this.selectBySQL(SELECTBYID_SQL, id);
-        if (list.isEmpty()) // ko co phan tu nao thi return null
-        {
-            return null;
-        }
-        return list.get(0); //Con co lay gia tri dau tien
     }
 
     @Override
@@ -73,14 +63,12 @@ public class OrderDAO extends SaleDAO<Order, Integer> {
         try {
             while (rs.next()) {
                 Order order = new Order();
-
                 order.setId(rs.getInt("ID"));
                 order.setUserId(rs.getInt("USER_ID"));
                 order.setCustomersId(rs.getInt("CUSTOMER_ID"));
                 order.setCreateDate(rs.getDate("CREATE_DATE"));
                 order.setTotal(rs.getInt("TOTAL"));
                 order.setStatus(rs.getInt("STATUS"));
-
                 list.add(order);
             }
             return list;
@@ -88,6 +76,15 @@ public class OrderDAO extends SaleDAO<Order, Integer> {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
+    }
+
+    @Override
+    public Order selectByID(Integer id) {
+        List<Order> list = this.selectBySQL(SELECTBYID_SQL, id);
+        if (list.isEmpty()) {
+            return null;
+        }
+        return list.get(0);
     }
 
     public List<Object[]> selectByDate(Date startDate, Date endDate) {
@@ -111,4 +108,93 @@ public class OrderDAO extends SaleDAO<Order, Integer> {
         }
 
     }
+    
+    public Object[] selectProductByCode(String code) {
+        try {
+            List<Object[]> list = new ArrayList<>();
+            ResultSet rs = JdbcHelper.query(SELECT_PRODUCT_BY_CODE, code);;
+            while (rs.next()) {
+                Object[] entity = new Object[7];
+                entity[0] = rs.getString("IMAGE");
+                entity[1] = rs.getString("NAME");
+                entity[2] = rs.getString("SIZE");
+                entity[3] = rs.getString("COLOR");
+                entity[4] = rs.getInt("PRICE");
+                entity[5] = rs.getInt("ACTIVE");
+                entity[6] = rs.getInt("ID");
+                
+                list.add(entity);
+            }
+            return list.get(0);
+        } catch (SQLException ex) {
+            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
+
+    }
+    
+    public String selectCustomerByPhone(String phone) {
+            try {
+                return JdbcHelper.value(SELECT_CUSTOMER_BY_PHONE, phone).toString();
+            } catch (Exception e) {
+                return null;
+            }
+    }
+
+    public Object[] selectProductById(Integer idPro, Integer idOrd) {
+        try {
+            List<Object[]> list = new ArrayList<>();
+            ResultSet rs = JdbcHelper.query(SELECT_PRODUCT_BY_ID, idPro, idOrd);;
+            while (rs.next()) {
+                Object[] entity = new Object[7];
+                entity[0] = rs.getString("IMAGE");
+                entity[1] = rs.getString("NAME");
+                entity[2] = rs.getString("SIZE");
+                entity[3] = rs.getString("COLOR");
+                entity[4] = rs.getInt("PRICE");
+                entity[5] = rs.getInt("QUANTITY");
+                entity[6] = rs.getInt("ID");
+                
+                list.add(entity);
+            }
+            return list.get(0);
+        } catch (SQLException ex) {
+            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
+
+    }
+    
+    public static List<Order> findByStatus(int status){
+        try {
+            List<Order> list = new ArrayList<>();
+            ResultSet resultSet = JdbcHelper.query(SELECT_BY_STATUS, status);
+            while(resultSet.next()){
+                int id = resultSet.getInt("id");
+                int userId = resultSet.getInt("user_id");
+                int customerId = resultSet.getInt("customer_id");
+                Date createdDate = resultSet.getDate("create_date");
+                int total = resultSet.getInt("total");
+                Order order = new Order();
+                order.setId(id);
+                order.setUserId(userId);
+                order.setCustomersId(customerId);
+                order.setCreateDate(createdDate);
+                order.setTotal(total);
+                list.add(order);
+            }
+            return list;
+        } catch (SQLException ex) {
+            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
+    }
+
+    @Override
+    public void delete(Integer id) {
+        JdbcHelper.update(DELETE_SQL, id);
+    }
+
+    
+
 }

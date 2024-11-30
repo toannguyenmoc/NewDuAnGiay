@@ -9,6 +9,7 @@ import com.sales.Utils.JdbcHelper;
 import com.sales.Utils.XImage;
 import com.sales.Utils.XValidate;
 import java.sql.ResultSet;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -27,7 +28,7 @@ public class FormTongHopThongKe extends javax.swing.JFrame {
     List<Object[]> listThongKeTonKho = new ArrayList<>();
     List<Object[]> listThongKeKhachHang = new ArrayList<>();
     List<Object[]> listThongKeNhanVien = new ArrayList<>();
-
+    DecimalFormat df = new DecimalFormat("###,###");
     /**
      * Creates new form FormTongHopThongKe
      */
@@ -63,22 +64,12 @@ public class FormTongHopThongKe extends javax.swing.JFrame {
         if (chkThongKeSanPhamTang.isSelected()) {
             Collections.reverse(listThongKeSanPham);
             for (Object[] row : listThongKeSanPham) {
-                String tenSanPham = (String) row[0];
-                String bienTheSanPham = (String) row[1];
-                int soLuongBan = (Integer) row[2];
-                double donGia = (Double) row[3];
-                double doanhThu = (Double) row[4];
-                model.addRow(new Object[]{tenSanPham, bienTheSanPham, soLuongBan, donGia, doanhThu});
+                model.addRow(new Object[]{row[0], row[1], row[2], row[3], row[4]});
             }
         } else {
             Collections.reverse(listThongKeSanPham);
             for (Object[] row : listThongKeSanPham) {
-                String tenSanPham = (String) row[0];
-                String bienTheSanPham = (String) row[1];
-                int soLuongBan = (Integer) row[2];
-                double donGia = (Double) row[3];
-                double doanhThu = (Double) row[4];
-                model.addRow(new Object[]{tenSanPham, bienTheSanPham, soLuongBan, donGia, doanhThu});
+                model.addRow(new Object[]{row[0], row[1], row[2], row[3], row[4]});
             }
         }
 
@@ -100,8 +91,8 @@ public class FormTongHopThongKe extends javax.swing.JFrame {
                 String bienTheSanPham = rs.getString("BienTheSanPham");
                 int soLuongBan = rs.getInt("SoLuongBan");
                 double donGia = rs.getDouble("DonGia");
-                model.addRow(new Object[]{tenSanPham, bienTheSanPham, soLuongBan, donGia, soLuongBan * donGia});
-                listThongKeSanPham.add(new Object[]{tenSanPham, bienTheSanPham, soLuongBan, donGia, soLuongBan * donGia});
+                model.addRow(new Object[]{tenSanPham, bienTheSanPham, soLuongBan, df.format(donGia),df.format(soLuongBan * donGia) });
+                listThongKeSanPham.add(new Object[]{tenSanPham, bienTheSanPham,soLuongBan, df.format(donGia),df.format(soLuongBan * donGia) });
             }
             if (chkThongKeSanPhamTang.isSelected()) {
                 sapXepThongKeSanPham();
@@ -129,8 +120,8 @@ public class FormTongHopThongKe extends javax.swing.JFrame {
                 String bienTheSanPham = rs.getString("BienTheSanPham");
                 int soLuongTon = rs.getInt("SoLuongTon");
                 double donGia = rs.getDouble("DonGia");
-                model.addRow(new Object[]{tenSanPham, bienTheSanPham, soLuongTon, donGia});
-                listThongKeTonKho.add(new Object[]{tenSanPham, bienTheSanPham, soLuongTon, donGia});
+                model.addRow(new Object[]{tenSanPham, bienTheSanPham, soLuongTon, df.format(donGia) });
+                listThongKeTonKho.add(new Object[]{tenSanPham, bienTheSanPham, soLuongTon, df.format(donGia)});
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -174,8 +165,8 @@ public class FormTongHopThongKe extends javax.swing.JFrame {
                 int soLuongDonHang = rs.getInt("SoLuongDonHangDaMua");
                 int soLuongSanPham = rs.getInt("SoLuongSanPhamDaMua");
                 double tongTien = rs.getDouble("TongTien");
-                model.addRow(new Object[]{tenKhachHang, gioiTinh, soLuongDonHang, soLuongSanPham, tongTien});
-                listThongKeKhachHang.add(new Object[]{tenKhachHang, gioiTinh, soLuongDonHang, soLuongSanPham, tongTien});
+                model.addRow(new Object[]{tenKhachHang, gioiTinh, soLuongDonHang, soLuongSanPham, df.format(tongTien)});
+                listThongKeKhachHang.add(new Object[]{tenKhachHang, gioiTinh, soLuongDonHang, soLuongSanPham, df.format(tongTien)});
             }
             if (chkThongKeKhachHangTang.isSelected()) {
                 sapXepThongKeKhachHang();
@@ -206,8 +197,8 @@ public class FormTongHopThongKe extends javax.swing.JFrame {
                 String tenNhanVien = rs.getString("TEN_NHAN_VIEN");
                 int soLuongHoaDon = rs.getInt("SO_LUONG_HOA_DON");
                 int tongTien = rs.getInt("TONG_TIEN");
-                model.addRow(new Object[]{id, tenNhanVien, soLuongHoaDon, tongTien});
-                listThongKeNhanVien.add(new Object[]{id, tenNhanVien, soLuongHoaDon, tongTien});
+                model.addRow(new Object[]{id, tenNhanVien, soLuongHoaDon, df.format(tongTien)});
+                listThongKeNhanVien.add(new Object[]{id, tenNhanVien, soLuongHoaDon, df.format(tongTien)});
             }
             if (chkNhanVienTang.isSelected()) {
                 sapXepNhanVien();

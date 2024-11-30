@@ -77,4 +77,9 @@ public class StatisticDAO {
         return getListofArray(sql, cols, nam);
     }
 
+    public List<Object[]> getThongKeNgay(Date ngay) {
+        String sql = "{CALL ThongKeTheoNgay(?)}";
+        String[] cols = {"Ngay", "TongSoLuongKhachHang", "TongSanPham", "TongDonHang", "TongDoanhThu"};
+        return getListofArray(sql, cols, ngay);
+    }
 }

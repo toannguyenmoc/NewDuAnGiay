@@ -260,7 +260,7 @@ public class FormThuongHieu extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     public void loadTable() {
-       
+
         model.setRowCount(0);
 
         try {
@@ -278,13 +278,15 @@ public class FormThuongHieu extends javax.swing.JFrame {
         } catch (Exception e) {
         }
     }
- public void setTableTitle() {
+
+    public void setTableTitle() {
         model.addColumn("Mã Số");
         model.addColumn("Tên Thương Hiệu");
         model.addColumn("Trạng Thái");
 
         tblThuongHieu.setModel(model);
     }
+
     void setModel(Brand model) {
 
         txtThuongHieu.setText(String.valueOf(model.getName()));
@@ -350,7 +352,7 @@ public class FormThuongHieu extends javax.swing.JFrame {
         txtThuongHieu.setText(t);
 
         bgrTrangThai.clearSelection();
-btnXoa.setEnabled(false);
+        btnXoa.setEnabled(false);
         btnSua.setEnabled(false);
     }
     private void txtThuongHieuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtThuongHieuActionPerformed

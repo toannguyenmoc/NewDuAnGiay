@@ -79,8 +79,10 @@ public class FormTaoHoaDon extends javax.swing.JFrame {
             if (orders != null) {
                 order = orders.get(0);
             } else {
-                order = new Order(0, 1, 1, new Date(), 0, 0);
+                order = new Order(1, 1, 1, new Date(), 0, 0);
                 orderDAO.insert(order);
+                System.out.println();
+                        
             }
             txtMaHoaDon.setText("Mã hóa đơn:" + order.getId());
         } catch (Exception e) {
@@ -188,7 +190,7 @@ public class FormTaoHoaDon extends javax.swing.JFrame {
                 order.setPrice((int) product[4]);
 
                 try {
-                    orderDetailDAO.insert(order);  // Thêm hàng mớitrong database
+                    orderDetailDAO.insert(order);  // Thêm hàng mới trong database
                 } catch (Exception e) {
                     System.out.println("Thêm order detail thất bại");
                 }
@@ -289,20 +291,19 @@ public class FormTaoHoaDon extends javax.swing.JFrame {
 
     public void createHoaDon() {
         try {
-            if (txtTenKhachHang.getText() != null && (chkTienMat.isSelected() || chkThanhToanOnline.isSelected())) {
+            if (txtTenKhachHang.getText() != null && (chkTienMat.isSelected() || chkThanhToanOnline.isSelected()) ) {
                 Order order = new Order();
-                int idUser = user.getId();
+                int idUser = 1;   //user.getId();
                 int idCustomer = customerDAO.selectByObject(txtSoDienThoai.getText()).get(0).getId();
                 Date createDate = new Date();
-                int tongTien = Integer.parseInt(txtTongTien.getText());
                 order.setUserId(idUser);
                 order.setCustomersId(idCustomer);
                 order.setCreateDate(createDate);
-                order.setTotal(tongTien);
-                order.setStatus(1);
+                order.setTotal(Integer.parseInt(txtTongTien.getText()));
+                order.setStatus(0);
                 orderDAO.update(order);
-                System.out.println("Thêm thành công");
-                loadOrCreateOrder();
+                JOptionPane.showMessageDialog(this, "Tạo hóa đơn thành công!");
+                clearForm();
             } else {
                 JOptionPane.showMessageDialog(this, "Cần nhập đầy đủ thông tin!");
             }
@@ -340,6 +341,19 @@ public class FormTaoHoaDon extends javax.swing.JFrame {
     public void tinhTienThua() {
         int tienThua = Integer.parseInt(txtTienKhachDua.getText()) - Integer.parseInt(txtTongTien.getText());
         txtTienThua.setText(tienThua + "");
+    }
+    
+    public void clearForm() {
+        txtSoDienThoai.setText("");
+        txtTenKhachHang.setText("");
+        txtTongTien.setText("");
+        txtTienKhachDua.setText("");
+        txtTienThua.setText("");
+        chkTienMat.setSelected(false);
+        chkThanhToanOnline.setSelected(false);
+        model.setRowCount(0);
+        loadOrCreateOrder();
+        txtMaHoaDon.setText("Mã hóa đơn:" + order.getId());
     }
 
     @SuppressWarnings("unchecked")

@@ -11,7 +11,10 @@ import com.sales.Utils.Auth;
 import com.sales.Utils.DateHelper;
 import com.sales.Utils.XImage;
 import java.awt.Color;
+import java.awt.event.MouseListener;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import javax.swing.JFrame;
 
 /**
@@ -37,10 +40,64 @@ public class FormManHinhChinh extends javax.swing.JFrame {
         setTitle("PHẦN MỀM QUẢN LÝ GIÀY THỂ THAO");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         kiemtra();
-        BieuDo();
+        Quyen();
         if (Auth.user != null) {
             lblTenNhanVien.setText(user.getFullName());
             lblQuyen.setText(user.getRole() ? "Quản Lý" : "Nhân Viên");
+        }
+    }
+
+    public void Quyen() {
+        if (Auth.isLogin() && !Auth.isManager()) {
+            for (MouseListener ml : lblNhanVien.getMouseListeners()) {
+                lblNhanVien.removeMouseListener(ml);
+            }
+            for (MouseListener ml : lblThongKe.getMouseListeners()) {
+                lblThongKe.removeMouseListener(ml);
+            }
+            for (MouseListener ml : lblHoaDon.getMouseListeners()) {
+                lblHoaDon.removeMouseListener(ml);
+            }
+        } else {
+            BieuDo();
+        }
+    }
+
+    public void BieuDoDoanhThuNhanVien() {
+        // Lấy dữ liệu thống kê doanh thu theo năm 2024
+        StatisticDAO thongKe = new StatisticDAO();
+        List<Object[]> list = thongKe.getThongKeDoanhThu(2023); // Lấy doanh thu theo năm
+
+        // Tạo danh sách để lưu tên nhân viên và doanh thu của từng nhân viên cho từng tháng
+        List<String> danhSachTenNhanVien = new ArrayList<>();
+        List<double[]> doanhThuThang = new ArrayList<>();
+
+        // Duyệt qua danh sách nhân viên và doanh thu của từng người
+        for (int i = 0; i < list.size(); i++) {
+            Object[] dt = list.get(i);
+            String tenNhanVien = dt[0].toString(); // Lấy tên nhân viên từ cột 1
+
+            // Lấy doanh thu của nhân viên cho từng tháng từ cột 2 đến cột 13
+            double[] doanhThu = new double[12];
+            for (int j = 1; j <= 12; j++) {
+                doanhThu[j - 1] = Double.parseDouble(dt[j].toString()); // Doanh thu từng tháng
+            }
+
+            // Thêm tên nhân viên vào legend
+            chart.addLegend(tenNhanVien, new Color((int) (Math.random() * 0x1000000)));
+
+            // Thêm doanh thu vào danh sách doanh thu
+            doanhThuThang.add(doanhThu);
+        }
+
+        // Thêm dữ liệu vào biểu đồ (dữ liệu cho từng tháng và doanh thu của mỗi nhân viên)
+        for (int month = 0; month < 12; month++) {
+            // Lấy doanh thu cho từng tháng của tất cả nhân viên
+            double[] doanhThuThangCuaTatCaNhanVien = new double[doanhThuThang.size()];
+            for (int i = 0; i < doanhThuThang.size(); i++) {
+                doanhThuThangCuaTatCaNhanVien[i] = doanhThuThang.get(i)[month]; // Doanh thu của nhân viên i cho tháng month
+            }
+            chart.addData(new ModelChart("Tháng " + (month + 1), doanhThuThangCuaTatCaNhanVien));
         }
     }
 
@@ -79,7 +136,7 @@ public class FormManHinhChinh extends javax.swing.JFrame {
 
     public void BieuDoKhachHang() {
         StatisticDAO thongKe = new StatisticDAO();
-        List<Object[]> list = thongKe.getKhachHangThanThietTuNgayDenNgay(DateHelper.toDate("01-11-2024"), DateHelper.toDate("02-11-2024"));
+        List<Object[]> list = thongKe.getKhachHangThanThietTuNgayDenNgay(DateHelper.toDate("01-11-2024"), DateHelper.toDate("10-11-2024"));
         chart.addLegend("Đơn Hàng", new Color(245, 189, 135));
         chart.addLegend("Sản Phẩm", new Color(135, 189, 245));
         for (Object[] dt : list) {
@@ -385,12 +442,12 @@ public class FormManHinhChinh extends javax.swing.JFrame {
 
         lblTenNhanVien.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         lblTenNhanVien.setText("User name");
-        jPanel2.add(lblTenNhanVien, new org.netbeans.lib.awtextra.AbsoluteConstraints(970, 20, 90, 20));
+        jPanel2.add(lblTenNhanVien, new org.netbeans.lib.awtextra.AbsoluteConstraints(970, 20, 120, 20));
 
         lblQuyen.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
         lblQuyen.setForeground(new java.awt.Color(153, 153, 153));
         lblQuyen.setText("Admin");
-        jPanel2.add(lblQuyen, new org.netbeans.lib.awtextra.AbsoluteConstraints(970, 48, 60, 20));
+        jPanel2.add(lblQuyen, new org.netbeans.lib.awtextra.AbsoluteConstraints(970, 48, 120, 20));
 
         jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icon/bell (2).png"))); // NOI18N
         jLabel5.setToolTipText("");

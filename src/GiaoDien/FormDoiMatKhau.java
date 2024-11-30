@@ -26,6 +26,7 @@ public class FormDoiMatKhau extends javax.swing.JFrame {
     private boolean matKhauMoi = false;
     private boolean matKhauCu = false;
     private boolean xacNhan = false;
+    boolean kiemTraMatKhauDaDoi = false;
 
     /**
      * Creates new form FormDoiMatKhau
@@ -42,6 +43,7 @@ public class FormDoiMatKhau extends javax.swing.JFrame {
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         txtEmail.setEditable(false);
         txtEmail.setText(user.getFullName());
+        clearForm();
     }
 
     /**
@@ -103,6 +105,11 @@ public class FormDoiMatKhau extends javax.swing.JFrame {
         btnThoat.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         btnThoat.setForeground(new java.awt.Color(255, 255, 255));
         btnThoat.setText("Thoát");
+        btnThoat.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnThoatActionPerformed(evt);
+            }
+        });
 
         lblAnMatKhauCu.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icon/AnMatKhau.png"))); // NOI18N
         lblAnMatKhauCu.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -267,6 +274,16 @@ public class FormDoiMatKhau extends javax.swing.JFrame {
         xacNhan = !xacNhan;
     }//GEN-LAST:event_lblAnXacNhanMatKhauMouseClicked
 
+    private void btnThoatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThoatActionPerformed
+        if(kiemTraMatKhauDaDoi){
+            new FormDangNhap().setVisible(true);
+            dispose();
+        }else{
+            dispose();
+            new FormManHinhChinh().setVisible(true);
+        }
+    }//GEN-LAST:event_btnThoatActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -338,8 +355,16 @@ public class FormDoiMatKhau extends javax.swing.JFrame {
             user.setPassword(matKhauMoi);
             userDAO.updatePassword(user);
             JOptionPane.showMessageDialog(this, "Mật khẩu đã được cập nhật thành công.");
+            clearForm();
+            kiemTraMatKhauDaDoi = true;
         }
     }
    
+    public void clearForm(){
+        String t = "";
+        txtMatKhauCu.setText(t);
+        txtMatKhauMoi.setText(t);
+        txtXacNhanMatKhau.setText(t);
+    }
     
 }

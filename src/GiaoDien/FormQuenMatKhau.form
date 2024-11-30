@@ -90,10 +90,10 @@
                           <Component id="btnThoat" alignment="0" min="-2" pref="377" max="-2" attributes="0"/>
                           <Group type="103" alignment="0" groupAlignment="1" max="-2" attributes="0">
                               <Group type="102" alignment="1" attributes="0">
-                                  <Component id="jTextField1" min="-2" pref="190" max="-2" attributes="0"/>
-                                  <EmptySpace type="separate" max="-2" attributes="0"/>
-                                  <Component id="lblDemNguoc" min="-2" pref="64" max="-2" attributes="0"/>
+                                  <Component id="txtMaXacNhan" min="-2" pref="190" max="-2" attributes="0"/>
                                   <EmptySpace max="32767" attributes="0"/>
+                                  <Component id="lblDemNguoc" min="-2" pref="64" max="-2" attributes="0"/>
+                                  <EmptySpace type="separate" max="-2" attributes="0"/>
                                   <Component id="btnGuiMa" min="-2" max="-2" attributes="0"/>
                               </Group>
                               <Component id="btnDoiMatKhau" alignment="0" pref="378" max="32767" attributes="0"/>
@@ -144,12 +144,14 @@
                           <Component id="lblAnXacNhanMatKhau" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="jTextField1" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="btnGuiMa" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="lblDemNguoc" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="lblDemNguoc" alignment="0" min="-2" pref="39" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="txtMaXacNhan" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="btnGuiMa" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
                       </Group>
-                      <EmptySpace pref="12" max="32767" attributes="0"/>
+                      <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
                       <Component id="btnDoiMatKhau" min="-2" pref="37" max="-2" attributes="0"/>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Component id="btnThoat" min="-2" pref="37" max="-2" attributes="0"/>
@@ -242,6 +244,9 @@
                 </Property>
                 <Property name="text" type="java.lang.String" value="Tho&#xe1;t"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnThoatActionPerformed"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JButton" name="btnGuiMa">
               <Properties>
@@ -266,6 +271,9 @@
                   <Image iconType="3" name="/Icon/AnMatKhau.png"/>
                 </Property>
               </Properties>
+              <Events>
+                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="lblAnMatKhauMoiMouseClicked"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JLabel" name="lblAnXacNhanMatKhau">
               <Properties>
@@ -273,8 +281,11 @@
                   <Image iconType="3" name="/Icon/AnMatKhau.png"/>
                 </Property>
               </Properties>
+              <Events>
+                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="lblAnXacNhanMatKhauMouseClicked"/>
+              </Events>
             </Component>
-            <Component class="javax.swing.JTextField" name="jTextField1">
+            <Component class="javax.swing.JTextField" name="txtMaXacNhan">
               <Properties>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                   <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
@@ -288,7 +299,6 @@
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Segoe UI" size="18" style="1"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="30 gi&#xe2;y"/>
               </Properties>
             </Component>
           </SubComponents>

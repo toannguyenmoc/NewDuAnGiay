@@ -48,6 +48,10 @@ public class FormThuocTinh extends javax.swing.JFrame {
         setTableTitleSize();
         loadTableColor();
         loadTableSize();
+        btnSuaMauSac.setEnabled(false);
+        btnXoaMauSac.setEnabled(false);
+        btnSuaKichThuoc.setEnabled(false);
+        btnXoaKichThuoc.setEnabled(false);
     }
 
     /**
@@ -771,6 +775,9 @@ public class FormThuocTinh extends javax.swing.JFrame {
         txtMauSac.setText(t);
 
         bgrMauSac.clearSelection();
+        btnSuaMauSac.setEnabled(false);
+        btnXoaMauSac.setEnabled(false);
+        
 
     }
 
@@ -779,6 +786,8 @@ public class FormThuocTinh extends javax.swing.JFrame {
         txtSize.setText(t);
 
         bgrKichThuoc.clearSelection();
+        btnSuaKichThuoc.setEnabled(false);
+        btnXoaKichThuoc.setEnabled(false);
 
     }
 
@@ -831,6 +840,9 @@ public class FormThuocTinh extends javax.swing.JFrame {
          int index = tblKichThuoc.getSelectedRow();
         size = listSize.get(index);
         setModelSize(size);
+       
+        btnSuaKichThuoc.setEnabled(true);
+        btnXoaKichThuoc.setEnabled(true);
     }//GEN-LAST:event_tblKichThuocMouseClicked
     XValidate vaildate = new XValidate();
     private void btnThemKichThuocActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThemKichThuocActionPerformed
@@ -880,6 +892,8 @@ public class FormThuocTinh extends javax.swing.JFrame {
         int index = tblMauSac.getSelectedRow();
         color = listColor.get(index);
         setModelColor(color);
+         btnSuaMauSac.setEnabled(true);
+        btnXoaMauSac.setEnabled(true);
     }//GEN-LAST:event_tblMauSacMouseClicked
 
     private void btnSuaKichThuocActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSuaKichThuocActionPerformed

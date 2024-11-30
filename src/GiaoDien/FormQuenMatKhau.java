@@ -4,12 +4,16 @@
  */
 package GiaoDien;
 
+import com.sales.DAO.UserDAO;
+import com.sales.Entity.User;
 import com.sales.Utils.MailHelper;
 import com.sales.Utils.XImage;
 import com.sales.Utils.XValidate;
 import java.net.URL;
 import java.util.Timer;
 import java.util.TimerTask;
+import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
 
 /**
@@ -17,12 +21,14 @@ import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
  * @author NganTTK_PC09494
  */
 public class FormQuenMatKhau extends javax.swing.JFrame {
+
     String maXacNhan = null;
     XValidate validate = new XValidate();
     URL eyeHide = XImage.class.getResource("/Icon/AnMatKhau.png");
     URL eyeShow = XImage.class.getResource("/Icon/HienMatKhau.png");
     private boolean matKhauMoi = false;
     private boolean xacNhan = false;
+
     /**
      * Creates new form FormQuenMatKhau
      */
@@ -36,6 +42,7 @@ public class FormQuenMatKhau extends javax.swing.JFrame {
         setIconImage(XImage.XImage());
         setTitle("PHẦN MỀM QUẢN LÝ GIÀY THỂ THAO");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
+        clearForm();
     }
 
     /**
@@ -58,7 +65,7 @@ public class FormQuenMatKhau extends javax.swing.JFrame {
         btnGuiMa = new javax.swing.JButton();
         lblAnMatKhauMoi = new javax.swing.JLabel();
         lblAnXacNhanMatKhau = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        txtMaXacNhan = new javax.swing.JTextField();
         lblDemNguoc = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
 
@@ -97,6 +104,11 @@ public class FormQuenMatKhau extends javax.swing.JFrame {
         btnThoat.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         btnThoat.setForeground(new java.awt.Color(255, 255, 255));
         btnThoat.setText("Thoát");
+        btnThoat.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnThoatActionPerformed(evt);
+            }
+        });
 
         btnGuiMa.setBackground(new java.awt.Color(204, 0, 0));
         btnGuiMa.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -109,13 +121,22 @@ public class FormQuenMatKhau extends javax.swing.JFrame {
         });
 
         lblAnMatKhauMoi.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icon/AnMatKhau.png"))); // NOI18N
+        lblAnMatKhauMoi.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lblAnMatKhauMoiMouseClicked(evt);
+            }
+        });
 
         lblAnXacNhanMatKhau.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icon/AnMatKhau.png"))); // NOI18N
+        lblAnXacNhanMatKhau.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lblAnXacNhanMatKhauMouseClicked(evt);
+            }
+        });
 
-        jTextField1.setBorder(javax.swing.BorderFactory.createTitledBorder("Mã Xác Nhận"));
+        txtMaXacNhan.setBorder(javax.swing.BorderFactory.createTitledBorder("Mã Xác Nhận"));
 
         lblDemNguoc.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        lblDemNguoc.setText("30 giây");
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
@@ -127,10 +148,10 @@ public class FormQuenMatKhau extends javax.swing.JFrame {
                     .addComponent(btnThoat, javax.swing.GroupLayout.PREFERRED_SIZE, 377, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                         .addGroup(jPanel5Layout.createSequentialGroup()
-                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(18, 18, 18)
-                            .addComponent(lblDemNguoc, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtMaXacNhan, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(lblDemNguoc, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(18, 18, 18)
                             .addComponent(btnGuiMa))
                         .addComponent(btnDoiMatKhau, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 378, Short.MAX_VALUE)
                         .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel5Layout.createSequentialGroup()
@@ -167,11 +188,12 @@ public class FormQuenMatKhau extends javax.swing.JFrame {
                         .addComponent(txtXacNhanMatKhau, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(lblAnXacNhanMatKhau))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnGuiMa)
-                    .addComponent(lblDemNguoc))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 12, Short.MAX_VALUE)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblDemNguoc, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(txtMaXacNhan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnGuiMa)))
+                .addGap(12, 12, 12)
                 .addComponent(btnDoiMatKhau, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(btnThoat, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -221,17 +243,45 @@ public class FormQuenMatKhau extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnDoiMatKhauActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDoiMatKhauActionPerformed
-        // TODO add your handling code here:
+        CapNhat();
     }//GEN-LAST:event_btnDoiMatKhauActionPerformed
 
     private void btnGuiMaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuiMaActionPerformed
-        MailHelper mh = new MailHelper();
-        maXacNhan = mh.generateCode(6);
-        if (true) {
-            mh.sendEmail(txtEmail.getText(), maXacNhan,"Mã Xác Nhận Quên Mật Khẩu","Mã Xác Nhận Email của bạn là: ");
+        //MailHelper mh = new MailHelper();
+        maXacNhan = MailHelper.generateCode(6);
+        if (validate.checkEmail_QuenMatKhau(txtEmail)) {
+            MailHelper.sendEmail(txtEmail.getText(), maXacNhan, "Mã Xác Nhận Quên Mật Khẩu", "Mã Xác Nhận của bạn là: ");
+            JOptionPane.showMessageDialog(this, "Gửi mã thành công, vui lòng kiểm tra mail");
             demNguoc();
         }
     }//GEN-LAST:event_btnGuiMaActionPerformed
+
+    private void btnThoatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThoatActionPerformed
+        new FormDangNhap().setVisible(true);
+        dispose();
+    }//GEN-LAST:event_btnThoatActionPerformed
+
+    private void lblAnMatKhauMoiMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblAnMatKhauMoiMouseClicked
+        if (matKhauMoi) {
+            txtMatKhauMoi.setEchoChar('*');
+            lblAnMatKhauMoi.setIcon(new ImageIcon(eyeHide));
+        } else {
+            txtMatKhauMoi.setEchoChar((char) 0);
+            lblAnMatKhauMoi.setIcon(new ImageIcon(eyeShow));
+        }
+        matKhauMoi = !matKhauMoi;
+    }//GEN-LAST:event_lblAnMatKhauMoiMouseClicked
+
+    private void lblAnXacNhanMatKhauMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblAnXacNhanMatKhauMouseClicked
+        if (xacNhan) {
+            txtXacNhanMatKhau.setEchoChar('*');
+            lblAnXacNhanMatKhau.setIcon(new ImageIcon(eyeHide));
+        } else {
+            txtXacNhanMatKhau.setEchoChar((char) 0);
+            lblAnXacNhanMatKhau.setIcon(new ImageIcon(eyeShow));
+        }
+        xacNhan = !xacNhan;
+    }//GEN-LAST:event_lblAnXacNhanMatKhauMouseClicked
 
     /**
      * @param args the command line arguments
@@ -276,11 +326,11 @@ public class FormQuenMatKhau extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel5;
-    private javax.swing.JTextField jTextField1;
     private javax.swing.JLabel lblAnMatKhauMoi;
     private javax.swing.JLabel lblAnXacNhanMatKhau;
     private javax.swing.JLabel lblDemNguoc;
     private javax.swing.JTextField txtEmail;
+    private javax.swing.JTextField txtMaXacNhan;
     private javax.swing.JPasswordField txtMatKhauMoi;
     private javax.swing.JPasswordField txtXacNhanMatKhau;
     // End of variables declaration//GEN-END:variables
@@ -310,5 +360,37 @@ public class FormQuenMatKhau extends javax.swing.JFrame {
             }
         };
         timer.scheduleAtFixedRate(timerTask, 0, 1000);
+    }
+
+    public void CapNhat() {
+        if (validate.checkEmail_QuenMatKhau(txtEmail) && XValidate.checkMatKhau(txtMatKhauMoi, txtXacNhanMatKhau)) {
+            String matKhauMoi = new String(txtMatKhauMoi.getPassword());
+            String xacNhan = new String(txtXacNhanMatKhau.getPassword());
+
+            if (!txtMaXacNhan.getText().equals(maXacNhan)) {
+                JOptionPane.showMessageDialog(this, "Mã xác nhận không chính xác.");
+                return;
+            }
+
+            UserDAO userDAO = new UserDAO();
+            User user = userDAO.selectByEmail(txtEmail.getText());
+
+            if (user != null) {
+                user.setPassword(matKhauMoi);
+                userDAO.updatePassword(user);
+                JOptionPane.showMessageDialog(this, "Mật khẩu đã được cập nhật thành công.");
+                clearForm();
+            } else {
+                JOptionPane.showMessageDialog(this, "Không tìm thấy nhân viên với tên đăng nhập này.");
+            }
+        }
+    }
+    
+    public void clearForm(){
+        String t = "";
+        txtEmail.setText(t);
+        txtMatKhauMoi.setText(t);
+        txtMaXacNhan.setText(t);
+        txtXacNhanMatKhau.setText(t);
     }
 }

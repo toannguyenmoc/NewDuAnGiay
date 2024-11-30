@@ -8,12 +8,16 @@ import com.sales.DAO.BrandDAO;
 import com.sales.Entity.Brand;
 import com.sales.Utils.XImage;
 import com.sales.Utils.XValidate;
+import java.awt.Image;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.ImageIcon;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
-import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.JLabel;
 
 /**
  *
@@ -25,7 +29,7 @@ public class FormThuongHieu extends javax.swing.JFrame {
     DefaultTableModel model = new DefaultTableModel();
     List<Brand> listBrand = new ArrayList<>();
     Brand brand = new Brand();
-
+    int index = 0;
     /**
      * Creates new form FormThuongHieu
      */
@@ -70,7 +74,8 @@ public class FormThuongHieu extends javax.swing.JFrame {
         btnXoa = new javax.swing.JButton();
         btnThoat = new javax.swing.JButton();
         btnMoi = new javax.swing.JButton();
-        jPanel2 = new javax.swing.JPanel();
+        pnlHinhanh = new javax.swing.JPanel();
+        lblHinhAnh = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         cknHoatDong = new javax.swing.JCheckBox();
         cknNgungHoatDong = new javax.swing.JCheckBox();
@@ -149,18 +154,30 @@ public class FormThuongHieu extends javax.swing.JFrame {
             }
         });
 
-        jPanel2.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        pnlHinhanh.setBackground(new java.awt.Color(255, 255, 255));
+        pnlHinhanh.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 408, Short.MAX_VALUE)
+        lblHinhAnh.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lblHinhAnhMouseClicked(evt);
+            }
+        });
+
+        javax.swing.GroupLayout pnlHinhanhLayout = new javax.swing.GroupLayout(pnlHinhanh);
+        pnlHinhanh.setLayout(pnlHinhanhLayout);
+        pnlHinhanhLayout.setHorizontalGroup(
+            pnlHinhanhLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlHinhanhLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lblHinhAnh, javax.swing.GroupLayout.DEFAULT_SIZE, 396, Short.MAX_VALUE)
+                .addContainerGap())
         );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 258, Short.MAX_VALUE)
+        pnlHinhanhLayout.setVerticalGroup(
+            pnlHinhanhLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlHinhanhLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lblHinhAnh, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(17, Short.MAX_VALUE))
         );
 
         jLabel8.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
@@ -188,7 +205,7 @@ public class FormThuongHieu extends javax.swing.JFrame {
                                 .addComponent(jLabel1)
                                 .addGap(215, 215, 215))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(pnlHinhanh, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(111, 111, 111)))
                         .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -214,7 +231,7 @@ public class FormThuongHieu extends javax.swing.JFrame {
                 .addGap(136, 136, 136)
                 .addComponent(jLabel1)
                 .addGap(18, 18, 18)
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(pnlHinhanh, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel2)
                 .addGap(18, 18, 18)
@@ -260,7 +277,7 @@ public class FormThuongHieu extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     public void loadTable() {
-       
+
         model.setRowCount(0);
 
         try {
@@ -270,7 +287,8 @@ public class FormThuongHieu extends javax.swing.JFrame {
                 Object[] row = {
                     br.getId(),
                     br.getName(),
-                    br.getActive() ? "Hoạt Động" : "Ngừng Hoạt động"
+                    br.getActive() ? "Hoạt Động" : "Ngừng Hoạt động",
+                    br.getImage()
 
                 };
                 model.addRow(row);
@@ -278,13 +296,16 @@ public class FormThuongHieu extends javax.swing.JFrame {
         } catch (Exception e) {
         }
     }
- public void setTableTitle() {
+
+    public void setTableTitle() {
         model.addColumn("Mã Số");
         model.addColumn("Tên Thương Hiệu");
         model.addColumn("Trạng Thái");
+        model.addColumn("Ảnh");
 
         tblThuongHieu.setModel(model);
     }
+
     void setModel(Brand model) {
 
         txtThuongHieu.setText(String.valueOf(model.getName()));
@@ -293,14 +314,45 @@ public class FormThuongHieu extends javax.swing.JFrame {
         } else {
             cknNgungHoatDong.setSelected(true);
         }
+        
+        String hinhAnh =(String) tblThuongHieu.getValueAt(index, 3);
+        
+         if (hinhAnh != null) {
+            lblHinhAnh.setToolTipText(hinhAnh);
+            ImageIcon img = (XImage.read(hinhAnh, lblHinhAnh.getWidth(), lblHinhAnh.getHeight()));
+            lblHinhAnh.setIcon(img);
+        } else {
+            lblHinhAnh.setIcon(null);
+        }
+        
+//      if (model.getImage() != null && !model.getImage().isEmpty()) {
+//        ImageIcon icon = new ImageIcon(model.getImage());
+//        // Scale the image to fit the label (optional)
+//        Image scaledImage = icon.getImage().getScaledInstance(lblHinhAnh.getWidth(), lblHinhAnh.getHeight(), Image.SCALE_SMOOTH);
+//        lblHinhAnh.setIcon(new ImageIcon(scaledImage));
+//    } else {
+//        lblHinhAnh.setIcon(null); // Clear the image if no path is provided
+//    }
 
     }
+ JFileChooser fileChooser = new JFileChooser();
 
+    public void ChonAnh() {
+        if (fileChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
+            File file = fileChooser.getSelectedFile();
+            XImage.save(file);
+            ImageIcon img = XImage.read(file.getName(), lblHinhAnh.getWidth(), lblHinhAnh.getHeight());
+            lblHinhAnh.setIcon(img);
+            lblHinhAnh.setToolTipText(file.getName());
+        }
+    }
+
+   
     public Brand getFrom() {
 
         brand.setName(txtThuongHieu.getText());
         brand.setActive(cknHoatDong.isSelected() ? true : false);
-
+        brand.setImage(lblHinhAnh.getToolTipText());
         return brand;
     }
 
@@ -350,7 +402,7 @@ public class FormThuongHieu extends javax.swing.JFrame {
         txtThuongHieu.setText(t);
 
         bgrTrangThai.clearSelection();
-btnXoa.setEnabled(false);
+        btnXoa.setEnabled(false);
         btnSua.setEnabled(false);
     }
     private void txtThuongHieuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtThuongHieuActionPerformed
@@ -359,7 +411,7 @@ btnXoa.setEnabled(false);
 
     private void tblThuongHieuMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblThuongHieuMouseClicked
         // TODO add your handling code here:
-        int index = tblThuongHieu.getSelectedRow();
+        index = tblThuongHieu.getSelectedRow();
         brand = listBrand.get(index);
         setModel(brand);
         btnXoa.setEnabled(true);
@@ -396,6 +448,11 @@ btnXoa.setEnabled(false);
         // TODO add your handling code here:
         clearForm();
     }//GEN-LAST:event_btnMoiActionPerformed
+
+    private void lblHinhAnhMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblHinhAnhMouseClicked
+        // TODO add your handling code here:
+        ChonAnh();
+    }//GEN-LAST:event_lblHinhAnhMouseClicked
     XValidate vaildate = new XValidate();
 
     /**
@@ -446,8 +503,9 @@ btnXoa.setEnabled(false);
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel lblHinhAnh;
+    private javax.swing.JPanel pnlHinhanh;
     private javax.swing.JTable tblThuongHieu;
     private javax.swing.JTextField txtThuongHieu;
     // End of variables declaration//GEN-END:variables

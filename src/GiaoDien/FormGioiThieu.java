@@ -5,7 +5,6 @@
 package GiaoDien;
 
 import com.sales.Utils.XImage;
-import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
 
 /**
  *

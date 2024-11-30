@@ -20,6 +20,8 @@ import com.sales.Entity.Product;
 import com.sales.Entity.Product_Variant;
 import com.sales.Entity.Size;
 import com.sales.Entity.User;
+import com.toedter.calendar.JDateChooser;
+import java.util.Date;
 import java.util.List;
 import javax.swing.ButtonGroup;
 import javax.swing.JCheckBox;
@@ -129,236 +131,281 @@ public class XValidate {
         }
         return true;
     }
-    ColorDAO colorDao = new ColorDAO();
-
-    public boolean checkTenMau(JTextField text) {
+      ColorDAO colorDao = new ColorDAO();
+    public boolean checkTenMau(JTextField text)
+    {
         String rgx = "[a-zA-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚÝàáâãèéêìíòóôõùúýĂăĐđĨĩŨũƠơƯưẠ-ỹ ]+$";
         String tenMau = text.getText().trim();
         Color color = colorDao.selectByName(tenMau);
-        if (tenMau.length() == 0) {
+        if(tenMau.length()== 0)
+        {
             JOptionPane.showMessageDialog(text.getRootPane(), "Chưa nhập tên màu!");
             return false;
         }
-        if (tenMau.matches(rgx) == false) {
+        if(tenMau.matches(rgx)== false)
+        {
             JOptionPane.showMessageDialog(text.getRootPane(), "Họ tên chỉ chứa alphabet và ký tự trắng");
             return false;
         }
-        if (color != null) {
-            JOptionPane.showMessageDialog(text.getRootPane(), "Tên màu đã tồn tại!");
+         if(color != null)
+        {
+            JOptionPane.showMessageDialog(text.getRootPane(),"Tên màu đã tồn tại!");
             return false;
         }
         return true;
     }
-
-    public boolean checkUpdateTenMau(JTextField text) {
+    public boolean checkUpdateTenMau(JTextField text)
+    {
         String rgx = "[a-zA-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚÝàáâãèéêìíòóôõùúýĂăĐđĨĩŨũƠơƯưẠ-ỹ ]+$";
         String tenMau = text.getText().trim();
         Color color = colorDao.selectByName(tenMau);
-        if (tenMau.length() == 0) {
+        if(tenMau.length()== 0)
+        {
             JOptionPane.showMessageDialog(text.getRootPane(), "Chưa nhập tên màu!");
             return false;
         }
-        if (tenMau.matches(rgx) == false) {
+        if(tenMau.matches(rgx)== false)
+        {
             JOptionPane.showMessageDialog(text.getRootPane(), "Họ tên chỉ chứa alphabet và ký tự trắng");
             return false;
         }
-
+       
         return true;
     }
     SizeDAO sizeDao = new SizeDAO();
-
-    public boolean checkKichThuoc(JTextField text) {
+        public boolean checkKichThuoc(JTextField text)
+    {
         String rgx = "^(3[6-9]|4[0-9]|50)$";
         String tenSize = text.getText().trim();
-        Size size = sizeDao.selectByNAME(tenSize);
-        if (tenSize.length() == 0) {
+        Size size =sizeDao.selectByNAME(tenSize);
+        if(tenSize.length()== 0)
+        {
             JOptionPane.showMessageDialog(text.getRootPane(), "Chưa nhập kích thước!");
             return false;
         }
-        if (tenSize.matches(rgx) == false) {
+        if(tenSize.matches(rgx)== false)
+        {
             JOptionPane.showMessageDialog(text.getRootPane(), "Size chỉ từ 36 - 50");
             return false;
         }
-        if (size != null) {
-            JOptionPane.showMessageDialog(text.getRootPane(), "Kích thước đã tồn tại!");
+         if(size != null)
+        {
+            JOptionPane.showMessageDialog(text.getRootPane(),"Kích thước đã tồn tại!");
             return false;
         }
-        return true;
+         return true;
     }
-
-    public boolean checkUpdateKichThuoc(JTextField text) {
+            public boolean checkUpdateKichThuoc(JTextField text)
+    {
         String rgx = "^(3[6-9]|4[0-9]|50)$";
         String tenSize = text.getText().trim();
-        Size size = sizeDao.selectByNAME(tenSize);
-        if (tenSize.length() == 0) {
+        Size size =sizeDao.selectByNAME(tenSize);
+        if(tenSize.length()== 0)
+        {
             JOptionPane.showMessageDialog(text.getRootPane(), "Chưa nhập kích thước!");
             return false;
         }
-        if (tenSize.matches(rgx) == false) {
+        if(tenSize.matches(rgx)== false)
+        {
             JOptionPane.showMessageDialog(text.getRootPane(), "Size chỉ từ 36 - 50");
             return false;
         }
-
-        return true;
+       
+         return true;
     }
-
+        
     public boolean checkTrangThaiColor(JCheckBox checkBox1, JCheckBox checkBox2) {
-
+        
         if (!checkBox1.isSelected() && !checkBox2.isSelected()) {
             JOptionPane.showMessageDialog(null, "Chưa chọn hoạt động");
-            return false;
+            return false; 
         }
-        return true;
+        return true;  
     }
-
     public boolean checkTrangThaiSize(JCheckBox checkBox1, JCheckBox checkBox2) {
-
+        
         if (!checkBox1.isSelected() && !checkBox2.isSelected()) {
             JOptionPane.showMessageDialog(null, "Chưa chọn hoạt động");
-            return false;
+            return false; 
         }
-        return true;
+        return true;  
     }
     BrandDAO brandDao = new BrandDAO();
-
-    public boolean checkTenThuongHieu(JTextField text) {
+     public boolean checkTenThuongHieu(JTextField text)
+    {
         String rgx = "[a-zA-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚÝàáâãèéêìíòóôõùúýĂăĐđĨĩŨũƠơƯưẠ-ỹ ]+$";
         String tenThuongHieu = text.getText().trim();
         Brand brand = brandDao.selectByName(tenThuongHieu);
-        if (tenThuongHieu.length() == 0) {
+        if(tenThuongHieu.length()== 0)
+        {
             JOptionPane.showMessageDialog(text.getRootPane(), "Chưa nhập tên thương Hiệu!");
             return false;
         }
-        if (tenThuongHieu.matches(rgx) == false) {
+        if(tenThuongHieu.matches(rgx)== false)
+        {
             JOptionPane.showMessageDialog(text.getRootPane(), "Họ tên chỉ chứa alphabet và ký tự trắng");
             return false;
         }
-        if (brand != null) {
-            JOptionPane.showMessageDialog(text.getRootPane(), "Tên thương hiệu đã tồn tại!");
+         if(brand != null)
+        {
+            JOptionPane.showMessageDialog(text.getRootPane(),"Tên thương hiệu đã tồn tại!");
             return false;
         }
         return true;
-    }
-
-    public boolean checkUpdateTenThuongHieu(JTextField text) {
+    }public boolean checkUpdateTenThuongHieu(JTextField text)
+    {
         String rgx = "[a-zA-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚÝàáâãèéêìíòóôõùúýĂăĐđĨĩŨũƠơƯưẠ-ỹ ]+$";
         String tenThuongHieu = text.getText().trim();
         Brand brand = brandDao.selectByName(tenThuongHieu);
-        if (tenThuongHieu.length() == 0) {
+        if(tenThuongHieu.length()== 0)
+        {
             JOptionPane.showMessageDialog(text.getRootPane(), "Chưa nhập tên thương Hiệu!");
             return false;
         }
-        if (tenThuongHieu.matches(rgx) == false) {
+        if(tenThuongHieu.matches(rgx)== false)
+        {
             JOptionPane.showMessageDialog(text.getRootPane(), "Họ tên chỉ chứa alphabet và ký tự trắng");
             return false;
         }
-
+        
         return true;
     }
-
-    public boolean checkTrangThaiThuongHieu(JCheckBox checkBox1, JCheckBox checkBox2) {
-
+     public boolean checkTrangThaiThuongHieu(JCheckBox checkBox1, JCheckBox checkBox2) {
+        
         if (!checkBox1.isSelected() && !checkBox2.isSelected()) {
             JOptionPane.showMessageDialog(null, "Chưa chọn hoạt động");
-            return false;
+            return false; 
         }
-        return true;
+        return true;  
     }
-    ProductDAO productDao = new ProductDAO();
-
-    public boolean checkTenSanPham(JTextField text) {
+      ProductDAO productDao =new ProductDAO();
+     public boolean checkTenSanPham(JTextField text)
+    {
         String rgx = "[a-zA-Z0-9ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚÝàáâãèéêìíòóôõùúýĂăĐđĨĩŨũƠơƯưẠ-ỹ ]+$";
         String tenSanPham = text.getText().trim();
         Product product = productDao.selectByNAME(tenSanPham);
-        if (tenSanPham.length() == 0) {
+        if(tenSanPham.length()== 0)
+        {
             JOptionPane.showMessageDialog(text.getRootPane(), "Chưa nhập tên Sản Phẩm!");
-
+            
             return false;
         }
-        if (tenSanPham.matches(rgx) == false) {
+        if(tenSanPham.matches(rgx)== false)
+        {
             JOptionPane.showMessageDialog(text.getRootPane(), "Họ tên chỉ chứa alphabet và ký tự trắng");
             return false;
         }
-        if (product != null) {
-            JOptionPane.showMessageDialog(text.getRootPane(), "Tên Sản Phẩm đã tồn tại!");
+         if(product != null)
+        {
+            JOptionPane.showMessageDialog(text.getRootPane(),"Tên Sản Phẩm đã tồn tại!");
             return false;
         }
         return true;
     }
-
-    public boolean checkUpdateTenSanPham(JTextField text) {
+      public boolean checkUpdateTenSanPham(JTextField text)
+    {
         String rgx = "[a-zA-Z0-9ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚÝàáâãèéêìíòóôõùúýĂăĐđĨĩŨũƠơƯưẠ-ỹ ]+$";
         String tenSanPham = text.getText().trim();
         Product product = productDao.selectByNAME(tenSanPham);
-        if (tenSanPham.length() == 0) {
+        if(tenSanPham.length()== 0)
+        {
             JOptionPane.showMessageDialog(text.getRootPane(), "Chưa nhập tên Sản Phẩm!");
-
+            
             return false;
         }
-        if (tenSanPham.matches(rgx) == false) {
+        if(tenSanPham.matches(rgx)== false)
+        {
             JOptionPane.showMessageDialog(text.getRootPane(), "Họ tên chỉ chứa alphabet và ký tự trắng");
             return false;
         }
-
+         
         return true;
     }
-
-    public boolean checkGia(JTextField text) {
+   
+ 
+    public boolean checkGia(JTextField text){
         String txt = text.getText().trim();
-        if (txt.isEmpty()) {
+        if(txt.isEmpty()){
             JOptionPane.showMessageDialog(text.getRootPane(), "Vui Lòng Nhập Giá");
             return false;
         }
         try {
-            int gia = (Integer.parseInt(txt));
-            if (gia <= 0) {
+             int gia = (Integer.parseInt(txt));
+            if(gia <=0){
                 JOptionPane.showMessageDialog(text.getRootPane(), "Giá Phải Là Số Dương");
                 return false;
             }
-
+             
         } catch (Exception e) {
             JOptionPane.showMessageDialog(text.getRootPane(), "Giá Không Phải Là Chữ");
             return false;
         }
         return true;
     }
-    CategoriesDAO cateDao = new CategoriesDAO();
-
-    public boolean checkLoaiSanPham(JTextField text) {
+     CategoriesDAO cateDao = new CategoriesDAO();
+    public boolean checkLoaiSanPham(JTextField text)
+    {
         String rgx = "[a-zA-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚÝàáâãèéêìíòóôõùúýĂăĐđĨĩŨũƠơƯưẠ-ỹ ]+$";
         String tenLoai = text.getText().trim();
         Categories ctg = cateDao.selectByName(tenLoai);
-        if (tenLoai.length() == 0) {
+        if(tenLoai.length()== 0)
+        {
             JOptionPane.showMessageDialog(text.getRootPane(), "Chưa nhập tên màu!");
             return false;
         }
-        if (tenLoai.matches(rgx) == false) {
+        if(tenLoai.matches(rgx)== false)
+        {
             JOptionPane.showMessageDialog(text.getRootPane(), "Họ tên chỉ chứa alphabet và ký tự trắng");
             return false;
         }
-        if (ctg != null) {
-            JOptionPane.showMessageDialog(text.getRootPane(), "Tên màu đã tồn tại!");
+         if(ctg != null)
+        {
+            JOptionPane.showMessageDialog(text.getRootPane(),"Tên màu đã tồn tại!");
             return false;
         }
         return true;
     }
-
-    public boolean checkUpdateLoaiSanPham(JTextField text) {
+    public boolean checkUpdateLoaiSanPham(JTextField text)
+    {
         String rgx = "[a-zA-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚÝàáâãèéêìíòóôõùúýĂăĐđĨĩŨũƠơƯưẠ-ỹ ]+$";
         String tenLoai = text.getText().trim();
-
-        if (tenLoai.length() == 0) {
+        
+        if(tenLoai.length()== 0)
+        {
             JOptionPane.showMessageDialog(text.getRootPane(), "Chưa nhập tên màu!");
             return false;
         }
-        if (tenLoai.matches(rgx) == false) {
+        if(tenLoai.matches(rgx)== false)
+        {
             JOptionPane.showMessageDialog(text.getRootPane(), "Họ tên chỉ chứa alphabet và ký tự trắng");
             return false;
         }
-
+       
         return true;
     }
-
+    
+    public static boolean checkThoiGianTimKiem(JDateChooser tuNgay, JDateChooser denNgay){
+        Date to = tuNgay.getDate();
+        Date from = denNgay.getDate();
+        if(to.after(from)){
+            JOptionPane.showMessageDialog(tuNgay.getRootPane(), "Vui lòng nhập ngày kết thúc sau ngày bắt đầu!");
+            return false;
+        }
+        return true;
+    }
+    
+    public static boolean checkBoTrongNgayTimKiem(JDateChooser day, String message){
+        Date ngay = day.getDate();
+        if(ngay==null){
+            JOptionPane.showMessageDialog(day.getRootPane(), message);
+            return false;
+        }
+        return true;
+    }
+    
+    
+    
+    
     public boolean checkEmail_QuenMatKhau(JTextField text) {
         String email = text.getText();
         String rgx = "^[a-zA-Z0-9]{5,50}@(gmail.com|fpt.edu.vn)$";
@@ -435,5 +482,6 @@ public class XValidate {
         String pattern = "^(\\d{1,3}(,\\d{3})*|\\d+)(\\.\\d{1,2})?$";
         // Kiểm tra chuỗi có khớp với biểu thức hay không
         return tien != null && tien.matches(pattern);
+    
     }
 }

@@ -12,9 +12,9 @@ import com.sales.Utils.DateHelper;
 import com.sales.Utils.XImage;
 import java.awt.Color;
 import java.awt.event.MouseListener;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 import javax.swing.JFrame;
 
 /**
@@ -24,6 +24,7 @@ import javax.swing.JFrame;
 public class FormManHinhChinh extends javax.swing.JFrame {
 
     User user = Auth.user;
+    DecimalFormat df = new DecimalFormat("###,###");
 
     /**
      * Creates new form FormManHinhChinh
@@ -41,6 +42,7 @@ public class FormManHinhChinh extends javax.swing.JFrame {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         kiemtra();
         Quyen();
+        HienThiThongKeNgay();
         if (Auth.user != null) {
             lblTenNhanVien.setText(user.getFullName());
             lblQuyen.setText(user.getRole() ? "Quản Lý" : "Nhân Viên");
@@ -144,6 +146,26 @@ public class FormManHinhChinh extends javax.swing.JFrame {
         }
     }
 
+    public void HienThiThongKeNgay() {
+        StatisticDAO thongKe = new StatisticDAO();
+        List<Object[]> list = thongKe.getThongKeNgay(DateHelper.toDate("03-11-2024"));
+        
+        if (list.isEmpty()) {
+            // Gán giá trị mặc định nếu không có dữ liệu
+            lblTongSoLuongKhachHang.setText("0");
+            lblTongSoSanPham.setText("0");
+            lblTongDonHang.setText("0");
+            lblTongDoanhThu.setText("0");
+        } else {
+            // Lấy dữ liệu đầu tiên từ danh sách
+            Object[] tk = list.get(0);
+            lblTongSoLuongKhachHang.setText(tk[1] != null ? tk[1].toString() : "0");
+            lblTongSoSanPham.setText(tk[2] != null ? tk[2].toString() : "0");
+            lblTongDonHang.setText(tk[3] != null ? tk[3].toString() : "0");
+            lblTongDoanhThu.setText(tk[4] != null ? df.format(tk[4]) : "0");
+        }
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -155,19 +177,19 @@ public class FormManHinhChinh extends javax.swing.JFrame {
 
         jPanel3 = new javax.swing.JPanel();
         jPanel4 = new javax.swing.JPanel();
-        jLabel15 = new javax.swing.JLabel();
+        lblTongSoLuongKhachHang = new javax.swing.JLabel();
         jLabel16 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jPanel5 = new javax.swing.JPanel();
-        jLabel17 = new javax.swing.JLabel();
+        lblTongSoSanPham = new javax.swing.JLabel();
         jLabel18 = new javax.swing.JLabel();
         jLabel34 = new javax.swing.JLabel();
         jPanel6 = new javax.swing.JPanel();
-        jLabel19 = new javax.swing.JLabel();
+        lblTongDonHang = new javax.swing.JLabel();
         jLabel20 = new javax.swing.JLabel();
         jLabel35 = new javax.swing.JLabel();
         jPanel7 = new javax.swing.JPanel();
-        jLabel21 = new javax.swing.JLabel();
+        lblTongDoanhThu = new javax.swing.JLabel();
         jLabel22 = new javax.swing.JLabel();
         jLabel36 = new javax.swing.JLabel();
         jPanel8 = new javax.swing.JPanel();
@@ -213,10 +235,10 @@ public class FormManHinhChinh extends javax.swing.JFrame {
         jPanel4.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         jPanel4.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel15.setFont(new java.awt.Font("Segoe UI", 1, 48)); // NOI18N
-        jLabel15.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel15.setText("50 ");
-        jPanel4.add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(13, 22, -1, -1));
+        lblTongSoLuongKhachHang.setFont(new java.awt.Font("Segoe UI", 1, 48)); // NOI18N
+        lblTongSoLuongKhachHang.setForeground(new java.awt.Color(255, 255, 255));
+        lblTongSoLuongKhachHang.setText("50 ");
+        jPanel4.add(lblTongSoLuongKhachHang, new org.netbeans.lib.awtextra.AbsoluteConstraints(13, 22, -1, -1));
 
         jLabel16.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel16.setText("Khách hàng");
@@ -232,10 +254,10 @@ public class FormManHinhChinh extends javax.swing.JFrame {
         jPanel5.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         jPanel5.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel17.setFont(new java.awt.Font("Segoe UI", 1, 48)); // NOI18N
-        jLabel17.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel17.setText("85");
-        jPanel5.add(jLabel17, new org.netbeans.lib.awtextra.AbsoluteConstraints(13, 14, 85, -1));
+        lblTongSoSanPham.setFont(new java.awt.Font("Segoe UI", 1, 48)); // NOI18N
+        lblTongSoSanPham.setForeground(new java.awt.Color(255, 255, 255));
+        lblTongSoSanPham.setText("85");
+        jPanel5.add(lblTongSoSanPham, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 20, 85, -1));
 
         jLabel18.setBackground(new java.awt.Color(204, 255, 204));
         jLabel18.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
@@ -250,9 +272,9 @@ public class FormManHinhChinh extends javax.swing.JFrame {
         jPanel6.setBackground(new java.awt.Color(153, 204, 255));
         jPanel6.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
-        jLabel19.setFont(new java.awt.Font("Segoe UI", 1, 48)); // NOI18N
-        jLabel19.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel19.setText("150");
+        lblTongDonHang.setFont(new java.awt.Font("Segoe UI", 1, 48)); // NOI18N
+        lblTongDonHang.setForeground(new java.awt.Color(255, 255, 255));
+        lblTongDonHang.setText("150");
 
         jLabel20.setBackground(new java.awt.Color(204, 255, 204));
         jLabel20.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
@@ -267,7 +289,7 @@ public class FormManHinhChinh extends javax.swing.JFrame {
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel19)
+                    .addComponent(lblTongDonHang)
                     .addComponent(jLabel20))
                 .addGap(43, 43, 43)
                 .addComponent(jLabel35, javax.swing.GroupLayout.PREFERRED_SIZE, 115, Short.MAX_VALUE)
@@ -279,7 +301,7 @@ public class FormManHinhChinh extends javax.swing.JFrame {
                 .addGap(24, 24, 24)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addComponent(jLabel19, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(lblTongDonHang, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(35, 35, 35)
                         .addComponent(jLabel20))
                     .addComponent(jLabel35))
@@ -291,9 +313,9 @@ public class FormManHinhChinh extends javax.swing.JFrame {
         jPanel7.setBackground(new java.awt.Color(153, 204, 255));
         jPanel7.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
-        jLabel21.setFont(new java.awt.Font("Segoe UI", 1, 48)); // NOI18N
-        jLabel21.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel21.setText("85,560,000");
+        lblTongDoanhThu.setFont(new java.awt.Font("Segoe UI", 1, 48)); // NOI18N
+        lblTongDoanhThu.setForeground(new java.awt.Color(255, 255, 255));
+        lblTongDoanhThu.setText("85,560,000");
 
         jLabel22.setBackground(new java.awt.Color(204, 255, 204));
         jLabel22.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
@@ -309,7 +331,7 @@ public class FormManHinhChinh extends javax.swing.JFrame {
             .addGroup(jPanel7Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel21, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(lblTongDoanhThu, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel7Layout.createSequentialGroup()
                         .addComponent(jLabel22)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -320,7 +342,7 @@ public class FormManHinhChinh extends javax.swing.JFrame {
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel7Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel21)
+                .addComponent(lblTongDoanhThu)
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel7Layout.createSequentialGroup()
                         .addGap(23, 23, 23)
@@ -331,7 +353,7 @@ public class FormManHinhChinh extends javax.swing.JFrame {
                         .addComponent(jLabel36))))
         );
 
-        jPanel3.add(jPanel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(1230, 140, -1, -1));
+        jPanel3.add(jPanel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(1204, 140, 290, -1));
 
         jPanel8.setBackground(new java.awt.Color(255, 255, 255));
         jPanel8.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
@@ -819,14 +841,10 @@ public class FormManHinhChinh extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private com.chart.Chart chart;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
-    private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel18;
-    private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel20;
-    private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel22;
     private javax.swing.JLabel jLabel25;
     private javax.swing.JLabel jLabel28;
@@ -864,6 +882,10 @@ public class FormManHinhChinh extends javax.swing.JFrame {
     private javax.swing.JLabel lblThongKe;
     private javax.swing.JLabel lblThuocTinh;
     private javax.swing.JLabel lblThuongHieu;
+    private javax.swing.JLabel lblTongDoanhThu;
+    private javax.swing.JLabel lblTongDonHang;
+    private javax.swing.JLabel lblTongSoLuongKhachHang;
+    private javax.swing.JLabel lblTongSoSanPham;
     private javax.swing.JLabel lblTrangChu;
     private javax.swing.JPanel pnlBieuDo;
     // End of variables declaration//GEN-END:variables

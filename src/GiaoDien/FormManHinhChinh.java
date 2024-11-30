@@ -55,8 +55,11 @@ public class FormManHinhChinh extends javax.swing.JFrame {
             for (MouseListener ml : lblThongKe.getMouseListeners()) {
                 lblThongKe.removeMouseListener(ml);
             }
+            for (MouseListener ml : lblHoaDon.getMouseListeners()) {
+                lblHoaDon.removeMouseListener(ml);
+            }
         } else {
-            BieuDoDoanhThuNhanVien();
+            BieuDo();
         }
     }
 
@@ -133,7 +136,7 @@ public class FormManHinhChinh extends javax.swing.JFrame {
 
     public void BieuDoKhachHang() {
         StatisticDAO thongKe = new StatisticDAO();
-        List<Object[]> list = thongKe.getKhachHangThanThietTuNgayDenNgay(DateHelper.toDate("01-11-2024"), DateHelper.toDate("02-11-2024"));
+        List<Object[]> list = thongKe.getKhachHangThanThietTuNgayDenNgay(DateHelper.toDate("01-11-2024"), DateHelper.toDate("10-11-2024"));
         chart.addLegend("Đơn Hàng", new Color(245, 189, 135));
         chart.addLegend("Sản Phẩm", new Color(135, 189, 245));
         for (Object[] dt : list) {

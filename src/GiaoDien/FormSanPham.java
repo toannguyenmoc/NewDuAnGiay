@@ -1024,14 +1024,13 @@ public class FormSanPham extends javax.swing.JFrame {
             
             cell = row.createCell(5, CellType.STRING);
             cell.setCellValue("Thương Hiệu");
+           
             cell = row.createCell(6, CellType.STRING);
-            cell.setCellValue("Số Lượng");
-            cell = row.createCell(7, CellType.STRING);
             cell.setCellValue("Giá");
             
-            cell = row.createCell(8, CellType.STRING);
+            cell = row.createCell(7, CellType.STRING);
             cell.setCellValue("Trạng Thái");
-            cell = row.createCell(9, CellType.STRING);
+            cell = row.createCell(8, CellType.STRING);
             cell.setCellValue("Mã Code");
            List<Product_Variant> list = productVariantDao.selectAll();
 int i = 2; // Khởi tạo giá trị i
@@ -1055,31 +1054,51 @@ for (int j = 0; j < list.size(); j++) {
                 cell = row.createCell(5, CellType.STRING);
                 cell.setCellValue(tblSanPham.getValueAt(j, 5).toString());
                 cell = row.createCell(6, CellType.STRING);
-                cell.setCellValue(tblSanPham.getValueAt(j, 6).toString());
-                cell = row.createCell(7, CellType.STRING);
+              
                 cell.setCellValue(tblSanPham.getValueAt(j, 7).toString());
-                cell = row.createCell(8, CellType.STRING);
+                cell = row.createCell(7, CellType.STRING);
               
                 cell.setCellValue(tblSanPham.getValueAt(j, 9).toString());
-                cell = row.createCell(9, CellType.STRING);
+                cell = row.createCell(8, CellType.STRING);
                 cell.setCellValue(tblSanPham.getValueAt(j, 10).toString());
                
                 i++;
             }
-            File file = new File("D:/chuyende.xlsx");
-            FileOutputStream fos = new FileOutputStream(file);
-            workbook.write(fos);
-            fos.close();
-            if(Desktop.isDesktopSupported())
-            {
-                Desktop desktop = Desktop.getDesktop();
-                if(file.exists())
-                {
-                    desktop.open(file);
+            JFileChooser fileChooser = new JFileChooser();
+            fileChooser.setDialogTitle("Chọn nơi lưu file Excel");
+            fileChooser.setSelectedFile(new File("")); // Tên mặc định cho file
+
+            int userSelection = fileChooser.showSaveDialog(this);
+
+            if (userSelection == JFileChooser.APPROVE_OPTION) {
+                File fileToSave = fileChooser.getSelectedFile();
+
+                // Đảm bảo tên file có phần mở rộng .xlsx
+                if (!fileToSave.getAbsolutePath().endsWith(".xlsx")) {
+                    fileToSave = new File(fileToSave + ".xlsx");
+                }
+
+                // Ghi dữ liệu vào file đã chọn
+                try {
+                    FileOutputStream fos = new FileOutputStream(fileToSave);
+                    workbook.write(fos);
+                    fos.close();
+
+                    // Hiển thị thông báo và hỏi người dùng có muốn mở file hay không
+                    if (JOptionPane.showConfirmDialog(this, "Bạn muốn mở Excel không?", "Xuất Excel thành công", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+                        if (Desktop.isDesktopSupported()) {
+                            Desktop desktop = Desktop.getDesktop();
+                            if (fileToSave.exists()) {
+                                desktop.open(fileToSave);
+                            }
+                        }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    JOptionPane.showMessageDialog(this, "Có lỗi khi lưu file: " + e.getMessage());
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
         }
     }//GEN-LAST:event_btnXuatExcelActionPerformed
 

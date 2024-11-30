@@ -19,11 +19,13 @@ import javax.swing.table.DefaultTableModel;
  * @author NganTTK_PC09494
  */
 public class FormLoaiSanPham extends javax.swing.JFrame {
+
     DefaultTableModel model = new DefaultTableModel();
     Categories ctg = new Categories();
     List<Categories> list = new ArrayList<>();
     CategoriesDAO cateDao = new CategoriesDAO();
     int index = 0;
+
     /**
      * Creates new form FormLoaiSanPham
      */
@@ -41,7 +43,7 @@ public class FormLoaiSanPham extends javax.swing.JFrame {
         btnSua.setEnabled(false);
         setTableTitle();
         loadTable();
-        
+
     }
 
     /**
@@ -262,7 +264,6 @@ public class FormLoaiSanPham extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    
     public void loadTable() {
 
         model.setRowCount(0);
@@ -278,14 +279,16 @@ public class FormLoaiSanPham extends javax.swing.JFrame {
         }
         tblLoaiSanPham.setModel(model);
     }
-     public void setTableTitle() {
+
+    public void setTableTitle() {
         model.addColumn("Mã Số");
         model.addColumn("Tên Loại Sản Phẩm");
         model.addColumn("Trạng Thái");
 
         tblLoaiSanPham.setModel(model);
     }
-     void setModel(Categories model) {
+
+    void setModel(Categories model) {
 
         txtTenLoai.setText(String.valueOf(model.getName()));
         if (model.getActive()) {
@@ -295,14 +298,16 @@ public class FormLoaiSanPham extends javax.swing.JFrame {
         }
 
     }
-     public void clearForm() {
+
+    public void clearForm() {
         String t = "";
         txtTenLoai.setText(t);
 
         bgrHoatDong.clearSelection();
 
     }
-     public Categories getForm() {
+
+    public Categories getForm() {
 
 //       
         ctg.setName(txtTenLoai.getText());
@@ -310,7 +315,8 @@ public class FormLoaiSanPham extends javax.swing.JFrame {
 
         return ctg;
     }
-      public void insert() {
+
+    public void insert() {
         ctg = getForm();
         try {
 
@@ -323,7 +329,8 @@ public class FormLoaiSanPham extends javax.swing.JFrame {
         }
 
     }
-      public void update() {
+
+    public void update() {
         ctg = getForm();
         try {
             int ind = (Integer) tblLoaiSanPham.getValueAt(index, 0);
@@ -335,12 +342,13 @@ public class FormLoaiSanPham extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Cập nhật thất bại!");
         }
     }
-      public void delete() {
+
+    public void delete() {
 //       color = getFormColor();
         try {
             if (JOptionPane.showConfirmDialog(this, "Xóa", "Xác nhận xóa!", JOptionPane.YES_NO_OPTION) == 0) {
                 cateDao.delete(ctg.getId());
-              //  System.out.println(ctg.getId());
+                //  System.out.println(ctg.getId());
                 JOptionPane.showMessageDialog(this, "Xóa thành công!");
                 loadTable();
                 clearForm();
@@ -349,14 +357,14 @@ public class FormLoaiSanPham extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Xóa thất bại!");
         }
     }
-          
+
     private void txtTenLoaiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTenLoaiActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtTenLoaiActionPerformed
 
     private void btnThemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThemActionPerformed
         // TODO add your handling code here:
-        if(vaildate.checkLoaiSanPham(txtTenLoai)){
+        if (vaildate.checkLoaiSanPham(txtTenLoai)) {
             insert();
         }
     }//GEN-LAST:event_btnThemActionPerformed
@@ -372,7 +380,7 @@ public class FormLoaiSanPham extends javax.swing.JFrame {
 
     private void btnSuaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSuaActionPerformed
         // TODO add your handling code here:
-        if(vaildate.checkUpdateLoaiSanPham(txtTenLoai)){
+        if (vaildate.checkUpdateLoaiSanPham(txtTenLoai)) {
             update();
         }
     }//GEN-LAST:event_btnSuaActionPerformed
@@ -392,7 +400,8 @@ public class FormLoaiSanPham extends javax.swing.JFrame {
         btnSua.setEnabled(false);
         btnXoa.setEnabled(false);
     }//GEN-LAST:event_btnMoiActionPerformed
-XValidate vaildate = new XValidate();
+    XValidate vaildate = new XValidate();
+
     /**
      * @param args the command line arguments
      */

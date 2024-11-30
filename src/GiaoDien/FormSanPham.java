@@ -65,7 +65,7 @@ public class FormSanPham extends javax.swing.JFrame {
     List<Brand> listBrand = brandDao.selectAll();
     List<Product> listProduct = productDAO.selectAll();
 
-    public FormSanPham(){
+    public FormSanPham() {
         initComponents();
         Init();
     }
@@ -534,6 +534,7 @@ public class FormSanPham extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
   DecimalFormat df = new DecimalFormat("###,###");
+
     void fillComboBoxMauSac() {
         DefaultComboBoxModel modelColor = (DefaultComboBoxModel) cboMauSac.getModel();
         modelColor.removeAllElements();
@@ -625,7 +626,6 @@ public class FormSanPham extends javax.swing.JFrame {
                 productVariant.getImage()
 
             };
-            System.out.println(productVariant.getProductId());
             model.addRow(row);
 
         }
@@ -824,7 +824,7 @@ public class FormSanPham extends javax.swing.JFrame {
         try {
             Product pr = getFromPD();
             productDAO.insert(pr);
-            
+
             return true;
         } catch (Exception e) {
             return false;
@@ -853,11 +853,12 @@ public class FormSanPham extends javax.swing.JFrame {
         model.setRowCount(0);
         load();
     }
-    public void delete(){
-       
+
+    public void delete() {
+
         Product_Variant pv = getFromPV();
-        int confirm = JOptionPane.showConfirmDialog(this, "Bạn có chắc chắn Xóa Không","Xác Nhân",JOptionPane.YES_NO_OPTION);
-        if(confirm==0){
+        int confirm = JOptionPane.showConfirmDialog(this, "Bạn có chắc chắn Xóa Không", "Xác Nhân", JOptionPane.YES_NO_OPTION);
+        if (confirm == 0) {
             try {
                 int indexPv = (Integer) tblSanPham.getValueAt(index, 0);
                 productVariantDao.delete(indexPv);
@@ -942,18 +943,18 @@ public class FormSanPham extends javax.swing.JFrame {
     XValidate validate = new XValidate();
     private void btnThemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThemActionPerformed
         // TODO add your handling code here:
-        if(validate.checkTenSanPham(txtTenSanPham)
-         &&validate.checkGia(txtGia)){
-        insert();
+        if (validate.checkTenSanPham(txtTenSanPham)
+                && validate.checkGia(txtGia)) {
+            insert();
         }
     }//GEN-LAST:event_btnThemActionPerformed
 
     private void btnSuaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSuaActionPerformed
         // TODO add your handling code here:
 
-       if(validate.checkUpdateTenSanPham(txtTenSanPham)
-         &&validate.checkGia(txtGia)){
-        update();
+        if (validate.checkUpdateTenSanPham(txtTenSanPham)
+                && validate.checkGia(txtGia)) {
+            update();
         }
     }//GEN-LAST:event_btnSuaActionPerformed
 
@@ -987,74 +988,84 @@ public class FormSanPham extends javax.swing.JFrame {
 
     private void btnXuatExcelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXuatExcelActionPerformed
         // TODO add your handling code here:
-         try {
+        try {
 //         
             XSSFWorkbook workbook = new XSSFWorkbook();
             XSSFSheet worksheet = workbook.createSheet("Chuyên đề");
             XSSFRow row = null;
             XSSFCell cell = null;
             row = worksheet.createRow(0); //Tạo hàng thứ 1
-            row.setHeight((short)500); //Cài đặt chiều cao
+            row.setHeight((short) 500); //Cài đặt chiều cao
             cell = row.createCell(0, CellType.STRING);
             cell.setCellValue("Danh sách sản phẩm");
-            
-            row = worksheet.createRow(1);     
+
+            row = worksheet.createRow(1);
             cell = row.createCell(0, CellType.STRING);
             cell.setCellValue("STT");
-            
+
             cell = row.createCell(1, CellType.STRING);
             cell.setCellValue("Tên Sản Phẩm");
-            
-            
+
             cell = row.createCell(2, CellType.STRING);
             cell.setCellValue("Màu Sắc");
-            
+
             cell = row.createCell(3, CellType.STRING);
             cell.setCellValue("Kích Thước");
-            
+
             cell = row.createCell(4, CellType.STRING);
             cell.setCellValue("Loại Sản Phẩm");
-            
+
             cell = row.createCell(5, CellType.STRING);
             cell.setCellValue("Thương Hiệu");
-           
-            cell = row.createCell(6, CellType.STRING);
-            cell.setCellValue("Giá");
             
+            cell = row.createCell(6, CellType.STRING);
+            cell.setCellValue("Số Lượng");
+
             cell = row.createCell(7, CellType.STRING);
-            cell.setCellValue("Trạng Thái");
+            cell.setCellValue("Giá");
+
             cell = row.createCell(8, CellType.STRING);
+            cell.setCellValue("Trạng Thái");
+            
+            cell = row.createCell(9, CellType.STRING);
             cell.setCellValue("Mã Code");
-           List<Product_Variant> list = productVariantDao.selectAll();
-int i = 2; // Khởi tạo giá trị i
-for (int j = 0; j < list.size(); j++) {
-    Product_Variant cd = list.get(j);
+            List<Product_Variant> list = productVariantDao.selectAll();
+            int i = 2; // Khởi tạo giá trị i
+            for (int j = 0; j < list.size(); j++) {
+                Product_Variant cd = list.get(j);
                 row = worksheet.createRow(i); // Tạo hàng thứ  nhất
                 //Tạo STT
                 cell = row.createCell(0, CellType.NUMERIC);
-                
-                cell.setCellValue(i-1);
+
+                cell.setCellValue(i - 1);
                 //Tạo mã chuyên đề
                 cell = row.createCell(1, CellType.STRING);
                 cell.setCellValue(tblSanPham.getValueAt(j, 1).toString());
                 //Tạo tên chuyên đề
                 cell = row.createCell(2, CellType.NUMERIC);
                 cell.setCellValue(tblSanPham.getValueAt(j, 2).toString());
+                
                 cell = row.createCell(3, CellType.STRING);
                 cell.setCellValue(tblSanPham.getValueAt(j, 3).toString());
+                
                 cell = row.createCell(4, CellType.STRING);
                 cell.setCellValue(tblSanPham.getValueAt(j, 4).toString());
+                
                 cell = row.createCell(5, CellType.STRING);
                 cell.setCellValue(tblSanPham.getValueAt(j, 5).toString());
+                
                 cell = row.createCell(6, CellType.STRING);
-              
-                cell.setCellValue(tblSanPham.getValueAt(j, 7).toString());
-                cell = row.createCell(7, CellType.STRING);
-              
+                cell.setCellValue(Integer.parseInt(tblSanPham.getValueAt(j, 6).toString().replaceAll(",", "")));
+                
+                cell = row.createCell(7, CellType.NUMERIC);
+                cell.setCellValue(Integer.parseInt(tblSanPham.getValueAt(j, 7).toString().replaceAll(",", "")));
+                
+               cell = row.createCell(8, CellType.STRING);
                 cell.setCellValue(tblSanPham.getValueAt(j, 9).toString());
-                cell = row.createCell(8, CellType.STRING);
+                
+                cell = row.createCell(9, CellType.STRING);
                 cell.setCellValue(tblSanPham.getValueAt(j, 10).toString());
-               
+
                 i++;
             }
             JFileChooser fileChooser = new JFileChooser();
@@ -1125,7 +1136,7 @@ for (int j = 0; j < list.size(); j++) {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                    new FormSanPham().setVisible(true);            
+                new FormSanPham().setVisible(true);
             }
         });
     }

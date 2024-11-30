@@ -18,6 +18,8 @@ import com.sales.Entity.Product;
 import com.sales.Entity.Product_Variant;
 import com.sales.Entity.Size;
 import com.sales.Entity.User;
+import com.toedter.calendar.JDateChooser;
+import java.util.Date;
 import java.util.List;
 import javax.swing.ButtonGroup;
 import javax.swing.JCheckBox;
@@ -377,6 +379,25 @@ public class XValidate {
             return false;
         }
        
+        return true;
+    }
+    
+    public static boolean checkThoiGianTimKiem(JDateChooser tuNgay, JDateChooser denNgay){
+        Date to = tuNgay.getDate();
+        Date from = denNgay.getDate();
+        if(to.after(from)){
+            JOptionPane.showMessageDialog(tuNgay.getRootPane(), "Vui lòng nhập ngày kết thúc sau ngày bắt đầu!");
+            return false;
+        }
+        return true;
+    }
+    
+    public static boolean checkBoTrongNgayTimKiem(JDateChooser day, String message){
+        Date ngay = day.getDate();
+        if(ngay==null){
+            JOptionPane.showMessageDialog(day.getRootPane(), message);
+            return false;
+        }
         return true;
     }
 }

@@ -7,6 +7,7 @@ package GiaoDien;
 import com.sales.Utils.DateHelper;
 import com.sales.Utils.JdbcHelper;
 import com.sales.Utils.XImage;
+import com.sales.Utils.XValidate;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -24,6 +25,8 @@ public class FormTongHopThongKeKeKeKe extends javax.swing.JFrame {
 
     List<Object[]> listThongKeSanPham = new ArrayList<>();
     List<Object[]> listThongKeTonKho = new ArrayList<>();
+    List<Object[]> listThongKeKhachHang = new ArrayList<>();
+    List<Object[]> listThongKeNhanVien = new ArrayList<>();
 
     /**
      * Creates new form FormTongHopThongKe
@@ -42,6 +45,16 @@ public class FormTongHopThongKeKeKeKe extends javax.swing.JFrame {
         chkThongKeSanPhamGiam.setSelected(true);
         chkTonKhoTang.setSelected(true);
         thongKeTonKho();
+        chkThongKeKhachHangGiam.setSelected(true);
+        thongKeKhachHang("1999-02-02", DateHelper.toString(new Date(), "yyyy-MM-dd"));
+        chkNhanVienGiam.setSelected(true);
+        thongKeNhanVien("2000-01-01", DateHelper.toString(new Date(), "yyyy-MM-dd"));
+        dateChooserDenSanPham.getDateEditor().getUiComponent().setFocusable(false);
+        dateChooserTuSanPham.getDateEditor().getUiComponent().setFocusable(false);
+        dateChooserTuNhanVien.getDateEditor().getUiComponent().setFocusable(false);
+        dateChooserDenNhanVien.getDateEditor().getUiComponent().setFocusable(false);
+        dateChooserTuKhachHang.getDateEditor().getUiComponent().setFocusable(false);
+        dateChooserDenKhachHang.getDateEditor().getUiComponent().setFocusable(false);
     }
 
     public void sapXepThongKeSanPham() {
@@ -89,6 +102,9 @@ public class FormTongHopThongKeKeKeKe extends javax.swing.JFrame {
                 double donGia = rs.getDouble("DonGia");
                 model.addRow(new Object[]{tenSanPham, bienTheSanPham, soLuongBan, donGia, soLuongBan * donGia});
                 listThongKeSanPham.add(new Object[]{tenSanPham, bienTheSanPham, soLuongBan, donGia, soLuongBan * donGia});
+            }
+            if (chkThongKeSanPhamTang.isSelected()) {
+                sapXepThongKeSanPham();
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -145,6 +161,70 @@ public class FormTongHopThongKeKeKeKe extends javax.swing.JFrame {
         }
     }
 
+    public void thongKeKhachHang(String to, String from) {
+        String sql = "{CALL SP_ThongKeKhachHangThanThietTuNgayDenNgay(?, ?)}";
+        DefaultTableModel model = (DefaultTableModel) tblThongKeKhachHang.getModel();
+        model.setRowCount(0);
+        listThongKeKhachHang.clear();
+        try {
+            ResultSet rs = JdbcHelper.query(sql, to, from);
+            while (rs.next()) {
+                String tenKhachHang = rs.getString("TenKhachHang");
+                String gioiTinh = rs.getString("GioiTinh");
+                int soLuongDonHang = rs.getInt("SoLuongDonHangDaMua");
+                int soLuongSanPham = rs.getInt("SoLuongSanPhamDaMua");
+                double tongTien = rs.getDouble("TongTien");
+                model.addRow(new Object[]{tenKhachHang, gioiTinh, soLuongDonHang, soLuongSanPham, tongTien});
+                listThongKeKhachHang.add(new Object[]{tenKhachHang, gioiTinh, soLuongDonHang, soLuongSanPham, tongTien});
+            }
+            if (chkThongKeKhachHangTang.isSelected()) {
+                sapXepThongKeKhachHang();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void sapXepThongKeKhachHang() {
+        DefaultTableModel model = (DefaultTableModel) tblThongKeKhachHang.getModel();
+        model.setRowCount(0);
+        Collections.reverse(listThongKeKhachHang);
+        for (Object[] objects : listThongKeKhachHang) {
+            model.addRow(new Object[]{objects[0], objects[1], objects[2], objects[3], objects[4]});
+        }
+    }
+
+    public void thongKeNhanVien(String to, String from) {
+        String sql = "{CALL ThongKeNhanVien(?, ?)}";
+        DefaultTableModel model = (DefaultTableModel) tblNhanVien.getModel();
+        model.setRowCount(0);
+        listThongKeNhanVien.clear();
+        try {
+            ResultSet rs = JdbcHelper.query(sql, to, from);
+            while (rs.next()) {
+                int id = rs.getInt("ID");
+                String tenNhanVien = rs.getString("TEN_NHAN_VIEN");
+                int soLuongHoaDon = rs.getInt("SO_LUONG_HOA_DON");
+                int tongTien = rs.getInt("TONG_TIEN");
+                model.addRow(new Object[]{id, tenNhanVien, soLuongHoaDon, tongTien});
+                listThongKeNhanVien.add(new Object[]{id, tenNhanVien, soLuongHoaDon, tongTien});
+            }
+            if (chkNhanVienTang.isSelected()) {
+                sapXepNhanVien();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    public void sapXepNhanVien(){
+        DefaultTableModel model = (DefaultTableModel) tblNhanVien.getModel();
+        model.setRowCount(0);
+        Collections.reverse(listThongKeNhanVien);
+        for(Object[] objects:listThongKeNhanVien){
+            model.addRow(new Object[]{objects[0], objects[1], objects[2], objects[3]});
+        }
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -156,6 +236,8 @@ public class FormTongHopThongKeKeKeKe extends javax.swing.JFrame {
 
         bgrThongKeSanPham = new javax.swing.ButtonGroup();
         bgrThongKeTonKho = new javax.swing.ButtonGroup();
+        bgrThongKeKhachHang = new javax.swing.ButtonGroup();
+        bgrNhanVien = new javax.swing.ButtonGroup();
         jPanel2 = new javax.swing.JPanel();
         jTabbedPane1 = new javax.swing.JTabbedPane();
         pnlThongKeSanPham = new javax.swing.JPanel();
@@ -171,8 +253,26 @@ public class FormTongHopThongKeKeKeKe extends javax.swing.JFrame {
         chkThongKeSanPhamGiam = new javax.swing.JCheckBox();
         pnlThongKeKhachHang = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tblThongKeKhachHang = new javax.swing.JTable();
+        jLabel5 = new javax.swing.JLabel();
+        dateChooserTuKhachHang = new com.toedter.calendar.JDateChooser();
+        jLabel6 = new javax.swing.JLabel();
+        dateChooserDenKhachHang = new com.toedter.calendar.JDateChooser();
+        btnTimKiemKhachHang = new javax.swing.JButton();
+        chkThongKeKhachHangTang = new javax.swing.JCheckBox();
+        jLabel7 = new javax.swing.JLabel();
+        chkThongKeKhachHangGiam = new javax.swing.JCheckBox();
         pnlThongKeDoanhThu = new javax.swing.JPanel();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        tblNhanVien = new javax.swing.JTable();
+        jLabel8 = new javax.swing.JLabel();
+        btnTimKiemNhanVien = new javax.swing.JButton();
+        dateChooserDenNhanVien = new com.toedter.calendar.JDateChooser();
+        jLabel9 = new javax.swing.JLabel();
+        dateChooserTuNhanVien = new com.toedter.calendar.JDateChooser();
+        jLabel10 = new javax.swing.JLabel();
+        chkNhanVienTang = new javax.swing.JCheckBox();
+        chkNhanVienGiam = new javax.swing.JCheckBox();
         pnlThongKeTonKho = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         tblThongKeTonKho = new javax.swing.JTable();
@@ -192,6 +292,7 @@ public class FormTongHopThongKeKeKeKe extends javax.swing.JFrame {
         pnlThongKeSanPham.setBackground(new java.awt.Color(255, 255, 255));
 
         dateChooserTuSanPham.setDateFormatString("dd-MM-yyyy");
+        dateChooserTuSanPham.setFocusCycleRoot(true);
 
         dateChooserDenSanPham.setDateFormatString("dd-MM-yyyy");
 
@@ -236,6 +337,11 @@ public class FormTongHopThongKeKeKeKe extends javax.swing.JFrame {
 
         bgrThongKeSanPham.add(chkThongKeSanPhamGiam);
         chkThongKeSanPhamGiam.setText("Giảm");
+        chkThongKeSanPhamGiam.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                chkThongKeSanPhamGiamItemStateChanged(evt);
+            }
+        });
         chkThongKeSanPhamGiam.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 chkThongKeSanPhamGiamActionPerformed(evt);
@@ -294,18 +400,46 @@ public class FormTongHopThongKeKeKeKe extends javax.swing.JFrame {
 
         pnlThongKeKhachHang.setBackground(new java.awt.Color(255, 255, 255));
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tblThongKeKhachHang.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "Tên khách hàng", "Giới tính", "Số lượng đơn hàng đã mua", "Số lượng sản phẩm đã mua", "Tổng tiền"
             }
         ));
-        jScrollPane3.setViewportView(jTable1);
+        jScrollPane3.setViewportView(tblThongKeKhachHang);
+
+        jLabel5.setText("Từ");
+
+        dateChooserTuKhachHang.setDateFormatString("dd-MM-yyyy");
+
+        jLabel6.setText("Đến");
+
+        dateChooserDenKhachHang.setDateFormatString("dd-MM-yyyy");
+
+        btnTimKiemKhachHang.setText("Tìm kiếm");
+        btnTimKiemKhachHang.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnTimKiemKhachHangActionPerformed(evt);
+            }
+        });
+
+        bgrThongKeKhachHang.add(chkThongKeKhachHangTang);
+        chkThongKeKhachHangTang.setText("Tăng");
+        chkThongKeKhachHangTang.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                chkThongKeKhachHangTangItemStateChanged(evt);
+            }
+        });
+
+        jLabel7.setText("Sắp xếp tổng tiền");
+
+        bgrThongKeKhachHang.add(chkThongKeKhachHangGiam);
+        chkThongKeKhachHangGiam.setText("Giảm");
 
         javax.swing.GroupLayout pnlThongKeKhachHangLayout = new javax.swing.GroupLayout(pnlThongKeKhachHang);
         pnlThongKeKhachHang.setLayout(pnlThongKeKhachHangLayout);
@@ -313,14 +447,46 @@ public class FormTongHopThongKeKeKeKe extends javax.swing.JFrame {
             pnlThongKeKhachHangLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlThongKeKhachHangLayout.createSequentialGroup()
                 .addGap(17, 17, 17)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 1053, Short.MAX_VALUE)
-                .addContainerGap())
+                .addGroup(pnlThongKeKhachHangLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pnlThongKeKhachHangLayout.createSequentialGroup()
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 1053, Short.MAX_VALUE)
+                        .addContainerGap())
+                    .addGroup(pnlThongKeKhachHangLayout.createSequentialGroup()
+                        .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(dateChooserTuKhachHang, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(36, 36, 36)
+                        .addComponent(jLabel6)
+                        .addGap(18, 18, 18)
+                        .addComponent(dateChooserDenKhachHang, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnTimKiemKhachHang)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel7)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(chkThongKeKhachHangTang)
+                        .addGap(18, 18, 18)
+                        .addComponent(chkThongKeKhachHangGiam)
+                        .addGap(84, 84, 84))))
         );
         pnlThongKeKhachHangLayout.setVerticalGroup(
             pnlThongKeKhachHangLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlThongKeKhachHangLayout.createSequentialGroup()
-                .addContainerGap(143, Short.MAX_VALUE)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 381, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(64, Short.MAX_VALUE)
+                .addGroup(pnlThongKeKhachHangLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlThongKeKhachHangLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(pnlThongKeKhachHangLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(dateChooserDenKhachHang, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(dateChooserTuKhachHang, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(btnTimKiemKhachHang, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlThongKeKhachHangLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(chkThongKeKhachHangTang)
+                        .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(chkThongKeKhachHangGiam)))
+                .addGap(32, 32, 32)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 396, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(16, 16, 16))
         );
 
@@ -328,18 +494,101 @@ public class FormTongHopThongKeKeKeKe extends javax.swing.JFrame {
 
         pnlThongKeDoanhThu.setBackground(new java.awt.Color(255, 255, 255));
 
+        tblNhanVien.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "ID", "Tên nhân viên", "Số lượng hóa đơn đã bán", "Tổng tiền"
+            }
+        ));
+        jScrollPane4.setViewportView(tblNhanVien);
+
+        jLabel8.setText("Sắp xếp theo tổng tiền");
+
+        btnTimKiemNhanVien.setText("Tìm kiếm");
+        btnTimKiemNhanVien.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnTimKiemNhanVienActionPerformed(evt);
+            }
+        });
+
+        dateChooserDenNhanVien.setDateFormatString("dd-MM-yyyy");
+
+        jLabel9.setText("Đến");
+
+        dateChooserTuNhanVien.setDateFormatString("dd-MM-yyyy");
+
+        jLabel10.setText("Từ");
+
+        bgrNhanVien.add(chkNhanVienTang);
+        chkNhanVienTang.setText("Tăng");
+        chkNhanVienTang.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                chkNhanVienTangItemStateChanged(evt);
+            }
+        });
+        chkNhanVienTang.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                chkNhanVienTangActionPerformed(evt);
+            }
+        });
+
+        bgrNhanVien.add(chkNhanVienGiam);
+        chkNhanVienGiam.setText("Giảm");
+
         javax.swing.GroupLayout pnlThongKeDoanhThuLayout = new javax.swing.GroupLayout(pnlThongKeDoanhThu);
         pnlThongKeDoanhThu.setLayout(pnlThongKeDoanhThuLayout);
         pnlThongKeDoanhThuLayout.setHorizontalGroup(
             pnlThongKeDoanhThuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1076, Short.MAX_VALUE)
+            .addGroup(pnlThongKeDoanhThuLayout.createSequentialGroup()
+                .addGap(14, 14, 14)
+                .addGroup(pnlThongKeDoanhThuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pnlThongKeDoanhThuLayout.createSequentialGroup()
+                        .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 1047, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(15, Short.MAX_VALUE))
+                    .addGroup(pnlThongKeDoanhThuLayout.createSequentialGroup()
+                        .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(dateChooserTuNhanVien, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(36, 36, 36)
+                        .addComponent(jLabel9)
+                        .addGap(18, 18, 18)
+                        .addComponent(dateChooserDenNhanVien, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnTimKiemNhanVien)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel8)
+                        .addGap(18, 18, 18)
+                        .addComponent(chkNhanVienTang, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(chkNhanVienGiam, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(35, 35, 35))))
         );
         pnlThongKeDoanhThuLayout.setVerticalGroup(
             pnlThongKeDoanhThuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 540, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlThongKeDoanhThuLayout.createSequentialGroup()
+                .addContainerGap(64, Short.MAX_VALUE)
+                .addGroup(pnlThongKeDoanhThuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pnlThongKeDoanhThuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(dateChooserDenNhanVien, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(dateChooserTuNhanVien, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlThongKeDoanhThuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(btnTimKiemNhanVien, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(chkNhanVienTang)
+                        .addComponent(chkNhanVienGiam)))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 407, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18))
         );
 
-        jTabbedPane1.addTab("Thống kê doanh thu", pnlThongKeDoanhThu);
+        jTabbedPane1.addTab("Thống kê nhân viên", pnlThongKeDoanhThu);
 
         pnlThongKeTonKho.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -456,11 +705,13 @@ public class FormTongHopThongKeKeKeKe extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         Date dateTo = dateChooserTuSanPham.getDate();
         Date dateFrom = dateChooserDenSanPham.getDate();
-        if (dateTo.after(dateFrom)) {
-            JOptionPane.showMessageDialog(this, "Vui lòng nhập ngày ");
-        } else {
+        if(XValidate.checkBoTrongNgayTimKiem(dateChooserTuSanPham, "Vui lòng nhập ngày bắt đầu tìm kiếm!")
+                &&XValidate.checkBoTrongNgayTimKiem(dateChooserDenSanPham, "Vui lòng nhập ngày kết thúc!")
+                &&XValidate.checkThoiGianTimKiem(dateChooserTuSanPham, dateChooserDenSanPham))
+        {
             thongKeSanPham(DateHelper.toString(dateTo, "yyyy-MM-dd"), DateHelper.toString(dateFrom, "yyyy-MM-dd"));
         }
+        
 
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -471,18 +722,27 @@ public class FormTongHopThongKeKeKeKe extends javax.swing.JFrame {
 
     private void chkTonKhoTangItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_chkTonKhoTangItemStateChanged
         if (txtTimKiemThongKeTonKho.getText().trim().equals("")) {
-            timKiemTonKho();
+            thongKeTonKho();
         } else {
-            sapXepThongKeSanPham();
+            thongKeTonKho();
+            timKiemTonKho();
+
         }
     }//GEN-LAST:event_chkTonKhoTangItemStateChanged
 
     private void chkTonKhoGiamItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_chkTonKhoGiamItemStateChanged
-        thongKeTonKho();
+        if (txtTimKiemThongKeTonKho.getText().trim().equals("")) {
+            thongKeTonKho();
+        } else {
+            thongKeTonKho();
+            timKiemTonKho();
+
+        }
+
     }//GEN-LAST:event_chkTonKhoGiamItemStateChanged
 
     private void btnTimKiemTonKhoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTimKiemTonKhoActionPerformed
-             timKiemTonKho();
+        timKiemTonKho();
     }//GEN-LAST:event_btnTimKiemTonKhoActionPerformed
 
     private void txtTimKiemThongKeTonKhoKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtTimKiemThongKeTonKhoKeyReleased
@@ -490,6 +750,44 @@ public class FormTongHopThongKeKeKeKe extends javax.swing.JFrame {
             thongKeTonKho();
         }
     }//GEN-LAST:event_txtTimKiemThongKeTonKhoKeyReleased
+
+    private void chkThongKeSanPhamGiamItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_chkThongKeSanPhamGiamItemStateChanged
+        // TODO add your handling code here:
+    }//GEN-LAST:event_chkThongKeSanPhamGiamItemStateChanged
+
+    private void btnTimKiemKhachHangActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTimKiemKhachHangActionPerformed
+        Date to = dateChooserTuKhachHang.getDate();
+        Date from = dateChooserDenKhachHang.getDate();
+         if(XValidate.checkBoTrongNgayTimKiem(dateChooserTuKhachHang, "Vui lòng nhập ngày bắt đầu tìm kiếm!")
+                &&XValidate.checkBoTrongNgayTimKiem(dateChooserDenKhachHang, "Vui lòng nhập ngày kết thúc!")
+                &&XValidate.checkThoiGianTimKiem(dateChooserTuKhachHang, dateChooserDenKhachHang))
+        {
+            thongKeKhachHang(DateHelper.toString(to, "yyyy-MM-dd"), DateHelper.toString(from, "yyyy-MM-dd"));
+        }
+    }//GEN-LAST:event_btnTimKiemKhachHangActionPerformed
+
+    private void chkThongKeKhachHangTangItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_chkThongKeKhachHangTangItemStateChanged
+        sapXepThongKeKhachHang();
+    }//GEN-LAST:event_chkThongKeKhachHangTangItemStateChanged
+
+    private void btnTimKiemNhanVienActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTimKiemNhanVienActionPerformed
+        Date to = dateChooserTuNhanVien.getDate();
+        Date from = dateChooserDenNhanVien.getDate();
+         if(XValidate.checkBoTrongNgayTimKiem(dateChooserTuNhanVien, "Vui lòng nhập ngày bắt đầu tìm kiếm!")
+                &&XValidate.checkBoTrongNgayTimKiem(dateChooserDenNhanVien, "Vui lòng nhập ngày kết thúc!")
+                &&XValidate.checkThoiGianTimKiem(dateChooserTuNhanVien, dateChooserDenNhanVien))
+        {
+            thongKeNhanVien(DateHelper.toString(to, "yyyy-MM-dd"), DateHelper.toString(from, "yyyy-MM-dd"));
+        }
+    }//GEN-LAST:event_btnTimKiemNhanVienActionPerformed
+
+    private void chkNhanVienTangActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkNhanVienTangActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_chkNhanVienTangActionPerformed
+
+    private void chkNhanVienTangItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_chkNhanVienTangItemStateChanged
+        sapXepNhanVien();
+    }//GEN-LAST:event_chkNhanVienTangItemStateChanged
 
     /**
      * @param args the command line arguments
@@ -530,30 +828,50 @@ public class FormTongHopThongKeKeKeKe extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.ButtonGroup bgrNhanVien;
+    private javax.swing.ButtonGroup bgrThongKeKhachHang;
     private javax.swing.ButtonGroup bgrThongKeSanPham;
     private javax.swing.ButtonGroup bgrThongKeTonKho;
+    private javax.swing.JButton btnTimKiemKhachHang;
+    private javax.swing.JButton btnTimKiemNhanVien;
     private javax.swing.JButton btnTimKiemTonKho;
+    private javax.swing.JCheckBox chkNhanVienGiam;
+    private javax.swing.JCheckBox chkNhanVienTang;
+    private javax.swing.JCheckBox chkThongKeKhachHangGiam;
+    private javax.swing.JCheckBox chkThongKeKhachHangTang;
     private javax.swing.JCheckBox chkThongKeSanPhamGiam;
     private javax.swing.JCheckBox chkThongKeSanPhamTang;
     private javax.swing.JCheckBox chkTonKhoGiam;
     private javax.swing.JCheckBox chkTonKhoTang;
+    private com.toedter.calendar.JDateChooser dateChooserDenKhachHang;
+    private com.toedter.calendar.JDateChooser dateChooserDenNhanVien;
     private com.toedter.calendar.JDateChooser dateChooserDenSanPham;
+    private com.toedter.calendar.JDateChooser dateChooserTuKhachHang;
+    private com.toedter.calendar.JDateChooser dateChooserTuNhanVien;
     private com.toedter.calendar.JDateChooser dateChooserTuSanPham;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JTable jTable1;
     private javax.swing.JPanel pnlThongKeDoanhThu;
     private javax.swing.JPanel pnlThongKeKhachHang;
     private javax.swing.JPanel pnlThongKeSanPham;
     private javax.swing.JPanel pnlThongKeTonKho;
+    private javax.swing.JTable tblNhanVien;
+    private javax.swing.JTable tblThongKeKhachHang;
     private javax.swing.JTable tblThongKeSanPham;
     private javax.swing.JTable tblThongKeTonKho;
     private javax.swing.JTextField txtTimKiemThongKeTonKho;

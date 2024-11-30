@@ -279,7 +279,7 @@ public class FormDoiMatKhau extends javax.swing.JFrame {
             new FormDangNhap().setVisible(true);
             dispose();
         }else{
-            this.setVisible(false);
+            dispose();
             new FormManHinhChinh().setVisible(true);
         }
     }//GEN-LAST:event_btnThoatActionPerformed

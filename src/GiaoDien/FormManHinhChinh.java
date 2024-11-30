@@ -55,6 +55,9 @@ public class FormManHinhChinh extends javax.swing.JFrame {
             for (MouseListener ml : lblThongKe.getMouseListeners()) {
                 lblThongKe.removeMouseListener(ml);
             }
+            for (MouseListener ml : lblHoaDon.getMouseListeners()) {
+                lblHoaDon.removeMouseListener(ml);
+            }
         } else {
             BieuDo();
         }

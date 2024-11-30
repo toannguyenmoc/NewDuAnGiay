@@ -22,6 +22,7 @@ import com.sales.Utils.XValidate;
 import java.awt.Desktop;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.text.DecimalFormat;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.DefaultComboBoxModel;
@@ -532,7 +533,8 @@ public class FormSanPham extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-  void fillComboBoxMauSac() {
+  DecimalFormat df = new DecimalFormat("###,###");
+    void fillComboBoxMauSac() {
         DefaultComboBoxModel modelColor = (DefaultComboBoxModel) cboMauSac.getModel();
         modelColor.removeAllElements();
         try {
@@ -616,7 +618,7 @@ public class FormSanPham extends javax.swing.JFrame {
                 CategoriesName(productVariant.getProductId()),
                 BrandName(productVariant.getProductId()),
                 productVariant.getQuantity(),
-                productVariant.getPrice(),
+                df.format(productVariant.getPrice()),
                 ProductMoTa(productVariant.getProductId()),
                 productVariant.getActive() ? cknHoatDongKichThuoc.getText() : cknNgungHoatDongKickThuoc.getText(),
                 productVariant.getCode(),
@@ -766,7 +768,7 @@ public class FormSanPham extends javax.swing.JFrame {
         cboLoaiSanPham.setSelectedItem((String) tblSanPham.getValueAt(index, 4));
         cboThuongHieu.setSelectedItem((String) tblSanPham.getValueAt(index, 5));
         spinnerSoLuong.setValue(tblSanPham.getValueAt(index, 6));
-        txtGia.setText((String) tblSanPham.getValueAt(index, 7).toString());
+        txtGia.setText((String) tblSanPham.getValueAt(index, 7).toString().replaceAll(",", ""));
         txtMoTa.setText((String) tblSanPham.getValueAt(index, 8).toString());
 
         boolean kt = tblSanPham.getValueAt(index, 9).toString() == cknHoatDongKichThuoc.getText() ? true : false;
@@ -794,7 +796,7 @@ public class FormSanPham extends javax.swing.JFrame {
         prova.setColorId(ColorID());
         prova.setSizeId(SizeID());
         prova.setProductId(ProductID());
-        prova.setPrice(Integer.parseInt(txtGia.getText()));
+        prova.setPrice(Integer.parseInt(txtGia.getText().replaceAll(",", "")));
         prova.setQuantity((Integer) spinnerSoLuong.getValue());
         prova.setImage(lblHinhAnh.getToolTipText());
         prova.setCode(txtMaCode.getText());

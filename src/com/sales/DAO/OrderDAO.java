@@ -21,7 +21,7 @@ import java.util.logging.Logger;
 public class OrderDAO extends SaleDAO<Order, Integer> {
 
     String INSERT_SQL = "INSERT INTO ORDERS(USER_ID, CUSTOMER_ID, CREATE_DATE, TOTAL, STATUS) VALUES (?, ?, ?, ?, ?)";
-    String UPDATE_SQL = "UPDATE ORDERS SET STATUS = ? WHERE ID = ?";
+    String UPDATE_SQL = "UPDATE ORDERS SET  USER_ID = ?, CUSTOMER_ID = ?, CREATE_DATE = ?, TOTAL = ?, STATUS = ? WHERE ID = ?";
     String DELETE_SQL = "DELETE FROM ORDERS WHERE ID = ?";
     String SELECTALL_SQL = "SELECT * FROM ORDERS";
     String SELECTBYID_SQL = "SELECT * FROM ORDERS WHERE ID = ?";
@@ -45,11 +45,15 @@ public class OrderDAO extends SaleDAO<Order, Integer> {
     @Override
     public void update(Order entity) {
         JdbcHelper.update(UPDATE_SQL,
+                entity.getUserId(),
+                entity.getCustomersId(),
+                entity.getCreateDate(),
+                entity.getTotal(),
                 entity.getStatus(),
                 entity.getId());
     }
 
-    
+     
 
     @Override
     public List<Order> selectAll() {

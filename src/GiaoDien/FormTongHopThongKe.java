@@ -8,14 +8,25 @@ import com.sales.Utils.DateHelper;
 import com.sales.Utils.JdbcHelper;
 import com.sales.Utils.XImage;
 import com.sales.Utils.XValidate;
+import java.awt.Desktop;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.sql.ResultSet;
+import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
 import javax.swing.table.DefaultTableModel;
+import org.apache.poi.ss.usermodel.CellType;
+import org.apache.poi.xssf.usermodel.XSSFCell;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 /**
  *
@@ -27,7 +38,8 @@ public class FormTongHopThongKe extends javax.swing.JFrame {
     List<Object[]> listThongKeTonKho = new ArrayList<>();
     List<Object[]> listThongKeKhachHang = new ArrayList<>();
     List<Object[]> listThongKeNhanVien = new ArrayList<>();
-
+    DecimalFormat df = new DecimalFormat("###,###");
+    SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
     /**
      * Creates new form FormTongHopThongKe
      */
@@ -41,14 +53,14 @@ public class FormTongHopThongKe extends javax.swing.JFrame {
         setIconImage(XImage.XImage());
         setTitle("PHẦN MỀM QUẢN LÝ GIÀY THỂ THAO");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        thongKeSanPham("1999-02-02", DateHelper.toString(new Date(), "yyyy-MM-dd"));
+        thongKeSanPham("1999-02-02", formatter.format(new Date()));
         chkThongKeSanPhamGiam.setSelected(true);
         chkTonKhoTang.setSelected(true);
         thongKeTonKho();
         chkThongKeKhachHangGiam.setSelected(true);
-        thongKeKhachHang("1999-02-02", DateHelper.toString(new Date(), "yyyy-MM-dd"));
+        thongKeKhachHang("1999-02-02", formatter.format(new Date()));
         chkNhanVienGiam.setSelected(true);
-        thongKeNhanVien("2000-01-01", DateHelper.toString(new Date(), "yyyy-MM-dd"));
+        thongKeNhanVien("2000-01-01", formatter.format(new Date()));
         dateChooserDenSanPham.getDateEditor().getUiComponent().setFocusable(false);
         dateChooserTuSanPham.getDateEditor().getUiComponent().setFocusable(false);
         dateChooserTuNhanVien.getDateEditor().getUiComponent().setFocusable(false);
@@ -63,22 +75,12 @@ public class FormTongHopThongKe extends javax.swing.JFrame {
         if (chkThongKeSanPhamTang.isSelected()) {
             Collections.reverse(listThongKeSanPham);
             for (Object[] row : listThongKeSanPham) {
-                String tenSanPham = (String) row[0];
-                String bienTheSanPham = (String) row[1];
-                int soLuongBan = (Integer) row[2];
-                double donGia = (Double) row[3];
-                double doanhThu = (Double) row[4];
-                model.addRow(new Object[]{tenSanPham, bienTheSanPham, soLuongBan, donGia, doanhThu});
+                model.addRow(new Object[]{row[0], row[1], row[2], row[3], row[4]});
             }
         } else {
             Collections.reverse(listThongKeSanPham);
             for (Object[] row : listThongKeSanPham) {
-                String tenSanPham = (String) row[0];
-                String bienTheSanPham = (String) row[1];
-                int soLuongBan = (Integer) row[2];
-                double donGia = (Double) row[3];
-                double doanhThu = (Double) row[4];
-                model.addRow(new Object[]{tenSanPham, bienTheSanPham, soLuongBan, donGia, doanhThu});
+                model.addRow(new Object[]{row[0], row[1], row[2], row[3], row[4]});
             }
         }
 
@@ -100,8 +102,8 @@ public class FormTongHopThongKe extends javax.swing.JFrame {
                 String bienTheSanPham = rs.getString("BienTheSanPham");
                 int soLuongBan = rs.getInt("SoLuongBan");
                 double donGia = rs.getDouble("DonGia");
-                model.addRow(new Object[]{tenSanPham, bienTheSanPham, soLuongBan, donGia, soLuongBan * donGia});
-                listThongKeSanPham.add(new Object[]{tenSanPham, bienTheSanPham, soLuongBan, donGia, soLuongBan * donGia});
+                model.addRow(new Object[]{tenSanPham, bienTheSanPham, soLuongBan, df.format(donGia), df.format(soLuongBan * donGia)});
+                listThongKeSanPham.add(new Object[]{tenSanPham, bienTheSanPham, soLuongBan, df.format(donGia), df.format(soLuongBan * donGia)});
             }
             if (chkThongKeSanPhamTang.isSelected()) {
                 sapXepThongKeSanPham();
@@ -129,8 +131,8 @@ public class FormTongHopThongKe extends javax.swing.JFrame {
                 String bienTheSanPham = rs.getString("BienTheSanPham");
                 int soLuongTon = rs.getInt("SoLuongTon");
                 double donGia = rs.getDouble("DonGia");
-                model.addRow(new Object[]{tenSanPham, bienTheSanPham, soLuongTon, donGia});
-                listThongKeTonKho.add(new Object[]{tenSanPham, bienTheSanPham, soLuongTon, donGia});
+                model.addRow(new Object[]{tenSanPham, bienTheSanPham, soLuongTon, df.format(donGia)});
+                listThongKeTonKho.add(new Object[]{tenSanPham, bienTheSanPham, soLuongTon, df.format(donGia)});
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -174,8 +176,8 @@ public class FormTongHopThongKe extends javax.swing.JFrame {
                 int soLuongDonHang = rs.getInt("SoLuongDonHangDaMua");
                 int soLuongSanPham = rs.getInt("SoLuongSanPhamDaMua");
                 double tongTien = rs.getDouble("TongTien");
-                model.addRow(new Object[]{tenKhachHang, gioiTinh, soLuongDonHang, soLuongSanPham, tongTien});
-                listThongKeKhachHang.add(new Object[]{tenKhachHang, gioiTinh, soLuongDonHang, soLuongSanPham, tongTien});
+                model.addRow(new Object[]{tenKhachHang, gioiTinh, soLuongDonHang, soLuongSanPham, df.format(tongTien)});
+                listThongKeKhachHang.add(new Object[]{tenKhachHang, gioiTinh, soLuongDonHang, soLuongSanPham, df.format(tongTien)});
             }
             if (chkThongKeKhachHangTang.isSelected()) {
                 sapXepThongKeKhachHang();
@@ -206,8 +208,8 @@ public class FormTongHopThongKe extends javax.swing.JFrame {
                 String tenNhanVien = rs.getString("TEN_NHAN_VIEN");
                 int soLuongHoaDon = rs.getInt("SO_LUONG_HOA_DON");
                 int tongTien = rs.getInt("TONG_TIEN");
-                model.addRow(new Object[]{id, tenNhanVien, soLuongHoaDon, tongTien});
-                listThongKeNhanVien.add(new Object[]{id, tenNhanVien, soLuongHoaDon, tongTien});
+                model.addRow(new Object[]{id, tenNhanVien, soLuongHoaDon, df.format(tongTien)});
+                listThongKeNhanVien.add(new Object[]{id, tenNhanVien, soLuongHoaDon, df.format(tongTien)});
             }
             if (chkNhanVienTang.isSelected()) {
                 sapXepNhanVien();
@@ -216,15 +218,103 @@ public class FormTongHopThongKe extends javax.swing.JFrame {
             e.printStackTrace();
         }
     }
-    public void sapXepNhanVien(){
+
+    public void sapXepNhanVien() {
         DefaultTableModel model = (DefaultTableModel) tblNhanVien.getModel();
         model.setRowCount(0);
         Collections.reverse(listThongKeNhanVien);
-        for(Object[] objects:listThongKeNhanVien){
+        for (Object[] objects : listThongKeNhanVien) {
             model.addRow(new Object[]{objects[0], objects[1], objects[2], objects[3]});
         }
     }
 
+    public void xuatExcel() {
+        try {
+//         
+            XSSFWorkbook workbook = new XSSFWorkbook();
+            XSSFSheet worksheet = workbook.createSheet("Chuyên đề");
+            XSSFRow row = null;
+            XSSFCell cell = null;
+            row = worksheet.createRow(0); //Tạo hàng thứ 1
+            row.setHeight((short) 500); //Cài đặt chiều cao
+            cell = row.createCell(0, CellType.STRING);
+            cell.setCellValue("Thống kê sản phẩm");
+
+            row = worksheet.createRow(1);
+            cell = row.createCell(0, CellType.STRING);
+            cell.setCellValue("STT");
+
+            cell = row.createCell(1, CellType.STRING);
+            cell.setCellValue("Tên Sản Phẩm");
+
+            cell = row.createCell(2, CellType.STRING);
+            cell.setCellValue("Loại");
+
+            cell = row.createCell(3, CellType.STRING);
+            cell.setCellValue("Số lượng bán");
+
+            cell = row.createCell(4, CellType.STRING);
+            cell.setCellValue("Đơn giá");
+            
+            cell = row.createCell(5, CellType.STRING);
+            cell.setCellValue("Tổng tiền");
+            
+
+            int i = 2; // Khởi tạo giá trị i
+            for (int j = 0; j < listThongKeSanPham.size(); j++) {
+                row = worksheet.createRow(i); // Tạo hàng thứ  nhất
+                //Tạo STT
+                cell = row.createCell(0, CellType.NUMERIC);
+                cell.setCellValue(i - 1);
+                //Tạo mã chuyên đề okkkkkkkkkkkkkkkkkkkk
+                cell = row.createCell(1, CellType.STRING);
+                cell.setCellValue(tblThongKeSanPham.getValueAt(j, 0).toString());
+                //Tạo tên chuyên đề ok 
+                cell = row.createCell(2, CellType.STRING);
+                cell.setCellValue(tblThongKeSanPham.getValueAt(j, 1).toString());
+                cell = row.createCell(3, CellType.NUMERIC);
+                cell.setCellValue(Integer.parseInt(tblThongKeSanPham.getValueAt(j, 2).toString()));
+                cell = row.createCell(4, CellType.NUMERIC);
+                cell.setCellValue(Integer.parseInt(tblThongKeSanPham.getValueAt(j, 3).toString().replaceAll(",", "")));
+                cell = row.createCell(5, CellType.NUMERIC);
+                cell.setCellValue(Integer.parseInt(tblThongKeSanPham.getValueAt(j, 4).toString().replaceAll(",", "")) );
+                i++;
+            }
+            JFileChooser fileChooser = new JFileChooser();
+            fileChooser.setDialogTitle("Chọn nơi lưu file Excel");
+            fileChooser.setSelectedFile(new File("")); // Tên mặc định cho file
+
+            int userSelection = fileChooser.showSaveDialog(this);
+
+            if (userSelection == JFileChooser.APPROVE_OPTION) {
+                File fileToSave = fileChooser.getSelectedFile();
+                // Đảm bảo tên file có phần mở rộng .xlsx
+                if (!fileToSave.getAbsolutePath().endsWith(".xlsx")) {
+                    fileToSave = new File(fileToSave + ".xlsx");
+                }
+                // Ghi dữ liệu vào file đã chọn
+                try {
+                    FileOutputStream fos = new FileOutputStream(fileToSave);
+                    workbook.write(fos);
+                    fos.close();
+                    // Hiển thị thông báo và hỏi người dùng có muốn mở file hay không
+                    if (JOptionPane.showConfirmDialog(this, "Bạn muốn mở Excel không?", "Xuất Excel thành công", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+                        if (Desktop.isDesktopSupported()) {
+                            Desktop desktop = Desktop.getDesktop();
+                            if (fileToSave.exists()) {
+                                desktop.open(fileToSave);
+                            }
+                        }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    JOptionPane.showMessageDialog(this, "Có lỗi khi lưu file: " + e.getMessage());
+                }
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Lỗi truy vấn" + e.getMessage());
+        }
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -251,6 +341,7 @@ public class FormTongHopThongKe extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
         chkThongKeSanPhamGiam = new javax.swing.JCheckBox();
+        jButton2 = new javax.swing.JButton();
         pnlThongKeKhachHang = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
         tblThongKeKhachHang = new javax.swing.JTable();
@@ -348,6 +439,13 @@ public class FormTongHopThongKe extends javax.swing.JFrame {
             }
         });
 
+        jButton2.setText("Xuất Excel");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout pnlThongKeSanPhamLayout = new javax.swing.GroupLayout(pnlThongKeSanPham);
         pnlThongKeSanPham.setLayout(pnlThongKeSanPhamLayout);
         pnlThongKeSanPhamLayout.setHorizontalGroup(
@@ -355,9 +453,6 @@ public class FormTongHopThongKe extends javax.swing.JFrame {
             .addGroup(pnlThongKeSanPhamLayout.createSequentialGroup()
                 .addGap(26, 26, 26)
                 .addGroup(pnlThongKeSanPhamLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(pnlThongKeSanPhamLayout.createSequentialGroup()
-                        .addComponent(jScrollPane1)
-                        .addContainerGap())
                     .addGroup(pnlThongKeSanPhamLayout.createSequentialGroup()
                         .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
@@ -374,7 +469,11 @@ public class FormTongHopThongKe extends javax.swing.JFrame {
                         .addComponent(chkThongKeSanPhamTang)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(chkThongKeSanPhamGiam)
-                        .addGap(113, 113, 113))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jButton2)
+                        .addGap(11, 11, 11))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING))
+                .addContainerGap())
         );
         pnlThongKeSanPhamLayout.setVerticalGroup(
             pnlThongKeSanPhamLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -382,14 +481,15 @@ public class FormTongHopThongKe extends javax.swing.JFrame {
                 .addGap(46, 46, 46)
                 .addGroup(pnlThongKeSanPhamLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pnlThongKeSanPhamLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(dateChooserDenSanPham, javax.swing.GroupLayout.DEFAULT_SIZE, 32, Short.MAX_VALUE)
-                        .addComponent(dateChooserTuSanPham, javax.swing.GroupLayout.DEFAULT_SIZE, 32, Short.MAX_VALUE)
+                        .addComponent(dateChooserDenSanPham, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(dateChooserTuSanPham, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlThongKeSanPhamLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(chkThongKeSanPhamTang)
                             .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(chkThongKeSanPhamGiam)))
+                            .addComponent(chkThongKeSanPhamGiam)
+                            .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 44, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 399, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -705,18 +805,14 @@ public class FormTongHopThongKe extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         Date dateTo = dateChooserTuSanPham.getDate();
         Date dateFrom = dateChooserDenSanPham.getDate();
-        if(XValidate.checkBoTrongNgayTimKiem(dateChooserTuSanPham, "Vui lòng nhập ngày bắt đầu tìm kiếm!")
-                &&XValidate.checkBoTrongNgayTimKiem(dateChooserDenSanPham, "Vui lòng nhập ngày kết thúc!")
-                &&XValidate.checkThoiGianTimKiem(dateChooserTuSanPham, dateChooserDenSanPham))
-        {
-            thongKeSanPham(DateHelper.toString(dateTo, "yyyy-MM-dd"), DateHelper.toString(dateFrom, "yyyy-MM-dd"));
+        if (XValidate.checkBoTrongNgayTimKiem(dateChooserTuSanPham, "Vui lòng nhập ngày bắt đầu tìm kiếm!")
+                && XValidate.checkBoTrongNgayTimKiem(dateChooserDenSanPham, "Vui lòng nhập ngày kết thúc!")
+                && XValidate.checkThoiGianTimKiem(dateChooserTuSanPham, dateChooserDenSanPham)) {
+            thongKeSanPham(formatter.format(dateTo), formatter.format(dateFrom));
         }
-        
-
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void chkThongKeSanPhamTangItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_chkThongKeSanPhamTangItemStateChanged
-
         sapXepThongKeSanPham();
     }//GEN-LAST:event_chkThongKeSanPhamTangItemStateChanged
 
@@ -758,11 +854,10 @@ public class FormTongHopThongKe extends javax.swing.JFrame {
     private void btnTimKiemKhachHangActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTimKiemKhachHangActionPerformed
         Date to = dateChooserTuKhachHang.getDate();
         Date from = dateChooserDenKhachHang.getDate();
-         if(XValidate.checkBoTrongNgayTimKiem(dateChooserTuKhachHang, "Vui lòng nhập ngày bắt đầu tìm kiếm!")
-                &&XValidate.checkBoTrongNgayTimKiem(dateChooserDenKhachHang, "Vui lòng nhập ngày kết thúc!")
-                &&XValidate.checkThoiGianTimKiem(dateChooserTuKhachHang, dateChooserDenKhachHang))
-        {
-            thongKeKhachHang(DateHelper.toString(to, "yyyy-MM-dd"), DateHelper.toString(from, "yyyy-MM-dd"));
+        if (XValidate.checkBoTrongNgayTimKiem(dateChooserTuKhachHang, "Vui lòng nhập ngày bắt đầu tìm kiếm!")
+                && XValidate.checkBoTrongNgayTimKiem(dateChooserDenKhachHang, "Vui lòng nhập ngày kết thúc!")
+                && XValidate.checkThoiGianTimKiem(dateChooserTuKhachHang, dateChooserDenKhachHang)) {
+            thongKeKhachHang(formatter.format(to), formatter.format(from));
         }
     }//GEN-LAST:event_btnTimKiemKhachHangActionPerformed
 
@@ -773,11 +868,10 @@ public class FormTongHopThongKe extends javax.swing.JFrame {
     private void btnTimKiemNhanVienActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTimKiemNhanVienActionPerformed
         Date to = dateChooserTuNhanVien.getDate();
         Date from = dateChooserDenNhanVien.getDate();
-         if(XValidate.checkBoTrongNgayTimKiem(dateChooserTuNhanVien, "Vui lòng nhập ngày bắt đầu tìm kiếm!")
-                &&XValidate.checkBoTrongNgayTimKiem(dateChooserDenNhanVien, "Vui lòng nhập ngày kết thúc!")
-                &&XValidate.checkThoiGianTimKiem(dateChooserTuNhanVien, dateChooserDenNhanVien))
-        {
-            thongKeNhanVien(DateHelper.toString(to, "yyyy-MM-dd"), DateHelper.toString(from, "yyyy-MM-dd"));
+        if (XValidate.checkBoTrongNgayTimKiem(dateChooserTuNhanVien, "Vui lòng nhập ngày bắt đầu tìm kiếm!")
+                && XValidate.checkBoTrongNgayTimKiem(dateChooserDenNhanVien, "Vui lòng nhập ngày kết thúc!")
+                && XValidate.checkThoiGianTimKiem(dateChooserTuNhanVien, dateChooserDenNhanVien)) {
+            thongKeNhanVien(formatter.format(to), formatter.format(from));
         }
     }//GEN-LAST:event_btnTimKiemNhanVienActionPerformed
 
@@ -788,6 +882,10 @@ public class FormTongHopThongKe extends javax.swing.JFrame {
     private void chkNhanVienTangItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_chkNhanVienTangItemStateChanged
         sapXepNhanVien();
     }//GEN-LAST:event_chkNhanVienTangItemStateChanged
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        xuatExcel();
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -854,6 +952,7 @@ public class FormTongHopThongKe extends javax.swing.JFrame {
     private com.toedter.calendar.JDateChooser dateChooserTuNhanVien;
     private com.toedter.calendar.JDateChooser dateChooserTuSanPham;
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;

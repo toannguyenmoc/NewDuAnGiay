@@ -20,13 +20,13 @@ import javax.swing.table.DefaultTableModel;
  * @author NganTTK_PC09494
  */
 public class FormHoaDon extends javax.swing.JFrame {
-
     OrderDAO orderDAO = new OrderDAO();
     Order_DetailDAO orderDetailDAO = new Order_DetailDAO();
     DefaultTableModel modelTblSP = new DefaultTableModel(); //model table sản phẩm
 
     List<Object[]> list;
     Object[] ob = null;
+    int index;
 
     public FormHoaDon() {
         initComponents();
@@ -40,7 +40,7 @@ public class FormHoaDon extends javax.swing.JFrame {
         setLocationRelativeTo(null);
         setIconImage(XImage.XImage());
     }
-    
+
     public void clearForm() {
         String t = "";
         txtNguoiTao.setText(t);
@@ -49,7 +49,7 @@ public class FormHoaDon extends javax.swing.JFrame {
         dateChooserNgayTao.setDate(null);
         cboTrangThai.setSelectedIndex(0);
         modelTblSP.setRowCount(0);
-        
+
     }
 
     public void fillCombobox() {
@@ -81,10 +81,12 @@ public class FormHoaDon extends javax.swing.JFrame {
             modelTblSP = new DefaultTableModel(header, 0);
 
             List<Object[]> list = orderDetailDAO.selectByIDOrder((Integer) ob[0]);
+
             int stt = 1;
             for (Object[] ob : list) {
                 Object[] row = {stt, ob[0], ob[1], ob[2]};
                 modelTblSP.addRow(row);
+                stt++;
             }
 
             tblSanPham.setModel(modelTblSP);
@@ -125,19 +127,21 @@ public class FormHoaDon extends javax.swing.JFrame {
             System.out.println(e);
         }
     }
-    
+
     public void update() {
-         try {
-            Order order = orderDAO.selectByID(1);
+        try {
+            Order order = orderDAO.selectByID((Integer) tblHoaDon.getValueAt(tblHoaDon.getSelectedRow(), 0));
+            System.out.println(order.getId()+"|"+order.getCustomersId());
             int status = cboTrangThai.getSelectedIndex();
-            order.setStatus(status); 
+            order.setStatus(status);
             System.out.println("Hóa đơn: " + order.getId());
             orderDAO.update(order);
             fillTable();
-            
+
             clearForm();
             JOptionPane.showMessageDialog(this, "Cập nhật trạng thái thành công");
         } catch (Exception e) {
+            System.out.println(e);
             JOptionPane.showMessageDialog(this, "Cập nhật trạng thái không thành công");
         }
     }
@@ -383,7 +387,7 @@ public class FormHoaDon extends javax.swing.JFrame {
     }//GEN-LAST:event_btnTimActionPerformed
 
     private void tblHoaDonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblHoaDonMouseClicked
-        int index = tblHoaDon.getSelectedRow();
+        index = tblHoaDon.getSelectedRow();
         getDetail(index);
 
         txtNguoiTao.setEditable(false);

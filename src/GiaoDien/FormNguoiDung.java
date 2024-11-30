@@ -128,7 +128,6 @@ public class FormNguoiDung extends javax.swing.JFrame {
             loadDataToTable();
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Xóa thất bại!");
-            e.printStackTrace();
         }
 
     }

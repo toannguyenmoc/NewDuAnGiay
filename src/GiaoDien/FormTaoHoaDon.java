@@ -51,7 +51,7 @@ public class FormTaoHoaDon extends javax.swing.JFrame {
         setIconImage(XImage.XImage());
         setTitle("PHẦN MỀM QUẢN LÝ GIÀY THỂ THAO");
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-        
+
         setModelTableSanPham();
         SimpleDateFormat formatterDate = new SimpleDateFormat("dd/MM/yyyy");
         SimpleDateFormat formatterTime = new SimpleDateFormat("hh:mm a");
@@ -64,6 +64,7 @@ public class FormTaoHoaDon extends javax.swing.JFrame {
         txtTenKhachHang.setEditable(false);
         loadOrCreateOrder();
         loadOrderDetail();
+//        txtMaHoaDon.setText("Mã hóa đơn: " + order.getId());
     }
 
     public void init() {
@@ -73,47 +74,71 @@ public class FormTaoHoaDon extends javax.swing.JFrame {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
     }
 
+    public void taoHoaDonMoi() {
+        Order neworder = new Order();
+        neworder.setCustomersId(1);
+        neworder.setUserId(1);
+        neworder.setCreateDate(new Date());
+        neworder.setTotal(0);
+        neworder.setStatus(2);
+        orderDAO.insert(neworder);
+        System.out.println("Tạo thành công");
+
+    }
+
     public void loadOrCreateOrder() {
-        try {
-            List<Order> orders = OrderDAO.findByStatus(0);
-            if (orders != null) {
-                order = orders.get(0);
-            } else {
-                order = new Order(1, 1, 1, new Date(), 0, 0);
-                orderDAO.insert(order);
-                System.out.println();
-                        
-            }
-            txtMaHoaDon.setText("Mã hóa đơn:" + order.getId());
-        } catch (Exception e) {
-            System.out.println(e);
+        List<Order> orders = OrderDAO.findByStatus(2);
+
+        if (orders != null && !orders.isEmpty()) { // Kiểm tra đúng logic
+            order = orders.get(0); // Lấy đơn hàng đầu tiên
+            System.out.println("Order found: " + order);
+        } else {
+            order = createNewOrder(); // Tạo hóa đơn mới
+            System.out.println("Created new order: " + order);
         }
+
+        // Cập nhật giao diện
+        txtMaHoaDon.setText("Mã hóa đơn: " + order.getId());
+    }
+
+    // Phương thức tạo hóa đơn mới
+    private Order createNewOrder() {
+        taoHoaDonMoi(); // Thực hiện tạo hóa đơn mới
+        List<Order> newOrders = OrderDAO.findByStatus(2); // Tìm lại danh sách hóa đơn
+        if (newOrders == null || newOrders.isEmpty()) {
+            throw new IllegalStateException("Failed to create a new order."); // Xử lý lỗi nếu không tạo được hóa đơn
+        }
+        return newOrders.get(0); // Trả về hóa đơn mới tạo
     }
 
     public void loadOrderDetail() {
         try {
             List<Order_Detail> orderDetails = orderDetailDAO.selectAllByIDOrder(order.getId());
-            if (orderDetails != null) {
+            if (orderDetails != null && !orderDetails.isEmpty()) {
                 for (int i = 0; i < orderDetails.size(); i++) {
                     Order_Detail ord = orderDetails.get(i);
                     Object[] pro = orderDAO.selectProductById(ord.getProductVariantId(), ord.getId());
-                    Object[] row = {
-                        tongSanPham, // STT
-                        pro[1], // Tên sản phẩm
-                        pro[2], // Size
-                        pro[3], // Màu
-                        pro[4], // Giá
-                        pro[5], // Số lượng
-                        false // Cột xóa (Boolean)
-                    };
-                    model.addRow(row); // Thêm hàng mới
-                    tongSanPham++;
-                    txtTongTien.setText(tinhTongTien() + "");
+                    if (pro != null && pro.length >= 6) {
+                        Object[] row = {
+                            tongSanPham, // STT
+                            pro[1], // Tên sản phẩm
+                            pro[2], // Size
+                            pro[3], // Màu
+                            pro[4], // Giá
+                            pro[5], // Số lượng
+                            false // Cột xóa (Boolean)
+                        };
+                        model.addRow(row); // Thêm hàng mới
+                        tongSanPham++;
+                        txtTongTien.setText(tinhTongTien() + "");
+                    }
                 }
+            } else {
+                return;
             }
         } catch (Exception e) {
+            System.out.println("Lỗi khi tải chi tiết hóa đơn: " + e.getMessage());
         }
-
     }
 
     public void setModelTableSanPham() {
@@ -155,6 +180,7 @@ public class FormTaoHoaDon extends javax.swing.JFrame {
                 System.out.println("Không tìm thấy sản phẩm với mã: " + code);
                 return; // Thoát nếu không tìm thấy
             }
+
             // Kiểm tra sản phẩm có trùng trong bảng không
             int index = checkTrungSanPham(product[1].toString());
             if (index != -1) {
@@ -162,13 +188,14 @@ public class FormTaoHoaDon extends javax.swing.JFrame {
                 Object soLuongObj = tblSanPham.getValueAt(index, 5); // Cột số lượng cố định tại index = 5
                 int soLuong = (soLuongObj != null) ? Integer.parseInt(soLuongObj.toString()) : 0;
                 tblSanPham.setValueAt(soLuong + 1, index, 5); // Cập nhật cột số lượng
+
                 // Cập nhật cột số lượng trong database
                 Object[] update = {soLuong + 1, order.getId(), product[6]};
                 try {
                     orderDetailDAO.updateSoLuong(update);
-
+                    System.out.println("Cập nhật số lượng thành công.");
                 } catch (Exception e) {
-                    System.out.println("Cập nhật số lượng thất bại");
+                    System.out.println("Cập nhật số lượng thất bại: " + e.getMessage());
                 }
 
             } else {
@@ -183,18 +210,20 @@ public class FormTaoHoaDon extends javax.swing.JFrame {
                     false // Cột xóa (Boolean)
                 };
 
-                Order_Detail order = new Order_Detail();
-                order.setOrderId(order.getId());
-                order.setProductVariantId((int) product[6]);
-                order.setQuantity(1);
-                order.setPrice((int) product[4]);
+                Order_Detail orderDetail = new Order_Detail();
+                orderDetail.setOrderId(order.getId());
+                orderDetail.setProductVariantId((int) product[6]);
+                orderDetail.setQuantity(1);
+                orderDetail.setPrice((int) product[4]);
 
                 try {
-                    orderDetailDAO.insert(order);  // Thêm hàng mới trong database
+                    orderDetailDAO.insert(orderDetail);  // Thêm hàng mới trong database
+                    System.out.println("Thêm sản phẩm mới thành công.");
                 } catch (Exception e) {
-                    System.out.println("Thêm order detail thất bại");
+                    System.out.println("Thêm sản phẩm thất bại: " + e);
                 }
-                model.addRow(row); // Thêm hàng mới
+
+                model.addRow(row); // Thêm hàng mới vào bảng
                 tongSanPham++;
             }
 
@@ -205,10 +234,8 @@ public class FormTaoHoaDon extends javax.swing.JFrame {
 
         } catch (NumberFormatException e) {
             System.out.println("Lỗi chuyển đổi số lượng: " + e.getMessage());
-            e.printStackTrace();
         } catch (Exception e) {
             System.out.println("Lỗi không xác định: " + e.getMessage());
-            e.printStackTrace();
         }
     }
 
@@ -291,8 +318,9 @@ public class FormTaoHoaDon extends javax.swing.JFrame {
 
     public void createHoaDon() {
         try {
-            if (txtTenKhachHang.getText() != null && (chkTienMat.isSelected() || chkThanhToanOnline.isSelected()) ) {
-                Order order = new Order();
+            // Kiểm tra thông tin khách hàng và phương thức thanh toán
+            if (!txtTenKhachHang.getText().isEmpty() && (chkTienMat.isSelected() || chkThanhToanOnline.isSelected())) {
+//                Order order = new Order();
                 int idUser = 1;   //user.getId();
                 int idCustomer = customerDAO.selectByObject(txtSoDienThoai.getText()).get(0).getId();
                 Date createDate = new Date();
@@ -301,15 +329,17 @@ public class FormTaoHoaDon extends javax.swing.JFrame {
                 order.setCreateDate(createDate);
                 order.setTotal(Integer.parseInt(txtTongTien.getText()));
                 order.setStatus(0);
+
                 orderDAO.update(order);
                 JOptionPane.showMessageDialog(this, "Tạo hóa đơn thành công!");
                 clearForm();
+                loadOrCreateOrder();
             } else {
                 JOptionPane.showMessageDialog(this, "Cần nhập đầy đủ thông tin!");
             }
 
         } catch (Exception e) {
-            System.out.println(e + "| thất bại");
+            System.out.println("Lỗi tạo hóa đơn: " + e.getMessage());
         }
     }
 
@@ -342,7 +372,7 @@ public class FormTaoHoaDon extends javax.swing.JFrame {
         int tienThua = Integer.parseInt(txtTienKhachDua.getText()) - Integer.parseInt(txtTongTien.getText());
         txtTienThua.setText(tienThua + "");
     }
-    
+
     public void clearForm() {
         txtSoDienThoai.setText("");
         txtTenKhachHang.setText("");
@@ -778,13 +808,14 @@ public class FormTaoHoaDon extends javax.swing.JFrame {
     }//GEN-LAST:event_btnLamMoiHoaDonActionPerformed
 
     private void txtTienKhachDuaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtTienKhachDuaKeyReleased
-        System.out.println(validate.checkTien(txtTenKhachHang.getText()));
-        if (true) {
-            int tienThua = Integer.parseInt(txtTienKhachDua.getText()) - Integer.parseInt(txtTongTien.getText());
-            if (tienThua > 0) {
-                txtTienThua.setText(tienThua + "");
-            }
+        
+        int tienThua = Integer.parseInt(txtTienKhachDua.getText()) - Integer.parseInt(txtTongTien.getText());
+        if (tienThua > 0) {
+            txtTienThua.setText(tienThua + "");
+        } else {
+            txtTienThua.setText(0+"");
         }
+
     }//GEN-LAST:event_txtTienKhachDuaKeyReleased
 
     /**

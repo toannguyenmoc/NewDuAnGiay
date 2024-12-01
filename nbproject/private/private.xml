@@ -3,22 +3,8 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-<<<<<<< HEAD
-            <file>file:/D:/NewDuAnGiay/src/com/sales/DAO/OrderDAO.java</file>
-            <file>file:/D:/NewDuAnGiay/src/GiaoDien/FormHoaDon.java</file>
-            <file>file:/D:/NewDuAnGiay/src/com/sales/DAO/Order_DetailDAO.java</file>
+            <file>file:/D:/NewDuAnGiay/src/GiaoDien/PrintBillForm.java</file>
             <file>file:/D:/NewDuAnGiay/src/GiaoDien/FormTaoHoaDon.java</file>
- =======
-            <file>file:/D:/NewDuAnGiay/src/com/sales/Utils/DateHelper.java</file>
-            <file>file:/D:/NewDuAnGiay/src/GiaoDien/FormQuenMatKhau.java</file>
-            <file>file:/D:/NewDuAnGiay/src/GiaoDien/FormTongHopThongKe.java</file>
-            <file>file:/D:/NewDuAnGiay/src/GiaoDien/FormKhachHang.java</file>
-            <file>file:/D:/NewDuAnGiay/src/com/sales/Utils/MailHelper.java</file>
-            <file>file:/D:/NewDuAnGiay/src/com/sales/Utils/XValidate.java</file>
-            <file>file:/D:/NewDuAnGiay/src/com/sales/Utils/XImage.java</file>
-            <file>file:/D:/NewDuAnGiay/src/GiaoDien/FormTaoHoaDon.java</file>
-            <file>file:/D:/NewDuAnGiay/src/GiaoDien/FormNguoiDung.java</file>
->>>>>>> 0219e835975c2c187cfd64361aa72bb266457c1e
         </group>
     </open-files>
 </project-private>

@@ -16,8 +16,17 @@ import com.sales.Utils.Auth;
 import com.sales.Utils.JdbcHelper;
 import com.sales.Utils.XImage;
 import com.sales.Utils.XValidate;
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
+import java.awt.print.PageFormat;
+import java.awt.print.Paper;
+import static java.awt.print.Printable.NO_SUCH_PAGE;
+import java.awt.print.PrinterException;
+
+import java.awt.print.PrinterJob;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -43,6 +52,8 @@ public class FormTaoHoaDon extends javax.swing.JFrame {
     User user = Auth.user;
     CustomerDAO customerDAO = new CustomerDAO();
     Order order;
+
+    
 
     public FormTaoHoaDon() {
         initComponents();
@@ -74,6 +85,7 @@ public class FormTaoHoaDon extends javax.swing.JFrame {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
     }
 
+    
     public void taoHoaDonMoi() {
         Order neworder = new Order();
         neworder.setCustomersId(1);
@@ -609,6 +621,11 @@ public class FormTaoHoaDon extends javax.swing.JFrame {
         btnInHoaDon.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         btnInHoaDon.setForeground(new java.awt.Color(0, 102, 102));
         btnInHoaDon.setText("In đơn");
+        btnInHoaDon.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnInHoaDonActionPerformed(evt);
+            }
+        });
 
         btnTaoHoaDon.setBackground(new java.awt.Color(255, 255, 0));
         btnTaoHoaDon.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
@@ -808,15 +825,20 @@ public class FormTaoHoaDon extends javax.swing.JFrame {
     }//GEN-LAST:event_btnLamMoiHoaDonActionPerformed
 
     private void txtTienKhachDuaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtTienKhachDuaKeyReleased
-        
+
         int tienThua = Integer.parseInt(txtTienKhachDua.getText()) - Integer.parseInt(txtTongTien.getText());
         if (tienThua > 0) {
             txtTienThua.setText(tienThua + "");
         } else {
-            txtTienThua.setText(0+"");
+            txtTienThua.setText(0 + "");
         }
 
     }//GEN-LAST:event_txtTienKhachDuaKeyReleased
+
+    private void btnInHoaDonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInHoaDonActionPerformed
+        
+        
+    }//GEN-LAST:event_btnInHoaDonActionPerformed
 
     /**
      * @param args the command line arguments

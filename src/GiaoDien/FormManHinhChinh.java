@@ -51,15 +51,8 @@ public class FormManHinhChinh extends javax.swing.JFrame {
 
     public void Quyen() {
         if (Auth.isLogin() && !Auth.isManager()) {
-            for (MouseListener ml : lblNhanVien.getMouseListeners()) {
-                lblNhanVien.removeMouseListener(ml);
-            }
-            for (MouseListener ml : lblThongKe.getMouseListeners()) {
-                lblThongKe.removeMouseListener(ml);
-            }
-            for (MouseListener ml : lblHoaDon.getMouseListeners()) {
-                lblHoaDon.removeMouseListener(ml);
-            }
+            pnlMenu.remove(lblNhanVien);
+            pnlMenu.remove(lblThongKe);
         } else {
             BieuDo();
         }
@@ -210,7 +203,7 @@ public class FormManHinhChinh extends javax.swing.JFrame {
         jPanel9 = new javax.swing.JPanel();
         jLabel29 = new javax.swing.JLabel();
         jLabel30 = new javax.swing.JLabel();
-        jPanel11 = new javax.swing.JPanel();
+        pnlMenu = new javax.swing.JPanel();
         lblTrangChu = new javax.swing.JLabel();
         lblNhanVien = new javax.swing.JLabel();
         lblKhachHang = new javax.swing.JLabel();
@@ -496,8 +489,8 @@ public class FormManHinhChinh extends javax.swing.JFrame {
         jLabel30.setForeground(new java.awt.Color(255, 255, 255));
         jLabel30.setText("Tên ứng dụng");
 
-        jPanel11.setBackground(new java.awt.Color(0, 153, 153));
-        jPanel11.setLayout(new java.awt.GridLayout(0, 1, 0, 9));
+        pnlMenu.setBackground(new java.awt.Color(0, 153, 153));
+        pnlMenu.setLayout(new java.awt.GridLayout(0, 1, 0, 9));
 
         lblTrangChu.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         lblTrangChu.setForeground(new java.awt.Color(255, 255, 255));
@@ -510,7 +503,7 @@ public class FormManHinhChinh extends javax.swing.JFrame {
                 lblTrangChuMouseClicked(evt);
             }
         });
-        jPanel11.add(lblTrangChu);
+        pnlMenu.add(lblTrangChu);
 
         lblNhanVien.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         lblNhanVien.setForeground(new java.awt.Color(255, 255, 255));
@@ -522,7 +515,7 @@ public class FormManHinhChinh extends javax.swing.JFrame {
                 lblNhanVienMouseClicked(evt);
             }
         });
-        jPanel11.add(lblNhanVien);
+        pnlMenu.add(lblNhanVien);
 
         lblKhachHang.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         lblKhachHang.setForeground(new java.awt.Color(255, 255, 255));
@@ -534,7 +527,7 @@ public class FormManHinhChinh extends javax.swing.JFrame {
                 lblKhachHangMouseClicked(evt);
             }
         });
-        jPanel11.add(lblKhachHang);
+        pnlMenu.add(lblKhachHang);
 
         lblLoaiSanPham.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         lblLoaiSanPham.setForeground(new java.awt.Color(255, 255, 255));
@@ -546,7 +539,7 @@ public class FormManHinhChinh extends javax.swing.JFrame {
                 lblLoaiSanPhamMouseClicked(evt);
             }
         });
-        jPanel11.add(lblLoaiSanPham);
+        pnlMenu.add(lblLoaiSanPham);
 
         lblSanPham.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         lblSanPham.setForeground(new java.awt.Color(255, 255, 255));
@@ -558,7 +551,7 @@ public class FormManHinhChinh extends javax.swing.JFrame {
                 lblSanPhamMouseClicked(evt);
             }
         });
-        jPanel11.add(lblSanPham);
+        pnlMenu.add(lblSanPham);
 
         lblHoaDon.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         lblHoaDon.setForeground(new java.awt.Color(255, 255, 255));
@@ -570,7 +563,7 @@ public class FormManHinhChinh extends javax.swing.JFrame {
                 lblHoaDonMouseClicked(evt);
             }
         });
-        jPanel11.add(lblHoaDon);
+        pnlMenu.add(lblHoaDon);
 
         lblTaoHoaDon.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         lblTaoHoaDon.setForeground(new java.awt.Color(255, 255, 255));
@@ -582,7 +575,7 @@ public class FormManHinhChinh extends javax.swing.JFrame {
                 lblTaoHoaDonMouseClicked(evt);
             }
         });
-        jPanel11.add(lblTaoHoaDon);
+        pnlMenu.add(lblTaoHoaDon);
 
         lblThongKe.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         lblThongKe.setForeground(new java.awt.Color(255, 255, 255));
@@ -594,7 +587,7 @@ public class FormManHinhChinh extends javax.swing.JFrame {
                 lblThongKeMouseClicked(evt);
             }
         });
-        jPanel11.add(lblThongKe);
+        pnlMenu.add(lblThongKe);
 
         lblThuocTinh.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         lblThuocTinh.setForeground(new java.awt.Color(255, 255, 255));
@@ -606,7 +599,7 @@ public class FormManHinhChinh extends javax.swing.JFrame {
                 lblThuocTinhMouseClicked(evt);
             }
         });
-        jPanel11.add(lblThuocTinh);
+        pnlMenu.add(lblThuocTinh);
 
         lblThuongHieu.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         lblThuongHieu.setForeground(new java.awt.Color(255, 255, 255));
@@ -618,7 +611,7 @@ public class FormManHinhChinh extends javax.swing.JFrame {
                 lblThuongHieuMouseClicked(evt);
             }
         });
-        jPanel11.add(lblThuongHieu);
+        pnlMenu.add(lblThuongHieu);
 
         lblGioiThieu.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         lblGioiThieu.setForeground(new java.awt.Color(255, 255, 255));
@@ -630,7 +623,7 @@ public class FormManHinhChinh extends javax.swing.JFrame {
                 lblGioiThieuMouseClicked(evt);
             }
         });
-        jPanel11.add(lblGioiThieu);
+        pnlMenu.add(lblGioiThieu);
 
         lblHuongDan.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         lblHuongDan.setForeground(new java.awt.Color(255, 255, 255));
@@ -642,7 +635,7 @@ public class FormManHinhChinh extends javax.swing.JFrame {
                 lblHuongDanMouseClicked(evt);
             }
         });
-        jPanel11.add(lblHuongDan);
+        pnlMenu.add(lblHuongDan);
 
         lblThoat.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         lblThoat.setForeground(new java.awt.Color(255, 255, 255));
@@ -671,7 +664,7 @@ public class FormManHinhChinh extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel9Layout.createSequentialGroup()
-                        .addComponent(jPanel11, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(pnlMenu, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addContainerGap())
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel9Layout.createSequentialGroup()
                         .addComponent(jLabel29, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -693,7 +686,7 @@ public class FormManHinhChinh extends javax.swing.JFrame {
                     .addComponent(jLabel29)
                     .addComponent(jLabel30))
                 .addGap(50, 50, 50)
-                .addComponent(jPanel11, javax.swing.GroupLayout.PREFERRED_SIZE, 554, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(pnlMenu, javax.swing.GroupLayout.PREFERRED_SIZE, 554, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(35, 35, 35)
                 .addComponent(lblDoiMatKhau, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(26, 26, 26)
@@ -843,7 +836,6 @@ public class FormManHinhChinh extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
-    private javax.swing.JPanel jPanel11;
     private javax.swing.JPanel jPanel12;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
@@ -875,6 +867,7 @@ public class FormManHinhChinh extends javax.swing.JFrame {
     private javax.swing.JLabel lblTongSoSanPham;
     private javax.swing.JLabel lblTrangChu;
     private javax.swing.JPanel pnlBieuDo;
+    private javax.swing.JPanel pnlMenu;
     // End of variables declaration//GEN-END:variables
 
     public void kiemtra() {

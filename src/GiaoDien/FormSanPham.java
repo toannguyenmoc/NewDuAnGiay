@@ -903,7 +903,7 @@ public class FormSanPham extends javax.swing.JFrame {
         List<Object[]> list = thongKe.timKiemSanPham(txtTimKiem.getText());
         for (Object[] dong : list) {
             Object row[] = {dong[0], dong[1], dong[2], dong[3], dong[4], dong[5],
-                dong[6], dong[7], dong[8], dong[9].toString().equalsIgnoreCase("true") ? cknHoatDongKichThuoc.getText() : cknNgungHoatDongKickThuoc.getText(), dong[10], dong[11]
+                dong[6], df.format(dong[7]), dong[8], dong[9].toString().equalsIgnoreCase("true") ? cknHoatDongKichThuoc.getText() : cknNgungHoatDongKickThuoc.getText(), dong[10], dong[11]
 
             };
             model.addRow(row);
@@ -996,6 +996,7 @@ public class FormSanPham extends javax.swing.JFrame {
             XSSFCell cell = null;
             row = worksheet.createRow(0); //Tạo hàng thứ 1
             row.setHeight((short) 500); //Cài đặt chiều cao
+      
             cell = row.createCell(0, CellType.STRING);
             cell.setCellValue("Danh sách sản phẩm");
 

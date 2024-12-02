@@ -29,7 +29,10 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.CellType;
+import org.apache.poi.ss.usermodel.Font;
+import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -542,7 +545,9 @@ public class FormSanPham extends javax.swing.JFrame {
 
             System.out.println(listColor);
             for (Color cd : listColor) {
-                modelColor.addElement(cd.getName());
+                if (cd.getActive()) {
+                    modelColor.addElement(cd.getName());
+                }
             }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Lỗi truy vấn dữ liệu!");
@@ -989,14 +994,21 @@ public class FormSanPham extends javax.swing.JFrame {
     private void btnXuatExcelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXuatExcelActionPerformed
         // TODO add your handling code here:
         try {
-//         
+
             XSSFWorkbook workbook = new XSSFWorkbook();
             XSSFSheet worksheet = workbook.createSheet("Chuyên đề");
             XSSFRow row = null;
             XSSFCell cell = null;
             row = worksheet.createRow(0); //Tạo hàng thứ 1
             row.setHeight((short) 500); //Cài đặt chiều cao
-      
+
+            Font font = workbook.createFont();
+            font.setFontHeightInPoints((short) 15); // Kích thước font
+            font.setFontName("Ccode39");             // Tên font
+
+            CellStyle style = workbook.createCellStyle();
+            style.setFont(font);
+
             cell = row.createCell(0, CellType.STRING);
             cell.setCellValue("Danh sách sản phẩm");
 
@@ -1018,7 +1030,7 @@ public class FormSanPham extends javax.swing.JFrame {
 
             cell = row.createCell(5, CellType.STRING);
             cell.setCellValue("Thương Hiệu");
-            
+
             cell = row.createCell(6, CellType.STRING);
             cell.setCellValue("Số Lượng");
 
@@ -1027,7 +1039,7 @@ public class FormSanPham extends javax.swing.JFrame {
 
             cell = row.createCell(8, CellType.STRING);
             cell.setCellValue("Trạng Thái");
-            
+
             cell = row.createCell(9, CellType.STRING);
             cell.setCellValue("Mã Code");
             List<Product_Variant> list = productVariantDao.selectAll();
@@ -1045,27 +1057,28 @@ public class FormSanPham extends javax.swing.JFrame {
                 //Tạo tên chuyên đề
                 cell = row.createCell(2, CellType.NUMERIC);
                 cell.setCellValue(tblSanPham.getValueAt(j, 2).toString());
-                
+
                 cell = row.createCell(3, CellType.STRING);
                 cell.setCellValue(tblSanPham.getValueAt(j, 3).toString());
-                
+
                 cell = row.createCell(4, CellType.STRING);
                 cell.setCellValue(tblSanPham.getValueAt(j, 4).toString());
-                
+
                 cell = row.createCell(5, CellType.STRING);
                 cell.setCellValue(tblSanPham.getValueAt(j, 5).toString());
-                
+
                 cell = row.createCell(6, CellType.STRING);
                 cell.setCellValue(Integer.parseInt(tblSanPham.getValueAt(j, 6).toString().replaceAll(",", "")));
-                
+
                 cell = row.createCell(7, CellType.NUMERIC);
                 cell.setCellValue(Integer.parseInt(tblSanPham.getValueAt(j, 7).toString().replaceAll(",", "")));
-                
-               cell = row.createCell(8, CellType.STRING);
+
+                cell = row.createCell(8, CellType.STRING);
                 cell.setCellValue(tblSanPham.getValueAt(j, 9).toString());
-                
+
                 cell = row.createCell(9, CellType.STRING);
-                cell.setCellValue(tblSanPham.getValueAt(j, 10).toString());
+                cell.setCellStyle(style);
+                cell.setCellValue("*"+tblSanPham.getValueAt(j, 10).toString()+"*");
 
                 i++;
             }

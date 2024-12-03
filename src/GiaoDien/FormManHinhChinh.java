@@ -649,6 +649,7 @@ public class FormManHinhChinh extends javax.swing.JFrame {
 
         lblDoiMatKhau.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         lblDoiMatKhau.setForeground(new java.awt.Color(255, 255, 255));
+        lblDoiMatKhau.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icon/man.png"))); // NOI18N
         lblDoiMatKhau.setText("Đổi mật khẩu");
         lblDoiMatKhau.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -674,8 +675,8 @@ public class FormManHinhChinh extends javax.swing.JFrame {
             .addGroup(jPanel9Layout.createSequentialGroup()
                 .addGap(64, 64, 64)
                 .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblDoiMatKhau, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblThoat, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(lblThoat, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblDoiMatKhau, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel9Layout.setVerticalGroup(

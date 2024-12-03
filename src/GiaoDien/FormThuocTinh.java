@@ -751,7 +751,7 @@ public class FormThuocTinh extends javax.swing.JFrame {
                 clearFormColor();
             }
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Xóa thất bại!");
+            JOptionPane.showMessageDialog(this, "Không thể xoá màu này!");
         }
     }
 
@@ -766,7 +766,7 @@ public class FormThuocTinh extends javax.swing.JFrame {
                 clearFormSize();
             }
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Xóa thất bại!");
+            JOptionPane.showMessageDialog(this, "Không thể xoá kích thước này!");
         }
     }
 

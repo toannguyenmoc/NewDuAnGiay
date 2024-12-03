@@ -393,7 +393,7 @@ public class FormThuongHieu extends javax.swing.JFrame {
                 clearForm();
             }
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Xóa thất bại!");
+            JOptionPane.showMessageDialog(this, "Không thể xoá thương hiệu này!");
         }
     }
 

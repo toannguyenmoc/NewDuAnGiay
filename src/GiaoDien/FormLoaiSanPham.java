@@ -353,7 +353,7 @@ public class FormLoaiSanPham extends javax.swing.JFrame {
                 clearForm();
             }
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Xóa thất bại!");
+            JOptionPane.showMessageDialog(this, "Không thể xoá loại sản phẩm này!");
         }
     }
 

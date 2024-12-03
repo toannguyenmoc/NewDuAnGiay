@@ -874,7 +874,7 @@ public class FormSanPham extends javax.swing.JFrame {
                 refresh();
                 JOptionPane.showMessageDialog(this, "Xóa Thành Công");
             } catch (Exception e) {
-                JOptionPane.showMessageDialog(this, "Xóa Thất bại");
+                JOptionPane.showMessageDialog(this, "Không thể xoá Sản phẩm này!");
             }
         }
     }

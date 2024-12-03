@@ -594,7 +594,7 @@ public class FormKhachHang extends javax.swing.JFrame {
                 this.fillTable();
                 this.clearForm();
             } catch (Exception var4) {
-                JOptionPane.showMessageDialog(this, "Xoá thất bại");
+                JOptionPane.showMessageDialog(this, "Khách hàng này không được xoá");
             }
         }
 

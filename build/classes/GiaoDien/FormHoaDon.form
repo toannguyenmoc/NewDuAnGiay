@@ -256,7 +256,7 @@
                               <EmptySpace type="separate" max="-2" attributes="0"/>
                               <Component id="btnTim" min="-2" max="-2" attributes="0"/>
                               <EmptySpace type="separate" max="-2" attributes="0"/>
-                              <Component id="btnTim1" min="-2" max="-2" attributes="0"/>
+                              <Component id="btnReset" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <Component id="jLabel3" min="-2" pref="91" max="-2" attributes="0"/>
                       </Group>
@@ -278,7 +278,7 @@
                           <Component id="dateChooserNgayBatDau" min="-2" pref="35" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
                               <Component id="btnTim" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="btnTim1" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="btnReset" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                       <EmptySpace pref="34" max="32767" attributes="0"/>
@@ -331,7 +331,7 @@
                 <Property name="text" type="java.lang.String" value="&#x110;&#x1ebf;n ng&#xe0;y:"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JButton" name="btnTim1">
+            <Component class="javax.swing.JButton" name="btnReset">
               <Properties>
                 <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                   <Color blue="0" green="ff" red="ff" type="rgb"/>
@@ -342,7 +342,7 @@
                 <Property name="text" type="java.lang.String" value="Reset"/>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnTim1ActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnResetActionPerformed"/>
               </Events>
             </Component>
           </SubComponents>

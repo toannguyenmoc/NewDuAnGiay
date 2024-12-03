@@ -177,7 +177,7 @@ public class FormHoaDon extends javax.swing.JFrame {
             System.out.println(e);
         }
     }
-
+    
     public void update() {
         try {
             Order order = orderDAO.selectByID((Integer) tblHoaDon.getValueAt(tblHoaDon.getSelectedRow(), 0));
@@ -220,7 +220,7 @@ public class FormHoaDon extends javax.swing.JFrame {
         dateChooserNgayKetThuc = new com.toedter.calendar.JDateChooser();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        btnTim1 = new javax.swing.JButton();
+        btnReset = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblHoaDon = new javax.swing.JTable();
         jScrollPane2 = new javax.swing.JScrollPane();
@@ -282,12 +282,12 @@ public class FormHoaDon extends javax.swing.JFrame {
         jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel3.setText("Đến ngày:");
 
-        btnTim1.setBackground(new java.awt.Color(255, 255, 0));
-        btnTim1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        btnTim1.setText("Reset");
-        btnTim1.addActionListener(new java.awt.event.ActionListener() {
+        btnReset.setBackground(new java.awt.Color(255, 255, 0));
+        btnReset.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        btnReset.setText("Reset");
+        btnReset.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnTim1ActionPerformed(evt);
+                btnResetActionPerformed(evt);
             }
         });
 
@@ -307,7 +307,7 @@ public class FormHoaDon extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addComponent(btnTim)
                         .addGap(18, 18, 18)
-                        .addComponent(btnTim1))
+                        .addComponent(btnReset))
                     .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(29, Short.MAX_VALUE))
         );
@@ -324,7 +324,7 @@ public class FormHoaDon extends javax.swing.JFrame {
                     .addComponent(dateChooserNgayBatDau, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(lblTimKiemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(btnTim)
-                        .addComponent(btnTim1)))
+                        .addComponent(btnReset)))
                 .addContainerGap(34, Short.MAX_VALUE))
         );
 
@@ -537,9 +537,11 @@ public class FormHoaDon extends javax.swing.JFrame {
         clearForm();
     }//GEN-LAST:event_btnMoiActionPerformed
 
-    private void btnTim1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTim1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnTim1ActionPerformed
+    private void btnResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnResetActionPerformed
+        dateChooserNgayBatDau.setDate(null);
+        dateChooserNgayKetThuc.setDate(null);
+        fillTable();
+    }//GEN-LAST:event_btnResetActionPerformed
 
     /**
      * @param args the command line arguments
@@ -578,9 +580,9 @@ public class FormHoaDon extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnMoi;
+    private javax.swing.JButton btnReset;
     private javax.swing.JButton btnSua;
     private javax.swing.JButton btnTim;
-    private javax.swing.JButton btnTim1;
     private com.toedter.calendar.JDateChooser dateChooserNgayBatDau;
     private com.toedter.calendar.JDateChooser dateChooserNgayKetThuc;
     private com.toedter.calendar.JDateChooser dateChooserNgayTao;

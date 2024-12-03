@@ -41,6 +41,7 @@ import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import java.awt.*;
+import java.util.Collections;
 
 /**
  *
@@ -620,8 +621,9 @@ public class FormSanPham extends javax.swing.JFrame {
     }
 
     public void load() {
+        model.setRowCount(0);
         List<Product_Variant> list = productVariantDao.selectAll();
-
+        Collections.reverse(list);
         for (Product_Variant productVariant : list) {
 
             Object row[] = {productVariant.getId(),
@@ -641,7 +643,7 @@ public class FormSanPham extends javax.swing.JFrame {
             model.addRow(row);
 
         }
-
+        
         tblSanPham.setModel(model);
 
     }

@@ -2,6 +2,15 @@ package GiaoDien;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.print.PageFormat;
+import java.awt.print.Paper;
+import java.awt.print.Printable;
+import static java.awt.print.Printable.NO_SUCH_PAGE;
+import static java.awt.print.Printable.PAGE_EXISTS;
+import java.awt.print.PrinterException;
+import java.awt.print.PrinterJob;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,13 +47,62 @@ public class PrintBill extends JFrame {
         BillPanel billPanel = new BillPanel();
         JScrollPane scrollPane = new JScrollPane(billPanel);
         add(scrollPane, BorderLayout.CENTER);
+        billPanel.setBackground(Color.WHITE);
 
         // Nút in hóa đơn
         JPanel buttonPanel = new JPanel();
         JButton printButton = new JButton("Print");
         printButton.addActionListener(e -> {
-            JOptionPane.showMessageDialog(this, "Bill sent to printer!");
-            // Thêm logic in thực tế nếu cần
+            PrinterJob printerJob = PrinterJob.getPrinterJob();
+            printerJob.setPrintable(new Printable() {
+                @Override
+                public int print(Graphics g, PageFormat pageFormat, int pageIndex) {
+                    if (pageIndex > 0) {
+                        return NO_SUCH_PAGE;
+                    }
+
+                    Graphics2D g2d = (Graphics2D) g;
+
+                    // Cấu hình giấy và lề
+                    double paperWidth = 78 / 25.4 * 72; // 78mm in points
+                    double paperHeight = 700; // Chiều cao tạm thời, tự điều chỉnh theo nội dung
+                    double marginTop = 2 / 25.4 * 72; // 2cm
+                    double marginBottom = 1 / 25.4 * 72; // 1cm
+                    double marginLeft = 1 / 25.4 * 72; // 1cm
+                    double marginRight = 1 / 25.4 * 72; // 1cm
+
+                    Paper paper = new Paper();
+                    paper.setSize(paperWidth, paperHeight);
+                    paper.setImageableArea(marginLeft, marginTop, paperWidth - marginLeft - marginRight,
+                            paperHeight - marginTop - marginBottom);
+
+                    pageFormat.setPaper(paper);
+
+                    // Đặt góc tọa độ vẽ nội dung
+                    g2d.translate(pageFormat.getImageableX(), pageFormat.getImageableY());
+
+                    // Đặt font mặc định
+                    g2d.setFont(new Font("Monospaced", Font.PLAIN, 10));
+                    g2d.setColor(Color.BLACK);
+
+                    // Gọi phương thức vẽ nội dung từ `BillPanel`
+                    BillPanel billPanel = new BillPanel();
+                    billPanel.setSize((int) paperWidth, (int) paperHeight); // Đặt kích thước cho BillPanel
+                    billPanel.paint(g2d); // Vẽ nội dung panel trực tiếp vào Graphics2D
+
+                    return PAGE_EXISTS;
+                }
+            });
+
+// Hiển thị hộp thoại in và thực hiện in
+            if (printerJob.printDialog()) {
+                try {
+                    printerJob.print();
+                } catch (PrinterException ex) {
+                    ex.printStackTrace();
+                }
+            }
+
         });
         buttonPanel.add(printButton);
         add(buttonPanel, BorderLayout.SOUTH);
@@ -70,7 +128,7 @@ public class PrintBill extends JFrame {
 
         @Override
         public Dimension getPreferredSize() {
-            return new Dimension(400, 800); // Điều chỉnh kích thước nếu cần
+            return new Dimension(220, 800); // Điều chỉnh kích thước nếu cần
         }
     }
 
@@ -95,11 +153,10 @@ public class PrintBill extends JFrame {
     public void printInvoice(Graphics2D g2d, ImageIcon icon, List<String> itemName,
             List<Integer> quantity, List<Double> itemPrice,
             List<Double> subtotal, double totalAmount, double taxAmount, String date, String invoiceNumber) {
-        int y = 20; // Điểm y ban đầu
+        int y = 40; // Điểm y ban đầu
         int yShift = 20; // Khoảng cách dòng
-        int maxWidth = 250; // Chiều rộng tối đa của nội dung
-        int billWidth = 300; // Kích thước chiều rộng của bill
-        int centerX = billWidth / 2; // Tâm ngang của hóa đơn
+        int billWidth = 220; // Chiều rộng hóa đơn (78mm ~ 220 pixels)
+        int centerX = billWidth / 2; // Điểm giữa chiều ngang của hóa đơn
 
         // Font in đậm và kích thước lớn hơn cho tiêu đề
         Font boldFont = new Font("Monospaced", Font.BOLD, 12);
@@ -113,7 +170,7 @@ public class PrintBill extends JFrame {
 
         // Tiêu đề hóa đơn
         g2d.setFont(boldFont);
-        drawCenteredText(g2d, "CỬA HÀNG NƯỚC UỐNG BALANCE", centerX, y);
+        drawCenteredText(g2d, "CỬA HÀNG GIÀY BALANCE", centerX, y);
         y += yShift;
         drawCenteredText(g2d, "---------------------------", centerX, y);
         y += yShift;
@@ -122,45 +179,61 @@ public class PrintBill extends JFrame {
 
         // Thông tin cơ bản
         g2d.setFont(regularFont);
-        drawMultilineText(g2d, "Ngày: " + date, 10, y, maxWidth, yShift);
+        g2d.drawString("Ngày: " + date, 10, y);
         y += yShift;
-        drawMultilineText(g2d, "Số hóa đơn: " + invoiceNumber, 10, y, maxWidth, yShift);
+        g2d.drawString("Số hóa đơn: " + invoiceNumber, 10, y);
         y += yShift;
-        drawMultilineText(g2d, "Khách hàng: Khách mua lẻ", 10, y, maxWidth, yShift);
+        g2d.drawString("Khách hàng: Khách mua lẻ", 10, y);
         y += yShift;
-        drawMultilineText(g2d, "---------------------------", 10, y, maxWidth, yShift);
+        g2d.drawString("------------------------------", 10, y);
         y += yShift;
 
-        // Phần tiêu đề sản phẩm
+        // Tiêu đề bảng sản phẩm
         g2d.setFont(boldFont);
-        drawMultilineText(g2d, "STT | Sản Phẩm", 10, y, maxWidth, yShift);
-        y += yShift;
+        g2d.drawString("STT | Sản Phẩm", 10, y);
+        g2d.drawString("SL  Đơn Giá  Thành Tiền", 10, y + yShift);
+        y += yShift * 2;
 
-        // Chi tiết sản phẩm
+        // Danh sách sản phẩm
         g2d.setFont(regularFont);
         for (int i = 0; i < itemName.size(); i++) {
-            drawMultilineText(g2d, (i + 1) + "   " + formatText(itemName.get(i), 14)
-                    + "   " + quantity.get(i)
-                    + " X  " + String.format("%.0f", subtotal.get(i)), 10, y, maxWidth, yShift);
-            y += yShift;
+            g2d.drawString((i + 1) + " | " + itemName.get(i), 10, y);
+            g2d.drawString("    " + quantity.get(i) + " x " + String.format("%.0f", itemPrice.get(i)), 10, y + yShift);
+            g2d.drawString(String.format("%.0f", subtotal.get(i)), billWidth - 80, y + yShift);
+            y += yShift * 2;
         }
-        drawMultilineText(g2d, "---------------------------", 10, y, maxWidth, yShift);
+        g2d.drawString("------------------------------", 10, y);
         y += yShift;
 
         // Tổng tiền
         g2d.setFont(boldFont);
-        drawMultilineText(g2d, "Tổng cộng: " + String.format("%.0f", totalAmount), 10, y, maxWidth, yShift);
+        g2d.drawString("Tổng cộng: " + String.format("%.0f", totalAmount), 10, y);
         y += yShift;
 
-        // Ghi chú
+        g2d.drawString("*LƯU Ý:", 10, y);
+        y += yShift;
         g2d.setFont(regularFont);
-        drawMultilineText(g2d, "* Ghi chú:", 10, y, maxWidth, yShift);
+        g2d.drawString("1.Giá đã bao gồm thuế VAT và có", 10, y);
+        g2d.drawString("giá trị xuất hóa đơn trong ngày.", 10, y + yShift);
         y += yShift;
-        drawMultilineText(g2d, "1. Giá đã bao gồm thuế VAT.", 10, y, maxWidth, yShift);
-        y += yShift;
-        drawMultilineText(g2d, "2. Vui lòng giữ hóa đơn khi đổi trả.", 10, y, maxWidth, yShift);
-        y += yShift;
+        g2d.drawString("2.Vui lòng giữ hóa đơn khi đổi", 10, y + yShift);
+        g2d.drawString("trả hàng.", 10, y + yShift * 2);
+        y += yShift * 3;
 
+        //Thông tin liên hệ 
+        g2d.setFont(boldFont);
+        drawCenteredText(g2d, "CỬA HÀNG GIÀY BALANCE", centerX, y);
+        y += yShift;
+        
+        g2d.setFont(regularFont);
+        drawCenteredText(g2d,"Số 22,Thường Thạnh,Cái Răng,CT",centerX, y);
+        y+=yShift;
+        drawCenteredText(g2d,"ĐT: 0123456789",centerX, y);
+        y+=yShift;
+        drawCenteredText(g2d,"Facebook: Shop Giày Balance",centerX, y);
+        y+=yShift;
+        
+        
         // Lời cảm ơn
         g2d.setFont(boldFont);
         drawCenteredText(g2d, "CẢM ƠN QUÝ KHÁCH!", centerX, y);

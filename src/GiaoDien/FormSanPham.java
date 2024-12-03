@@ -561,7 +561,9 @@ public class FormSanPham extends javax.swing.JFrame {
 
             System.out.println(listSize);
             for (Size cd : listSize) {
-                modelKichThuoc.addElement(cd.getName());
+                if (cd.getActive()) {
+                    modelKichThuoc.addElement(cd.getName());
+                }
             }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Lỗi truy vấn dữ liệu!");
@@ -575,7 +577,9 @@ public class FormSanPham extends javax.swing.JFrame {
 
             System.out.println(listCategories);
             for (Categories cd : listCategories) {
-                modelLoai.addElement(cd.getName());
+                if (cd.getActive()) {
+                    modelLoai.addElement(cd.getName());
+                }
             }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Lỗi truy vấn dữ liệu!");
@@ -589,7 +593,9 @@ public class FormSanPham extends javax.swing.JFrame {
 
             System.out.println(listBrand);
             for (Brand cd : listBrand) {
-                modelThuongHieu.addElement(cd.getName());
+                if (cd.getActive()) {
+                    modelThuongHieu.addElement(cd.getName());
+                }
             }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Lỗi truy vấn dữ liệu!");
@@ -1078,7 +1084,7 @@ public class FormSanPham extends javax.swing.JFrame {
 
                 cell = row.createCell(9, CellType.STRING);
                 cell.setCellStyle(style);
-                cell.setCellValue("*"+tblSanPham.getValueAt(j, 10).toString()+"*");
+                cell.setCellValue("*" + tblSanPham.getValueAt(j, 10).toString() + "*");
 
                 i++;
             }

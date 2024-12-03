@@ -20,7 +20,7 @@ import javax.mail.internet.MimeMessage;
  * @author Admin
  */
 public class MailHelper {
-        public static String generateCode(int length) {
+    public static String generateCode(int length) {
         String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
         Random random = new Random();
         StringBuilder code = new StringBuilder();

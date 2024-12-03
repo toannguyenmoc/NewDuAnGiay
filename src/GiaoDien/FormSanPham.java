@@ -17,9 +17,12 @@ import com.sales.Entity.Color;
 import com.sales.Entity.Product;
 import com.sales.Entity.Product_Variant;
 import com.sales.Entity.Size;
+import com.sales.Utils.Placeholder;
 import com.sales.Utils.XImage;
 import com.sales.Utils.XValidate;
 import java.awt.Desktop;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.text.DecimalFormat;
@@ -37,6 +40,7 @@ import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import java.awt.*;
 
 /**
  *
@@ -87,6 +91,7 @@ public class FormSanPham extends javax.swing.JFrame {
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         btnXoa.setEnabled(false);
         btnSua.setEnabled(false);
+        Placeholder.Placeholder(txtTimKiem);
     }
 
     /**
@@ -907,13 +912,19 @@ public class FormSanPham extends javax.swing.JFrame {
         DefaultTableModel model = (DefaultTableModel) tblSanPham.getModel();
         StatisticDAO thongKe = new StatisticDAO();
         model.setRowCount(0);
-        List<Object[]> list = thongKe.timKiemSanPham(txtTimKiem.getText());
-        for (Object[] dong : list) {
-            Object row[] = {dong[0], dong[1], dong[2], dong[3], dong[4], dong[5],
-                dong[6], df.format(dong[7]), dong[8], dong[9].toString().equalsIgnoreCase("true") ? cknHoatDongKichThuoc.getText() : cknNgungHoatDongKickThuoc.getText(), dong[10], dong[11]
+        if (!txtTimKiem.getText().isEmpty()) {
+            List<Object[]> list = thongKe.timKiemSanPham(txtTimKiem.getText());
 
-            };
-            model.addRow(row);
+            if (list.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Không tìm thấy!");
+            }
+            for (Object[] dong : list) {
+                Object row[] = {dong[0], dong[1], dong[2], dong[3], dong[4], dong[5],
+                    dong[6], df.format(dong[7]), dong[8], dong[9].toString().equalsIgnoreCase("true") ? cknHoatDongKichThuoc.getText() : cknNgungHoatDongKickThuoc.getText(), dong[10], dong[11]
+
+                };
+                model.addRow(row);
+            }
         }
 
     }

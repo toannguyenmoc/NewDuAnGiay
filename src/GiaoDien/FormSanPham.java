@@ -91,7 +91,7 @@ public class FormSanPham extends javax.swing.JFrame {
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         btnXoa.setEnabled(false);
         btnSua.setEnabled(false);
-        Placeholder.Placeholder(txtTimKiem);
+        Placeholder.Placeholder(txtTimKiem,"Tìm kiếm ...");
     }
 
     /**

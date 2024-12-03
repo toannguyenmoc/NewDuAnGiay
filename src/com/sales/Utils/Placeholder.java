@@ -13,8 +13,8 @@ import javax.swing.JTextField;
  * @author Admin
  */
 public class Placeholder {
-        public static void Placeholder(JTextField text) {
-        String placeholder = "Tìm kiếm ...";
+        public static void Placeholder(JTextField text, String chuoiGoiY) {
+        String placeholder = chuoiGoiY;
 
         text.setText(placeholder);
         text.setForeground(new java.awt.Color(150, 150, 150));

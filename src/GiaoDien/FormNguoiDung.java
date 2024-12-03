@@ -127,7 +127,7 @@ public class FormNguoiDung extends javax.swing.JFrame {
             refresh();
             loadDataToTable();
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Xóa thất bại!");
+            JOptionPane.showMessageDialog(this, "Không được xóa nhân viên này!");
         }
 
     }

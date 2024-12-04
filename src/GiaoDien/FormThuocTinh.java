@@ -827,10 +827,6 @@ public class FormThuocTinh extends javax.swing.JFrame {
         }
     }
 
-    private void txtMauSacActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtMauSacActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtMauSacActionPerformed
-
     private void txtSizeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSizeActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtSizeActionPerformed
@@ -939,6 +935,10 @@ public class FormThuocTinh extends javax.swing.JFrame {
         // TODO add your handling code here:
         searchColor();
     }//GEN-LAST:event_btnTimKiemMauSacActionPerformed
+
+    private void txtMauSacActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtMauSacActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtMauSacActionPerformed
 
     /**
      * @param args the command line arguments

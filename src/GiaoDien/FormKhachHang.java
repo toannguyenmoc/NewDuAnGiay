@@ -6,6 +6,7 @@ package GiaoDien;
 
 import com.sales.DAO.CustomerDAO;
 import com.sales.Entity.Customer;
+import com.sales.Utils.DateHelper;
 import com.sales.Utils.XImage;
 import com.sales.Utils.XValidate;
 import java.awt.Color;
@@ -44,6 +45,8 @@ public class FormKhachHang extends javax.swing.JFrame {
         setIconImage(XImage.XImage());
         setTitle("PHẦN MỀM QUẢN LÝ GIÀY THỂ THAO");
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        chkNam.setSelected(true);
+       dateChooserNgaySinh.setDateFormatString("dd-MM-yyyy");
     }
 
     /**
@@ -607,7 +610,7 @@ public class FormKhachHang extends javax.swing.JFrame {
             String header[] = {"ID", "Họ tên", "Giới tính", "Điện thoại", "Email", "Ngày sinh", "Địa chỉ", "Trạng thái"};
             DefaultTableModel model = new DefaultTableModel(header, 0);
             for (Customer customer : list) {
-                model.addRow(new Object[]{customer.getId(), customer.getName(), customer.getGender() ? "Nam" : "Nữ", customer.getPhone(), customer.getEmail(), customer.getDateOfBirth(), customer.getAddress(), customer.getActive() ? "Khách VIP" : "Khách thường"});
+                model.addRow(new Object[]{customer.getId(), customer.getName(), customer.getGender() ? "Nam" : "Nữ", customer.getPhone(), customer.getEmail(), DateHelper.toString(customer.getDateOfBirth()), customer.getAddress(), customer.getActive() ? "Khách VIP" : "Khách thường"});
             }
             tblKhachHang.setModel(model);
         }
@@ -624,7 +627,7 @@ public class FormKhachHang extends javax.swing.JFrame {
         String header[] = {"ID", "Họ tên", "Giới tính", "Điện thoại", "Email", "Ngày sinh", "Địa chỉ", "Trạng thái"};
         DefaultTableModel model = new DefaultTableModel(header, 0);
         for (Customer customer : list) {
-            model.addRow(new Object[]{customer.getId(), customer.getName(), customer.getGender() ? "Nam" : "Nữ", customer.getPhone(), customer.getEmail(), customer.getDateOfBirth(), customer.getAddress(), customer.getActive() ? "Khách VIP" : "Khách thường"});
+            model.addRow(new Object[]{customer.getId(), customer.getName(), customer.getGender() ? "Nam" : "Nữ", customer.getPhone(), customer.getEmail(), DateHelper.toString(customer.getDateOfBirth()), customer.getAddress(), customer.getActive() ? "Khách VIP" : "Khách thường"});
         }
         tblKhachHang.setModel(model);
     }

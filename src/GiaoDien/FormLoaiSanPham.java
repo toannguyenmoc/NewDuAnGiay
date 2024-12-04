@@ -42,7 +42,7 @@ public class FormLoaiSanPham extends javax.swing.JFrame {
         btnSua.setEnabled(false);
         setTableTitle();
         loadTable();
-
+        cknHoatDong.setSelected(true);
     }
 
     /**
@@ -308,7 +308,6 @@ public class FormLoaiSanPham extends javax.swing.JFrame {
 
     public Categories getForm() {
 
-//       
         ctg.setName(txtTenLoai.getText());
         ctg.setActive(cknHoatDong.isSelected() ? true : false);
 

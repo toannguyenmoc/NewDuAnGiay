@@ -52,6 +52,8 @@ public class FormThuocTinh extends javax.swing.JFrame {
         btnXoaMauSac.setEnabled(false);
         btnSuaKichThuoc.setEnabled(false);
         btnXoaKichThuoc.setEnabled(false);
+        cknHoatDong.setSelected(true);
+        cknHoatDongKichThuoc.setSelected(true);
     }
 
     /**

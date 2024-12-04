@@ -38,6 +38,7 @@ public class FormKhachHang extends javax.swing.JFrame {
     public void init() {
         fillTable();
         dateChooserNgaySinh.getDateEditor().getUiComponent().setFocusable(false);
+        dateChooserNgaySinh.setDateFormatString("dd-MM-yyyy");
         btnSua.setEnabled(false);
         btnXoa.setEnabled(false);
         setLocationRelativeTo(null);

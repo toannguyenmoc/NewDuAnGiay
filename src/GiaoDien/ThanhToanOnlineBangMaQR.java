@@ -71,10 +71,10 @@ public class ThanhToanOnlineBangMaQR extends javax.swing.JFrame {
         return String.format("%04X", result & 0xFFFF);
     }
 
-    private static BufferedImage generateQRCodeImage(String data, int width, int height) throws Exception {
-        BitMatrix bitMatrix = new MultiFormatWriter().encode(data, BarcodeFormat.QR_CODE, width, height);
-        return MatrixToImageWriter.toBufferedImage(bitMatrix);
-    }
+//    private static BufferedImage generateQRCodeImage(String data, int width, int height) throws Exception {
+//        BitMatrix bitMatrix = new MultiFormatWriter().encode(data, BarcodeFormat.QR_CODE, width, height);
+//        return MatrixToImageWriter.toBufferedImage(bitMatrix);
+//    }
 
     public void createMaQR() {
         try {

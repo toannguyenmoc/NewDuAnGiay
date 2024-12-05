@@ -31,6 +31,7 @@ public class FormKhachHang extends javax.swing.JFrame {
     Customer customer = new Customer();
     XValidate xValidate = new XValidate();
     int index = 0;
+    SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
 
     public FormKhachHang() {
         initComponents();
@@ -44,12 +45,12 @@ public class FormKhachHang extends javax.swing.JFrame {
         Placeholder.Placeholder(txtTimKiem, "Tìm kiếm ...");
         btnSua.setEnabled(false);
         btnXoa.setEnabled(false);
+        chkNam.setSelected(true);
         setLocationRelativeTo(null);
         setIconImage(XImage.XImage());
         setTitle("PHẦN MỀM QUẢN LÝ GIÀY THỂ THAO");
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-        chkNam.setSelected(true);
-       dateChooserNgaySinh.setDateFormatString("dd-MM-yyyy");
+        dateChooserNgaySinh.setDateFormatString("dd-MM-yyyy");
     }
 
     /**
@@ -440,7 +441,9 @@ public class FormKhachHang extends javax.swing.JFrame {
         if (XValidate.checkHoTen(txtKhachHang)
                 && xValidate.checkSoDienThoaiKhachHang(txtSoDienThoai, "")
                 && XValidate.checkEmailKhachHang(txtEmail, "")
-                && XValidate.checkButtonGroup(bgrGioiTinh, "Vui lòng chọn giới tính")) {
+                && XValidate.checkButtonGroup(bgrGioiTinh, "Vui lòng chọn giới tính")
+                && xValidate.checkDiaChi(txtDiaChi)
+                && xValidate.checkNgaySinh(dateChooserNgaySinh)) {
             insert();
         }
     }//GEN-LAST:event_btnThemActionPerformed
@@ -448,9 +451,11 @@ public class FormKhachHang extends javax.swing.JFrame {
     private void btnSuaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSuaActionPerformed
         // TODO add your handling code here:
         if (XValidate.checkHoTen(txtKhachHang)
-                && xValidate.checkSoDienThoaiKhachHang(txtSoDienThoai, tblKhachHang.getValueAt(index, 0).toString())
-                && XValidate.checkEmailKhachHang(txtEmail, tblKhachHang.getValueAt(index, 0).toString())
-                && XValidate.checkButtonGroup(bgrGioiTinh, "Vui lòng chọn giới tính")) {
+                && xValidate.checkSoDienThoaiKhachHang(txtSoDienThoai, "")
+                && XValidate.checkEmailKhachHang(txtEmail, "")
+                && XValidate.checkButtonGroup(bgrGioiTinh, "Vui lòng chọn giới tính")
+                && xValidate.checkDiaChi(txtDiaChi)
+                && xValidate.checkNgaySinh(dateChooserNgaySinh)) {
             update();
         }
     }//GEN-LAST:event_btnSuaActionPerformed
@@ -620,21 +625,22 @@ public class FormKhachHang extends javax.swing.JFrame {
             fillTable();
             txtTimKiem.setText("");
         } else {
-            for (Customer customer : list) {
+            for (int i = list.size() - 1; i >= 0; i--) {
+                Customer customer = list.get(i);
+                String formattedDate = dateFormat.format(customer.getDateOfBirth());
                 model.addRow(new Object[]{
                     customer.getId(),
                     customer.getName(),
                     customer.getGender() ? "Nam" : "Nữ",
                     customer.getPhone(),
                     customer.getEmail(),
-                    customer.getDateOfBirth(),
+                    formattedDate,
                     customer.getAddress(),
                     customer.getActive() ? "Khách VIP" : "Khách thường"
                 });
-                model.addRow(new Object[]{customer.getId(), customer.getName(), customer.getGender() ? "Nam" : "Nữ", customer.getPhone(), customer.getEmail(), DateHelper.toString(customer.getDateOfBirth()), customer.getAddress(), customer.getActive() ? "Khách VIP" : "Khách thường"});
             }
+            tblKhachHang.setModel(model);
         }
-
     }
 
     public void fillTable() {
@@ -646,8 +652,6 @@ public class FormKhachHang extends javax.swing.JFrame {
         model.setRowCount(0);
         String header[] = {"ID", "Họ tên", "Giới tính", "Điện thoại", "Email", "Ngày sinh", "Địa chỉ", "Trạng thái"};
         DefaultTableModel model = new DefaultTableModel(header, 0);
-
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
 
         for (int i = list.size() - 1; i >= 0; i--) {
             Customer customer = list.get(i);
@@ -663,9 +667,8 @@ public class FormKhachHang extends javax.swing.JFrame {
                 customer.getAddress(),
                 customer.getActive() ? "Khách VIP" : "Khách thường"
             });
-            model.addRow(new Object[]{customer.getId(), customer.getName(), customer.getGender() ? "Nam" : "Nữ", customer.getPhone(), customer.getEmail(), DateHelper.toString(customer.getDateOfBirth()), customer.getAddress(), customer.getActive() ? "Khách VIP" : "Khách thường"});
-
         }
+
         tblKhachHang.setModel(model);
     }
 
@@ -707,5 +710,6 @@ public class FormKhachHang extends javax.swing.JFrame {
         bgrGioiTinh.clearSelection();
         btnSua.setEnabled(false);
         btnXoa.setEnabled(false);
+        chkNam.setSelected(true);
     }
 }

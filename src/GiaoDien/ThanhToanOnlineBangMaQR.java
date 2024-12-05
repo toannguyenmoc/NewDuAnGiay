@@ -4,10 +4,10 @@
  */
 package GiaoDien;
 
-import com.google.zxing.BarcodeFormat;
-import com.google.zxing.MultiFormatWriter;
-import com.google.zxing.client.j2se.MatrixToImageWriter;
-import com.google.zxing.common.BitMatrix;
+//import com.google.zxing.BarcodeFormat;
+//import com.google.zxing.MultiFormatWriter;
+//import com.google.zxing.client.j2se.MatrixToImageWriter;
+//import com.google.zxing.common.BitMatrix;
 import java.awt.image.BufferedImage;
 import javax.swing.ImageIcon;
 
@@ -20,7 +20,7 @@ public class ThanhToanOnlineBangMaQR extends javax.swing.JFrame {
     //int tongTien =Integer.parseInt(SessionStorage.getInstance().getAttribute("TongTien").toString());
     public ThanhToanOnlineBangMaQR() {
         initComponents();
-        createMaQR();
+//        createMaQR();
     }
 
     private static String generateQRData(String bankCode, String accountNumber, String accountName, int amount, String location, String content) {
@@ -65,33 +65,33 @@ public class ThanhToanOnlineBangMaQR extends javax.swing.JFrame {
         return String.format("%04X", result & 0xFFFF);
     }
 
-    private static BufferedImage generateQRCodeImage(String data, int width, int height) throws Exception {
-        BitMatrix bitMatrix = new MultiFormatWriter().encode(data, BarcodeFormat.QR_CODE, width, height);
-        return MatrixToImageWriter.toBufferedImage(bitMatrix);
-    }
+//    private static BufferedImage generateQRCodeImage(String data, int width, int height) throws Exception {
+//        BitMatrix bitMatrix = new MultiFormatWriter().encode(data, BarcodeFormat.QR_CODE, width, height);
+//        return MatrixToImageWriter.toBufferedImage(bitMatrix);
+//    }
 
-    public void createMaQR() {
-        try {
-            // Thông tin giao dịch
-            String bankCode = "970436"; // Mã ngân hàng Vietcombank
-            String accountNumber = "0146495917"; // Số tài khoản
-            String accountName = "TRAN THI KIM NGAN"; // Tên người nhận
-            int amount = 5000; // Số tiền (đơn vị: VND)
-            String location = "Can Tho"; // Vị trí
-            String content = "Thanh toan don hang"; // Nội dung giao dịch
-
-            // Tạo dữ liệu QR theo chuẩn VietQR
-            String qrData = generateQRData(bankCode, accountNumber, accountName, amount, location, content);
-
-            // Tạo QR Code và chuyển thành BufferedImage
-            BufferedImage qrImage = generateQRCodeImage(qrData, 160, 160);
-
-            // Hiển thị QR Code trên JLabel
-            lblMaQR.setIcon(new ImageIcon(qrImage));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+//    public void createMaQR() {
+//        try {
+//            // Thông tin giao dịch
+//            String bankCode = "970436"; // Mã ngân hàng Vietcombank
+//            String accountNumber = "0146495917"; // Số tài khoản
+//            String accountName = "TRAN THI KIM NGAN"; // Tên người nhận
+//            int amount = 5000; // Số tiền (đơn vị: VND)
+//            String location = "Can Tho"; // Vị trí
+//            String content = "Thanh toan don hang"; // Nội dung giao dịch
+//
+//            // Tạo dữ liệu QR theo chuẩn VietQR
+//            String qrData = generateQRData(bankCode, accountNumber, accountName, amount, location, content);
+//
+//            // Tạo QR Code và chuyển thành BufferedImage
+//            BufferedImage qrImage = generateQRCodeImage(qrData, 160, 160);
+//
+//            // Hiển thị QR Code trên JLabel
+//            lblMaQR.setIcon(new ImageIcon(qrImage));
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//    }
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents

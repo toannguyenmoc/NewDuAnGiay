@@ -3,9 +3,53 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/D:/NewDuAnGiay/src/GiaoDien/ThanhToanOnlineBangMaQR.java</file>
-            <file>file:/D:/NewDuAnGiay/src/GiaoDien/FormHoaDon.java</file>
-            <file>file:/D:/NewDuAnGiay/src/GiaoDien/FormTaoHoaDon.java</file>
+            <file>file:/D:/WebFall/NewDuAnGiay/src/GiaoDien/FormNguoiDung.java</file>
+            <file>file:/D:/WebFall/NewDuAnGiay/src/com/sales/Entity/Customer.java</file>
+            <file>file:/D:/WebFall/NewDuAnGiay/src/com/sales/DAO/ProductDAO.java</file>
+            <file>file:/D:/WebFall/NewDuAnGiay/src/com/sales/Entity/Color.java</file>
+            <file>file:/D:/WebFall/NewDuAnGiay/src/com/sales/Utils/XImage.java</file>
+            <file>file:/D:/WebFall/NewDuAnGiay/src/GiaoDien/FormHoaDon.java</file>
+            <file>file:/D:/WebFall/NewDuAnGiay/src/com/sales/DAO/UserDAO.java</file>
+            <file>file:/D:/WebFall/NewDuAnGiay/src/com/sales/Entity/User.java</file>
+            <file>file:/D:/WebFall/NewDuAnGiay/src/GiaoDien/FormGioiThieu.java</file>
+            <file>file:/D:/WebFall/NewDuAnGiay/src/com/sales/DAO/CategoriesDAO.java</file>
+            <file>file:/D:/WebFall/NewDuAnGiay/src/GiaoDien/FormThuocTinh.java</file>
+            <file>file:/D:/WebFall/NewDuAnGiay/src/GiaoDien/FormDoiMatKhau.java</file>
+            <file>file:/D:/WebFall/NewDuAnGiay/src/GiaoDien/FormManHinhChinh.java</file>
+            <file>file:/D:/WebFall/NewDuAnGiay/src/com/sales/Utils/MailHelper.java</file>
+            <file>file:/D:/WebFall/NewDuAnGiay/src/GiaoDien/FormKhachHang.java</file>
+            <file>file:/D:/WebFall/NewDuAnGiay/src/com/sales/DAO/ColorDAO.java</file>
+            <file>file:/D:/WebFall/NewDuAnGiay/src/com/sales/DAO/CustomerDAO.java</file>
+            <file>file:/D:/WebFall/NewDuAnGiay/src/com/sales/Entity/Order.java</file>
+            <file>file:/D:/WebFall/NewDuAnGiay/src/GiaoDien/FormManHinhChao.java</file>
+            <file>file:/D:/WebFall/NewDuAnGiay/src/com/sales/Entity/Order_Detail.java</file>
+            <file>file:/D:/WebFall/NewDuAnGiay/src/GiaoDien/FormQuenMatKhau.java</file>
+            <file>file:/D:/WebFall/NewDuAnGiay/src/com/sales/Entity/Brand.java</file>
+            <file>file:/D:/WebFall/NewDuAnGiay/src/GiaoDien/FormTaoHoaDon.java</file>
+            <file>file:/D:/WebFall/NewDuAnGiay/src/com/sales/Utils/DateHelper.java</file>
+            <file>file:/D:/WebFall/NewDuAnGiay/src/com/sales/Entity/Size.java</file>
+            <file>file:/D:/WebFall/NewDuAnGiay/src/GiaoDien/FormLoaiSanPham.java</file>
+            <file>file:/D:/WebFall/NewDuAnGiay/src/com/sales/Utils/XValidate.java</file>
+            <file>file:/D:/WebFall/NewDuAnGiay/src/com/sales/DAO/SaleDAO.java</file>
+            <file>file:/D:/WebFall/NewDuAnGiay/src/com/sales/DAO/BrandDAO.java</file>
+            <file>file:/D:/WebFall/NewDuAnGiay/src/com/sales/DAO/StatisticDAO.java</file>
+            <file>file:/D:/WebFall/NewDuAnGiay/src/com/sales/Entity/Categories.java</file>
+            <file>file:/D:/WebFall/NewDuAnGiay/src/GiaoDien/FormSanPham.java</file>
+            <file>file:/D:/WebFall/NewDuAnGiay/src/com/sales/Entity/Product_Variant.java</file>
+            <file>file:/D:/WebFall/NewDuAnGiay/src/com/sales/Utils/Auth.java</file>
+            <file>file:/D:/WebFall/NewDuAnGiay/src/GiaoDien/FormHuongDan.java</file>
+            <file>file:/D:/WebFall/NewDuAnGiay/src/com/sales/Utils/JdbcHelper.java</file>
+            <file>file:/D:/WebFall/NewDuAnGiay/src/com/sales/DAO/Order_DetailDAO.java</file>
+            <file>file:/D:/WebFall/NewDuAnGiay/src/com/sales/DAO/SizeDAO.java</file>
+            <file>file:/D:/WebFall/NewDuAnGiay/src/GiaoDien/FormDangNhap.java</file>
+            <file>file:/D:/WebFall/NewDuAnGiay/src/GiaoDien/FormThuongHieu.java</file>
+            <file>file:/D:/WebFall/NewDuAnGiay/src/GiaoDien/PrintBill.java</file>
+            <file>file:/D:/WebFall/NewDuAnGiay/src/com/sales/DAO/OrderDAO.java</file>
+            <file>file:/D:/WebFall/NewDuAnGiay/src/com/sales/Entity/Product.java</file>
+            <file>file:/D:/WebFall/NewDuAnGiay/src/com/sales/DAO/Product_VariantDAO.java</file>
+            <file>file:/D:/WebFall/NewDuAnGiay/src/GiaoDien/FormTongHopThongKe.java</file>
+            <file>file:/D:/WebFall/NewDuAnGiay/src/com/sales/Utils/Placeholder.java</file>
+            <file>file:/D:/WebFall/NewDuAnGiay/src/GiaoDien/ThanhToanOnlineBangMaQR.java</file>
         </group>
     </open-files>
 </project-private>

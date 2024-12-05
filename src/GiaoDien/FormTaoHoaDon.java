@@ -540,7 +540,7 @@ public class FormTaoHoaDon extends javax.swing.JFrame {
                         .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 592, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                        .addGap(0, 33, Short.MAX_VALUE)
+                        .addGap(0, 30, Short.MAX_VALUE)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -553,7 +553,7 @@ public class FormTaoHoaDon extends javax.swing.JFrame {
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(26, 26, 26)
                         .addComponent(btnXoaSanPham)
-                        .addGap(91, 91, 91))))
+                        .addGap(94, 94, 94))))
         );
 
         jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 70, 900, 730));
@@ -660,6 +660,11 @@ public class FormTaoHoaDon extends javax.swing.JFrame {
         buttonGroup1.add(chkThanhToanOnline);
         chkThanhToanOnline.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         chkThanhToanOnline.setText("Thanh toán online");
+        chkThanhToanOnline.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                chkThanhToanOnlineActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -821,17 +826,19 @@ public class FormTaoHoaDon extends javax.swing.JFrame {
     private void txtTienKhachDuaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtTienKhachDuaKeyReleased
         int tienKhachDua = 0;
         try {
-            tienKhachDua = Integer.parseInt(txtTienKhachDua.getText());
+            if (!txtTienKhachDua.getText().equals("")) {
+                tienKhachDua = Integer.parseInt(txtTienKhachDua.getText());
+            }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Tiền khách đưa không đúng định dạng");
+            txtTienKhachDua.setText("");
         }
-        int tienThua =tienKhachDua  - Integer.parseInt(txtTongTien.getText());
-            if (tienThua > 0) {
-                txtTienThua.setText(tienThua + "");
-            } else {
-                txtTienThua.setText(0 + "");
-            }
-        
+        int tienThua = tienKhachDua - Integer.parseInt(txtTongTien.getText().replaceAll(",", ""));
+        if (tienThua > 0) {
+            txtTienThua.setText(tienThua + "");
+        } else {
+            txtTienThua.setText(0 + "");
+        }
 
 
     }//GEN-LAST:event_txtTienKhachDuaKeyReleased
@@ -842,6 +849,10 @@ public class FormTaoHoaDon extends javax.swing.JFrame {
         new FormKhachHang().setVisible(true);
         setVisible(false);
     }//GEN-LAST:event_btnThemKhachHangActionPerformed
+
+    private void chkThanhToanOnlineActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkThanhToanOnlineActionPerformed
+        new ThanhToanOnlineBangMaQR().setVisible(true);
+    }//GEN-LAST:event_chkThanhToanOnlineActionPerformed
 
     /**
      * @param args the command line arguments

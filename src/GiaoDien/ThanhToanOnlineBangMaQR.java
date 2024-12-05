@@ -8,8 +8,10 @@ import com.google.zxing.BarcodeFormat;
 import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.client.j2se.MatrixToImageWriter;
 import com.google.zxing.common.BitMatrix;
+import com.sales.Utils.XImage;
 import java.awt.image.BufferedImage;
 import javax.swing.ImageIcon;
+import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
 
 /**
  *
@@ -20,6 +22,10 @@ public class ThanhToanOnlineBangMaQR extends javax.swing.JFrame {
     //int tongTien =Integer.parseInt(SessionStorage.getInstance().getAttribute("TongTien").toString());
     public ThanhToanOnlineBangMaQR() {
         initComponents();
+        setLocationRelativeTo(null);
+        setIconImage(XImage.XImage());
+        setTitle("PHẦN MỀM QUẢN LÝ GIÀY THỂ THAO");
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         createMaQR();
     }
 
@@ -84,7 +90,7 @@ public class ThanhToanOnlineBangMaQR extends javax.swing.JFrame {
             String qrData = generateQRData(bankCode, accountNumber, accountName, amount, location, content);
 
             // Tạo QR Code và chuyển thành BufferedImage
-            BufferedImage qrImage = generateQRCodeImage(qrData, 160, 160);
+            BufferedImage qrImage = generateQRCodeImage(qrData, 166, 166);
 
             // Hiển thị QR Code trên JLabel
             lblMaQR.setIcon(new ImageIcon(qrImage));
@@ -126,7 +132,7 @@ public class ThanhToanOnlineBangMaQR extends javax.swing.JFrame {
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(lblMaQR, javax.swing.GroupLayout.DEFAULT_SIZE, 157, Short.MAX_VALUE)
+            .addComponent(lblMaQR, javax.swing.GroupLayout.DEFAULT_SIZE, 166, Short.MAX_VALUE)
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

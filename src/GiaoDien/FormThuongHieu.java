@@ -51,6 +51,7 @@ public class FormThuongHieu extends javax.swing.JFrame {
         setTableTitle();
         btnXoa.setEnabled(false);
         btnSua.setEnabled(false);
+        cknHoatDong.setSelected(true);
     }
 
     /**

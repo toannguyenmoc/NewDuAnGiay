@@ -500,4 +500,17 @@ public class XValidate {
         return tien != null && tien.matches(pattern);
     
     }
+    
+    public boolean checkMaCodeSanPham(JTextField maCode ){
+        String code = maCode.getText().trim();
+        List<Product_Variant> list = new Product_VariantDAO().selectAll();
+        
+        for(Product_Variant product_Variant:list){
+            if(product_Variant.getCode().equals(code)){
+                JOptionPane.showMessageDialog(maCode.getRootPane(), "Mã code đã tồn tại!");
+                return false;
+            }
+        }
+        return true;
+    }
 }

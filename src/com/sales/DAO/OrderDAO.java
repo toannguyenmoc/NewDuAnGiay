@@ -105,7 +105,7 @@ public class OrderDAO extends SaleDAO<Order, Integer> {
                 entity[5] = rs.getInt("Status");
                 list.add(entity);
             }
-            return list;
+            return list.reversed();
         } catch (SQLException ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
             return null;

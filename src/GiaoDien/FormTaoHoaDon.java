@@ -46,6 +46,11 @@ public class FormTaoHoaDon extends javax.swing.JFrame {
     User user = Auth.user;
     CustomerDAO customerDAO = new CustomerDAO();
     Order order;
+    Integer idNow = 0;
+
+    public Integer getIdNow() {
+        return idNow;
+    }
 
     public FormTaoHoaDon() {
         initComponents();
@@ -102,6 +107,7 @@ public class FormTaoHoaDon extends javax.swing.JFrame {
 
         // Cập nhật giao diện
         txtMaHoaDon.setText("Mã hóa đơn: " + order.getId());
+        idNow = order.getId();
     }
 
     // Phương thức tạo hóa đơn mới

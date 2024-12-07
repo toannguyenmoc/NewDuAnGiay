@@ -97,12 +97,12 @@ public class Product_VariantDAO extends SaleDAO<Product_Variant, Integer> {
         return list.get(0);
     }
     
-    public Product_Variant selectName_ByID(Integer id) {
+    public List<Product_Variant> selectNameByID(Integer id) {
         List<Product_Variant> list = selectBySQL(SELECT_NAME_BYID, id);
         if (list.isEmpty()) {
             return null;
         }
-        return list.get(0);
+        return list;
     }
 
     @Override

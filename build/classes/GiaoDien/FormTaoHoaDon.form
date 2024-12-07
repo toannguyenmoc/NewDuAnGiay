@@ -641,6 +641,9 @@
                     </Property>
                     <Property name="text" type="java.lang.String" value="G&#x1eed;i mail"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnGuiMailActionPerformed"/>
+                  </Events>
                 </Component>
               </SubComponents>
             </Container>

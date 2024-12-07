@@ -26,6 +26,7 @@ public class Product_VariantDAO extends SaleDAO<Product_Variant, Integer> {
     String SELECT_BYID_SQL = "SELECT * FROM PRODUCT_VARIANTS WHERE ID = ?";
     String SELECT_BYSQL_SQL = "";
     String SELECT_BY_OBJECT = "EXEC sp_SearchSanPham ?";
+    String SELECT_NAME_BYID = "EXEC GetProductDetailsByVariantId ?";
   
      
     
@@ -90,6 +91,14 @@ public class Product_VariantDAO extends SaleDAO<Product_Variant, Integer> {
     @Override
     public Product_Variant selectByID(Integer id) {
         List<Product_Variant> list = selectBySQL(SELECT_BYID_SQL, id);
+        if (list.isEmpty()) {
+            return null;
+        }
+        return list.get(0);
+    }
+    
+    public Product_Variant selectName_ByID(Integer id) {
+        List<Product_Variant> list = selectBySQL(SELECT_NAME_BYID, id);
         if (list.isEmpty()) {
             return null;
         }

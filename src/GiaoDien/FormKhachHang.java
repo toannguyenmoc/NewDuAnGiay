@@ -6,10 +6,11 @@ package GiaoDien;
 
 import com.sales.DAO.CustomerDAO;
 import com.sales.Entity.Customer;
+import com.sales.Utils.Placeholder;
 import com.sales.Utils.DateHelper;
 import com.sales.Utils.XImage;
 import com.sales.Utils.XValidate;
-import java.awt.Color;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
@@ -30,6 +31,7 @@ public class FormKhachHang extends javax.swing.JFrame {
     Customer customer = new Customer();
     XValidate xValidate = new XValidate();
     int index = 0;
+    SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
 
     public FormKhachHang() {
         initComponents();
@@ -39,14 +41,16 @@ public class FormKhachHang extends javax.swing.JFrame {
     public void init() {
         fillTable();
         dateChooserNgaySinh.getDateEditor().getUiComponent().setFocusable(false);
+        dateChooserNgaySinh.setDateFormatString("dd-MM-yyyy");
+        Placeholder.Placeholder(txtTimKiem, "Tìm kiếm ...");
         btnSua.setEnabled(false);
         btnXoa.setEnabled(false);
+        chkNam.setSelected(true);
         setLocationRelativeTo(null);
         setIconImage(XImage.XImage());
         setTitle("PHẦN MỀM QUẢN LÝ GIÀY THỂ THAO");
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-        chkNam.setSelected(true);
-       dateChooserNgaySinh.setDateFormatString("dd-MM-yyyy");
+        dateChooserNgaySinh.setDateFormatString("dd-MM-yyyy");
     }
 
     /**
@@ -211,7 +215,6 @@ public class FormKhachHang extends javax.swing.JFrame {
 
         txtTimKiem.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         txtTimKiem.setForeground(new java.awt.Color(204, 204, 204));
-        txtTimKiem.setText("Tìm kiếm......");
         txtTimKiem.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 txtTimKiemMouseClicked(evt);
@@ -429,6 +432,7 @@ public class FormKhachHang extends javax.swing.JFrame {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        fillTable();
         setForm();
     }//GEN-LAST:event_tblKhachHangMouseClicked
 
@@ -437,7 +441,9 @@ public class FormKhachHang extends javax.swing.JFrame {
         if (XValidate.checkHoTen(txtKhachHang)
                 && xValidate.checkSoDienThoaiKhachHang(txtSoDienThoai, "")
                 && XValidate.checkEmailKhachHang(txtEmail, "")
-                && XValidate.checkButtonGroup(bgrGioiTinh, "Vui lòng chọn giới tính")) {
+                && XValidate.checkButtonGroup(bgrGioiTinh, "Vui lòng chọn giới tính")
+                && xValidate.checkDiaChi(txtDiaChi)
+                && xValidate.checkNgaySinh(dateChooserNgaySinh)) {
             insert();
         }
     }//GEN-LAST:event_btnThemActionPerformed
@@ -445,9 +451,11 @@ public class FormKhachHang extends javax.swing.JFrame {
     private void btnSuaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSuaActionPerformed
         // TODO add your handling code here:
         if (XValidate.checkHoTen(txtKhachHang)
-                && xValidate.checkSoDienThoaiKhachHang(txtSoDienThoai, tblKhachHang.getValueAt(index, 0).toString())
-                && XValidate.checkEmailKhachHang(txtEmail, tblKhachHang.getValueAt(index, 0).toString())
-                && XValidate.checkButtonGroup(bgrGioiTinh, "Vui lòng chọn giới tính")) {
+                && xValidate.checkSoDienThoaiKhachHang(txtSoDienThoai, "")
+                && XValidate.checkEmailKhachHang(txtEmail, "")
+                && XValidate.checkButtonGroup(bgrGioiTinh, "Vui lòng chọn giới tính")
+                && xValidate.checkDiaChi(txtDiaChi)
+                && xValidate.checkNgaySinh(dateChooserNgaySinh)) {
             update();
         }
     }//GEN-LAST:event_btnSuaActionPerformed
@@ -468,7 +476,7 @@ public class FormKhachHang extends javax.swing.JFrame {
     }//GEN-LAST:event_btnTimKiemActionPerformed
 
     private void txtTimKiemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTimKiemActionPerformed
-        // TODO add your handling code here:
+
     }//GEN-LAST:event_txtTimKiemActionPerformed
 
     private void txtTimKiemKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtTimKiemKeyPressed
@@ -479,22 +487,19 @@ public class FormKhachHang extends javax.swing.JFrame {
     private void txtTimKiemKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtTimKiemKeyReleased
         // TODO add your handling code here:
         if (txtTimKiem.getText().isEmpty()) {
+            model.setRowCount(0);
             fillTable();
         }
     }//GEN-LAST:event_txtTimKiemKeyReleased
 
     private void txtTimKiemMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtTimKiemMouseEntered
         // TODO add your handling code here:
-        if (txtTimKiem.getText().isEmpty()) {
-            txtTimKiem.setText("Tìm kiếm......");
-            txtTimKiem.setForeground(new Color(204, 204, 204));
-        }
+
     }//GEN-LAST:event_txtTimKiemMouseEntered
 
     private void txtTimKiemMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtTimKiemMouseClicked
         // TODO add your handling code here:
-        txtTimKiem.setText("");
-        txtTimKiem.setForeground(Color.black);
+
     }//GEN-LAST:event_txtTimKiemMouseClicked
 
     /**
@@ -610,31 +615,60 @@ public class FormKhachHang extends javax.swing.JFrame {
     }
 
     public void search() {
-        this.model.setRowCount(0);
-        List<Customer> list = this.customerDAO.selectByObject(this.txtTimKiem.getText());
-        if (list != null) {
-            String header[] = {"ID", "Họ tên", "Giới tính", "Điện thoại", "Email", "Ngày sinh", "Địa chỉ", "Trạng thái"};
-            DefaultTableModel model = new DefaultTableModel(header, 0);
-            for (Customer customer : list) {
-                model.addRow(new Object[]{customer.getId(), customer.getName(), customer.getGender() ? "Nam" : "Nữ", customer.getPhone(), customer.getEmail(), DateHelper.toString(customer.getDateOfBirth()), customer.getAddress(), customer.getActive() ? "Khách VIP" : "Khách thường"});
+        List<Customer> list = customerDAO.selectByObject(txtTimKiem.getText().trim());
+
+        DefaultTableModel model = (DefaultTableModel) tblKhachHang.getModel();
+        model.setRowCount(0);
+
+        if (list == null || list.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Không tìm thấy dữ liệu!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+            fillTable();
+            txtTimKiem.setText("");
+        } else {
+            for (int i = list.size() - 1; i >= 0; i--) {
+                Customer customer = list.get(i);
+                String formattedDate = dateFormat.format(customer.getDateOfBirth());
+                model.addRow(new Object[]{
+                    customer.getId(),
+                    customer.getName(),
+                    customer.getGender() ? "Nam" : "Nữ",
+                    customer.getPhone(),
+                    customer.getEmail(),
+                    formattedDate,
+                    customer.getAddress(),
+                    customer.getActive() ? "Khách VIP" : "Khách thường"
+                });
             }
             tblKhachHang.setModel(model);
         }
-
     }
 
     public void fillTable() {
-
         try {
             list = customerDAO.selectAll();
         } catch (Exception e) {
             e.printStackTrace();
         }
+        model.setRowCount(0);
         String header[] = {"ID", "Họ tên", "Giới tính", "Điện thoại", "Email", "Ngày sinh", "Địa chỉ", "Trạng thái"};
         DefaultTableModel model = new DefaultTableModel(header, 0);
-        for (Customer customer : list) {
-            model.addRow(new Object[]{customer.getId(), customer.getName(), customer.getGender() ? "Nam" : "Nữ", customer.getPhone(), customer.getEmail(), DateHelper.toString(customer.getDateOfBirth()), customer.getAddress(), customer.getActive() ? "Khách VIP" : "Khách thường"});
+
+        for (int i = list.size() - 1; i >= 0; i--) {
+            Customer customer = list.get(i);
+            String formattedDate = dateFormat.format(customer.getDateOfBirth());
+
+            model.addRow(new Object[]{
+                customer.getId(),
+                customer.getName(),
+                customer.getGender() ? "Nam" : "Nữ",
+                customer.getPhone(),
+                customer.getEmail(),
+                formattedDate,
+                customer.getAddress(),
+                customer.getActive() ? "Khách VIP" : "Khách thường"
+            });
         }
+
         tblKhachHang.setModel(model);
     }
 
@@ -665,14 +699,17 @@ public class FormKhachHang extends javax.swing.JFrame {
         txtDiaChi.setText(customer.getAddress());
         btnSua.setEnabled(true);
         btnXoa.setEnabled(true);
+
     }
 
     public void clearForm() {
         customer = new Customer();
         customer.setGender(false);
         setForm();
+        fillTable();
         bgrGioiTinh.clearSelection();
         btnSua.setEnabled(false);
         btnXoa.setEnabled(false);
+        chkNam.setSelected(true);
     }
 }

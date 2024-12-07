@@ -77,7 +77,7 @@ public class FormManHinhChao extends javax.swing.JFrame {
 
         jLabel2.setFont(new java.awt.Font("Tempus Sans ITC", 1, 28)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel2.setText("TÊN SHOP BÁN GIÀY");
+        jLabel2.setText("SHOP GIÀY BALANCE");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);

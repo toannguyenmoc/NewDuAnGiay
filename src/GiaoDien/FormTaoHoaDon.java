@@ -338,7 +338,7 @@ public class FormTaoHoaDon extends javax.swing.JFrame {
                 order.setUserId(idUser);
                 order.setCustomersId(idCustomer);
                 order.setCreateDate(createDate);
-                order.setTotal(Integer.parseInt(txtTongTien.getText()));
+                order.setTotal(Integer.parseInt(txtTongTien.getText().replaceAll(",", "")));
                 order.setStatus(0);
 
                 orderDAO.update(order);
@@ -672,6 +672,11 @@ public class FormTaoHoaDon extends javax.swing.JFrame {
         btnGuiMail.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         btnGuiMail.setForeground(new java.awt.Color(0, 102, 102));
         btnGuiMail.setText("Gửi mail");
+        btnGuiMail.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGuiMailActionPerformed(evt);
+            }
+        });
         pnlChucNang.add(btnGuiMail);
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
@@ -854,6 +859,10 @@ public class FormTaoHoaDon extends javax.swing.JFrame {
     private void chkThanhToanOnlineActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkThanhToanOnlineActionPerformed
         new ThanhToanOnlineBangMaQR().setVisible(true);
     }//GEN-LAST:event_chkThanhToanOnlineActionPerformed
+
+    private void btnGuiMailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuiMailActionPerformed
+        new FormInBill().setVisible(true);
+    }//GEN-LAST:event_btnGuiMailActionPerformed
 
     /**
      * @param args the command line arguments

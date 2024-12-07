@@ -453,6 +453,22 @@ public class XValidate {
 
     }
     
+     public static boolean checkDiaChi(JTextField text) {
+        String diaChi = text.getText();
+        if (diaChi.isEmpty()) {
+            JOptionPane.showMessageDialog(text.getRootPane(), "Vui lòng nhập địa chỉ");
+            return false;
+        }
+        return true;
+    }
+     
+   public static boolean checkNgaySinh(JDateChooser text) {
+    if (text.getDate() == null) { // Check if a date has been selected
+        JOptionPane.showMessageDialog(text.getRootPane(), "Vui lòng chọn ngày sinh");
+        return false;
+    }
+    return true;
+}
     
     public static boolean checkEmailKhachHang(JTextField text, String maKH) {
         String email = text.getText();
@@ -483,5 +499,18 @@ public class XValidate {
         // Kiểm tra chuỗi có khớp với biểu thức hay không
         return tien != null && tien.matches(pattern);
     
+    }
+    
+    public boolean checkMaCodeSanPham(JTextField maCode ){
+        String code = maCode.getText().trim();
+        List<Product_Variant> list = new Product_VariantDAO().selectAll();
+        
+        for(Product_Variant product_Variant:list){
+            if(product_Variant.getCode().equals(code)){
+                JOptionPane.showMessageDialog(maCode.getRootPane(), "Mã code đã tồn tại!");
+                return false;
+            }
+        }
+        return true;
     }
 }

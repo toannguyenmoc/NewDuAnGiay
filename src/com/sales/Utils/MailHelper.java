@@ -59,8 +59,9 @@ public class MailHelper {
             message.setFrom(new InternetAddress(senderEmail));
             message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(mailNguoiNhan));
             message.setSubject(titleEmail);
-            String emailContent = contentEmail + verificationCode;
-            message.setText(emailContent);
+            String emailContent = (contentEmail + verificationCode);
+            message.setContent(emailContent, "text/html;charset=utf-8");
+            //message.setText(emailContent);
 
             Transport.send(message);
             System.out.println("Email đã được gửi thành công.");

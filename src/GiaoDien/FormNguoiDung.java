@@ -6,10 +6,12 @@ package GiaoDien;
 
 import com.sales.DAO.UserDAO;
 import com.sales.Entity.User;
+import com.sales.Utils.Auth;
 import com.sales.Utils.MailHelper;
 import com.sales.Utils.XImage;
 import com.sales.Utils.XValidate;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
@@ -79,16 +81,23 @@ public class FormNguoiDung extends javax.swing.JFrame {
     }
 
     public void loadDataToTable() {
-
         try {
             list = userDAO.selectAll();
         } catch (Exception e) {
             e.printStackTrace();
         }
+        Collections.reverse(list);
         String header[] = {"ID", "Họ tên", "Quyền", "Giới tính", "Điện thoại", "Email", "Địa chỉ", "Trạng thái"};
         DefaultTableModel model = new DefaultTableModel(header, 0);
         for (User user : list) {
-            model.addRow(new Object[]{user.getId(), user.getFullName(), user.getRole() ? "Quản lý" : "Nhân viên", user.getGender() ? "Nam" : "Nữ", user.getPhone(), user.getEmail(), user.getAddress(), user.getActive() ? "Đang hoạt động" : "Ngừng hoạt động"});
+            if (user.getActive()) {
+                model.addRow(new Object[]{user.getId(), user.getFullName(), user.getRole() ? "Quản lý" : "Nhân viên", user.getGender() ? "Nam" : "Nữ", user.getPhone(), user.getEmail(), user.getAddress(), user.getActive() ? "Đang hoạt động" : "Ngừng hoạt động"});
+            }
+        }
+        for (User user : list) {
+            if (!user.getActive()) {
+                model.addRow(new Object[]{user.getId(), user.getFullName(), user.getRole() ? "Quản lý" : "Nhân viên", user.getGender() ? "Nam" : "Nữ", user.getPhone(), user.getEmail(), user.getAddress(), user.getActive() ? "Đang hoạt động" : "Ngừng hoạt động"});
+            }
         }
         tblNguoiDung.setModel(model);
     }
@@ -104,9 +113,7 @@ public class FormNguoiDung extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Thêm thất bại!");
             e.printStackTrace();
         }
-
     }
-
     public void update(User user) {
         try {
             userDAO.update(user);
@@ -148,17 +155,17 @@ public class FormNguoiDung extends javax.swing.JFrame {
         txtEmail.setText(user.getEmail());
         if (user.getGender()) {
             chkNam.setSelected(true);
-        } else if(user.getGender() == false){
+        } else if (user.getGender() == false) {
             chkNu.setSelected(true);
         }
         if (user.getRole()) {
             cboQuyen.setSelectedItem("Quản lý");
-        } else if(user.getRole() == false) {
+        } else if (user.getRole() == false) {
             cboQuyen.setSelectedItem("Nhân viên");
         }
         if (user.getActive()) {
             chkDangHoatDong.setSelected(true);
-        } else if(user.getActive() == false){
+        } else if (user.getActive() == false) {
             chkNgungHoatDong.setSelected(true);
         }
     }
@@ -573,7 +580,7 @@ public class FormNguoiDung extends javax.swing.JFrame {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        
+
         setForm();
     }//GEN-LAST:event_tblNguoiDungMouseClicked
 
@@ -599,7 +606,7 @@ public class FormNguoiDung extends javax.swing.JFrame {
     }//GEN-LAST:event_btnThemActionPerformed
 
     private void btnSuaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSuaActionPerformed
-        if(user.getId() != 0){
+        if (user.getId() != 0) {
             if (XValidate.checkHoTen(txtTenNguoiDung)
                     && XValidate.checkDienThoai(txtSoDienThoai)
                     && XValidate.checkEmailNhanVien(txtEmail, user.getId() + "")
@@ -613,17 +620,20 @@ public class FormNguoiDung extends javax.swing.JFrame {
                 update(user);
             }
         }
-        
+
     }//GEN-LAST:event_btnSuaActionPerformed
 
     private void btnXoaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXoaActionPerformed
-        if(user.getId() != 0){
-           int check = JOptionPane.showConfirmDialog(this, "Xóa", "Xác nhận xóa", JOptionPane.YES_NO_OPTION);
-        if (check == 0) {
-            delete(user);
-           }
-       }
-        
+        if (user.getId() != 0) {
+            int check = JOptionPane.showConfirmDialog(this, "Xóa", "Xác nhận xóa", JOptionPane.YES_NO_OPTION);
+            if (check == 0) {
+                if (Auth.user.getId() == user.getId()) {
+                    JOptionPane.showMessageDialog(this, "Không được xóa chính mình!");
+                } else {
+                    delete(user);
+                }
+            }
+        }
     }//GEN-LAST:event_btnXoaActionPerformed
 
     private void btnMoiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMoiActionPerformed

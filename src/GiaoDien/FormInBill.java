@@ -4,72 +4,82 @@
  */
 package GiaoDien;
 
+import com.sales.DAO.OrderDAO;
+import com.sales.DAO.Order_DetailDAO;
 import com.sales.DAO.Product_VariantDAO;
 import com.sales.Entity.Order;
 import com.sales.Entity.Order_Detail;
 import com.sales.Utils.MailHelper;
+import com.sales.Utils.SessionStorage;
 import com.sales.Utils.XImage;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
  * @author Admin
  */
 public class FormInBill extends javax.swing.JFrame {
-    
-    String idIn;
-    ArrayList<Order_Detail> list;
-    Order totalIn;
-    Product_VariantDAO product_VariantDAO = new Product_VariantDAO();
 
+    List<Order_Detail> list;
+    Order_DetailDAO order_DetailDAO = new Order_DetailDAO();
+    Product_VariantDAO product_VariantDAO = new Product_VariantDAO();
+    OrderDAO orderDAO = new OrderDAO();
+    FormTaoHoaDon idNow = new FormTaoHoaDon();
+    Integer idBill = idNow.getIdNow()-1;
+    Integer totalIn = orderDAO.selectByID(idBill).getTotal();
     /**
      * Creates new form FormInBill
      */
     public FormInBill() {
         initComponents();
-        bill_print();
+        
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
         setIconImage(XImage.XImage());
         setTitle("HOÁ ĐƠN");
         bill.setEditable(false);
+        list = order_DetailDAO.selectAllByIDOrder(idBill);
+        bill_print();
+        System.out.println(totalIn);
     }
-    
+
     public void bill_print() {
-        
         try {
             bill.setText("\tThe FurtureTech Office \n");
             bill.setText(bill.getText() + "\t589/King Road, \n");
             bill.setText(bill.getText() + "\tColombo, Srilanka,\n");
             bill.setText(bill.getText() + "\t+9411 123456789, \n");
             bill.setText(bill.getText() + "----------------------------------------------------------------\n");
-            bill.setText(bill.getText() + "Iteam \tQty \tPrice \n");
+            bill.setText(bill.getText() + "Iteam \t\tQty \tPrice \n");
             bill.setText(bill.getText() + "----------------------------------------------------------------\n");
-            
+
             for (int i = 0; i < list.size(); i++) {
-                
-                String name = product_VariantDAO.selectName_ByID(list.get(i).getProductVariantId()).toString();
+
+                int name = list.get(i).getProductVariantId();
                 String qt = list.get(i).getQuantity() + "";
                 String prc = list.get(i).getPrice() + "";
                 
-                bill.setText(bill.getText() + "\t\t" + name + "\t" + qt + "\t" + prc + " \n");
-                
+                System.out.println(list.get(i).getProductVariantId());
+
+                bill.setText(bill.getText() + "\t" + name + "\t" + qt + "\t" + prc + " \n");
+
             }
             bill.setText(bill.getText() + "\t\t----------------------------------------------------------------\n");
             //  bill.setText(bill.getText() + "\t\tTax :\t" + totalIn.getTax() + "\n");
             //bill.setText(bill.getText() + "\t\tDiscount :\t" + totalIn.getDiscount() + "\n");
-            bill.setText(bill.getText() + "\t\tTotal :\t" + totalIn.getTotal() + "\n");
+            bill.setText(bill.getText() + "\t\tTotal :\t" + totalIn + "\n");
             bill.setText(bill.getText() + "\t\t====================================\n");
-            bill.setText(bill.getText() + "\t\tThanks For Your Business...!" + "\n");
+            bill.setText(bill.getText() + "\tThanks For Your Business...!" + "\n");
             bill.setText(bill.getText() + "\t\t----------------------------------------------------------------\n");
-            
+
         } catch (Exception e) {
             System.out.println(e);
         }
     }
-    
+
     public String bill_Html() {
-        
+
         try {
             // Tạo nội dung HTML
             StringBuilder htmlBill = new StringBuilder();
@@ -79,35 +89,35 @@ public class FormInBill extends javax.swing.JFrame {
             htmlBill.append("<hr>");
             htmlBill.append("<table style='width: 100%; border-collapse: collapse;'>");
             htmlBill.append("<tr><th style='border: 1px solid black; padding: 8px;'>Item</th><th style='border: 1px solid black; padding: 8px;'>Qty</th><th style='border: 1px solid black; padding: 8px;'>Price</th></tr>");
-            
+
             for (int i = 0; i < list.size(); i++) {
-                String name = product_VariantDAO.selectName_ByID(list.get(i).getProductVariantId()).toString();
+                int name = list.get(i).getProductVariantId();
                 String qt = list.get(i).getQuantity() + "";
                 String prc = list.get(i).getPrice() + "";
-                
+
                 htmlBill.append("<tr>");
                 htmlBill.append("<td style='border: 1px solid black; padding: 8px;'>").append(name).append("</td>");
                 htmlBill.append("<td style='border: 1px solid black; padding: 8px;'>").append(qt).append("</td>");
                 htmlBill.append("<td style='border: 1px solid black; padding: 8px;'>").append(prc).append("</td>");
                 htmlBill.append("</tr>");
             }
-            
+
             htmlBill.append("</table>");
             htmlBill.append("<hr>");
             //htmlBill.append("<p>Tax: ").append(totalIn.getTax()).append("</p>");
             //htmlBill.append("<p>Discount: ").append(totalIn.getDiscount()).append("</p>");
-            htmlBill.append("<p>Total: ").append(totalIn.getTotal()).append("</p>");
+            htmlBill.append("<p>Total: ").append(totalIn).append("</p>");
             htmlBill.append("<hr>");
             htmlBill.append("<p style='text-align: center;'>Thanks For Your Business...!</p>");
             htmlBill.append("</body></html>");
-            
+
             return htmlBill.toString();
         } catch (Exception e) {
-            
+
             e.printStackTrace();
             return null;
         }
-        
+
     }
 
     /**
@@ -167,7 +177,7 @@ public class FormInBill extends javax.swing.JFrame {
                 .addGap(27, 27, 27))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 42, Short.MAX_VALUE)
+                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 233, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(16, 16, 16))

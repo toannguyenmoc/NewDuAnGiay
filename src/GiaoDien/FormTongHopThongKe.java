@@ -903,6 +903,9 @@ public class FormTongHopThongKe extends javax.swing.JFrame {
         if (txtTimKiemThongKeTonKho.getText().trim().equals("")) {
             thongKeTonKho();
         }
+        else{
+            timKiemTonKho();
+        }
     }//GEN-LAST:event_txtTimKiemThongKeTonKhoKeyReleased
 
     private void chkThongKeSanPhamGiamItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_chkThongKeSanPhamGiamItemStateChanged

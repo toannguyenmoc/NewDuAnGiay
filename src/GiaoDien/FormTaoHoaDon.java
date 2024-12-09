@@ -894,7 +894,7 @@ public class FormTaoHoaDon extends javax.swing.JFrame {
     private void btnThemKhachHangActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThemKhachHangActionPerformed
         SessionStorage.getInstance().setAttribute("SDTKhachHang", txtSoDienThoai.getText());
         new FormKhachHang().setVisible(true);
-        setVisible(false);
+        // setVisible(false);
     }//GEN-LAST:event_btnThemKhachHangActionPerformed
 
     private void chkThanhToanOnlineActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkThanhToanOnlineActionPerformed
@@ -903,7 +903,7 @@ public class FormTaoHoaDon extends javax.swing.JFrame {
     }//GEN-LAST:event_chkThanhToanOnlineActionPerformed
 
     private void btnGuiMailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuiMailActionPerformed
-        new FormInBill().setVisible(true);
+        new FormGuiBillQuaMail().setVisible(true);
     }//GEN-LAST:event_btnGuiMailActionPerformed
 
     private void btnInHoaDonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInHoaDonActionPerformed

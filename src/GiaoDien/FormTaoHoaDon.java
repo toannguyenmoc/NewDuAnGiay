@@ -133,7 +133,7 @@ public class FormTaoHoaDon extends javax.swing.JFrame {
                             pro[1], // Tên sản phẩm
                             pro[2], // Size
                             pro[3], // Màu
-                            pro[4], // Giá
+                            dinhDangMoney(Integer.parseInt(pro[4].toString())), // Giá
                             pro[5], // Số lượng
                             false // Cột xóa (Boolean)
                         };
@@ -317,7 +317,7 @@ public class FormTaoHoaDon extends javax.swing.JFrame {
                 Object soLuongObj = tblSanPham.getValueAt(i, 5); // Cột số lượng
 
                 // Kiểm tra giá trị không null và chuyển đổi sang số
-                int gia = (giaObj != null) ? Integer.parseInt(giaObj.toString()) : 0;
+                int gia = (giaObj != null) ? Integer.parseInt(giaObj.toString().replaceAll(",", "")) : 0;
                 int soLuong = (soLuongObj != null) ? Integer.parseInt(soLuongObj.toString()) : 0;
 
                 // Tính tổng tiền: Giá x Số lượng
@@ -386,7 +386,8 @@ public class FormTaoHoaDon extends javax.swing.JFrame {
 
     public void tinhTienThua() {
         int tienThua = Integer.parseInt(txtTienKhachDua.getText()) - Integer.parseInt(txtTongTien.getText());
-        txtTienThua.setText(tienThua + "");
+        String tienDaDinhDang = dinhDangMoney(tienThua);
+        txtTienThua.setText(tienDaDinhDang);
     }
 
     public void clearForm() {
@@ -847,7 +848,7 @@ public class FormTaoHoaDon extends javax.swing.JFrame {
         }
         int tienThua = tienKhachDua - Integer.parseInt(txtTongTien.getText().replaceAll(",", ""));
         if (tienThua > 0) {
-            txtTienThua.setText(tienThua + "");
+            txtTienThua.setText(dinhDangMoney(tienThua) + "");
         } else {
             txtTienThua.setText(0 + "");
         }
@@ -862,6 +863,7 @@ public class FormTaoHoaDon extends javax.swing.JFrame {
     }//GEN-LAST:event_btnThemKhachHangActionPerformed
 
     private void chkThanhToanOnlineActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkThanhToanOnlineActionPerformed
+        SessionStorage.getInstance().setAttribute("TongTien", txtTongTien.getText().replace(",", ""));
         new ThanhToanOnlineBangMaQR().setVisible(true);
     }//GEN-LAST:event_chkThanhToanOnlineActionPerformed
 

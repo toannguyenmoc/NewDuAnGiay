@@ -214,7 +214,7 @@ public class PrintBill extends JFrame {
         g2d.setFont(regularFont);
         for (int i = 0; i < itemName.size(); i++) {
             g2d.drawString((i + 1) + " | " + itemName.get(i), 10, y);
-            g2d.drawString("    " + quantity.get(i) + " x " + String.format("%.0f", itemPrice.get(i)), 10, y + yShift);
+            g2d.drawString("    " + quantity.get(i) + " x " + String.format("%.0f", itemPrice.get(i)), 10, y+ yShift);
             g2d.drawString(String.format("%.0f", subtotal.get(i)), billWidth - 80, y + yShift);
             y += yShift * 2;
         }

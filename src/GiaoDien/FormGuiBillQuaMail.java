@@ -14,6 +14,8 @@ import com.sales.Utils.MailHelper;
 import com.sales.Utils.SessionStorage;
 import com.sales.Utils.XImage;
 import java.text.DecimalFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
@@ -32,6 +34,11 @@ public class FormGuiBillQuaMail extends javax.swing.JFrame {
     Integer idBill = idNow.getIdNow() - 1;
     Integer totalIn = orderDAO.selectByID(idBill).getTotal();
     DecimalFormat df = new DecimalFormat("###,###");
+    // Lấy thời gian hiện tại
+    LocalDateTime now = LocalDateTime.now();
+    // Định dạng theo kiểu dd/MM/yyyy HH:mm
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+    String formattedDateTime = now.format(formatter);
 
     /**
      * Creates new form FormInBill
@@ -69,10 +76,11 @@ public class FormGuiBillQuaMail extends javax.swing.JFrame {
     public void bill_print() {
         list = order_DetailDAO.selectAllByIDOrder(idBill);
         try {
-            bill.setText("\tThe FurtureTech Office \n");
-            bill.setText(bill.getText() + "\t589/King Road, \n");
-            bill.setText(bill.getText() + "\tColombo, Srilanka,\n");
-            bill.setText(bill.getText() + "\t+9411 123456789, \n");
+            bill.setText("\tSHOP GIÀY BALANCE \n");
+            bill.setText(bill.getText() + "phường Thường Thạnh,quận Cái Răng, TP Cần Thơ\n");
+            bill.setText(bill.getText() + "\tĐT: +84 382035448 \n\n");
+            bill.setText(bill.getText() + "\tHOÁ ĐƠN BÁN HÀNG\n\n");
+            bill.setText(bill.getText() + "\t" + formattedDateTime + "\n");
             bill.setText(bill.getText() + "--------------------------------------------------------------------\n");
             bill.setText(bill.getText() + "Đơn Giá\t\tSố Lượng\tThành Tiền \n");
             bill.setText(bill.getText() + "--------------------------------------------------------------------\n");
@@ -103,7 +111,7 @@ public class FormGuiBillQuaMail extends javax.swing.JFrame {
     }
 
     public String generateHtmlBill() {
-        list = order_DetailDAO.selectAllByIDOrder(idBill);        
+        list = order_DetailDAO.selectAllByIDOrder(idBill);
         StringBuilder htmlContent = new StringBuilder();
 
         try {
@@ -115,9 +123,12 @@ public class FormGuiBillQuaMail extends javax.swing.JFrame {
                     .append("th { background-color: #f2f2f2; }")
                     .append("</style></head>")
                     .append("<body>")
-                    .append("<h2 style='text-align:center;'>The FutureTech Office</h2>")
-                    .append("<p style='text-align:center;'>589/King Road, Colombo, Sri Lanka</p>")
-                    .append("<p style='text-align:center;'>+9411 123456789</p>")
+                    .append("<h2 style='text-align:center;'>SHOP GIÀY BALANCE</h2>")
+                    .append("<p style='text-align:center;'>phường Thường Thạnh, quận Cái Răng, TP Cần Thơ</p>")
+                    .append("<p style='text-align:center;'>ĐT: +84 382035448</p>")
+                    .append("<hr>")
+                    .append("<h3 style='text-align:center;'>HOÁ ĐƠN BÁN HÀNG</h3>")
+                    .append("<p style='text-align:center;'>").append(formattedDateTime).append("</p>")
                     .append("<hr>")
                     .append("<table>")
                     .append("<thead>")
@@ -258,7 +269,7 @@ public class FormGuiBillQuaMail extends javax.swing.JFrame {
                 .addGap(27, 27, 27))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 43, Short.MAX_VALUE)
+                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 233, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(16, 16, 16))

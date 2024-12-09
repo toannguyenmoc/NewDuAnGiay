@@ -1,5 +1,7 @@
-package GiaoDien;
+package com.sales.Utils;
 
+import com.sales.DAO.Order_DetailDAO;
+import com.sales.Utils.SessionStorage;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -11,8 +13,11 @@ import static java.awt.print.Printable.NO_SUCH_PAGE;
 import static java.awt.print.Printable.PAGE_EXISTS;
 import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import javax.mail.Session;
 
 public class PrintBill extends JFrame {
 
@@ -24,9 +29,9 @@ public class PrintBill extends JFrame {
     private double taxAmount;
     private String date;
     private String invoiceNumber;
-    
+
     public PrintBill(ArrayList<String> itemName, ArrayList<String> quantity, ArrayList<String> itemPrice,
-            ArrayList<String> subtotal, double totalAmount, double taxAmount,
+            ArrayList<String> subtotal, double totalAmount,
             String date, String invoiceNumber) {
         this.itemName = itemName;
         this.quantity = quantity;
@@ -60,7 +65,6 @@ public class PrintBill extends JFrame {
                     if (pageIndex > 0) {
                         return NO_SUCH_PAGE;
                     }
-
                     Graphics2D g2d = (Graphics2D) g;
 
                     // Cấu hình giấy và lề
@@ -72,15 +76,14 @@ public class PrintBill extends JFrame {
                     double marginRight = 1 / 25.4 * 72; // 1cm
 
                     Paper paper = new Paper();
-                   
+
                     paper.setSize(paperWidth, paperHeight);
                     // Thiết lập vùng in
-//                    double imageableWidth = paperWidth - marginLeft - marginRight;
-//                    double imageableWidth = 200;
-//                    double imageableHeight = paperHeight - marginTop - marginBottom;
+                    double imageableWidth = paperWidth - marginLeft - marginRight;
+                    double imageableHeight = paperHeight - marginTop - marginBottom;
 
                     // Cấu hình vùng in
-                    paper.setImageableArea(0, 10,paperWidth , paperHeight);
+                    paper.setImageableArea(0, 10, imageableWidth, imageableHeight);
 
                     pageFormat.setPaper(paper);
 
@@ -93,7 +96,7 @@ public class PrintBill extends JFrame {
 
                     // Gọi phương thức vẽ nội dung từ `BillPanel`
                     BillPanel billPanel = new BillPanel();
-                    
+
                     billPanel.setSize((int) paperWidth, (int) paperHeight); // Đặt kích thước cho BillPanel
                     billPanel.paint(g2d); // Vẽ nội dung panel trực tiếp vào Graphics2D
 
@@ -107,7 +110,7 @@ public class PrintBill extends JFrame {
                     printerJob.print();
                 } catch (PrinterException ex) {
                     System.out.println("Lỗi in : " + ex);
-                    
+
                 }
             }
 
@@ -136,14 +139,14 @@ public class PrintBill extends JFrame {
 
         @Override
         public Dimension getPreferredSize() {
-            return new Dimension(200, 800); // Điều chỉnh kích thước nếu cần
+            return new Dimension(220, 800); // Điều chỉnh kích thước nếu cần
         }
     }
-    
-    public double cm_to_pp(double cm){
+
+    public double cm_to_pp(double cm) {
         return toPPI(cm * 0.393600787);
     }
-    
+
     public double toPPI(double inch) {
         return inch * 72d;
     }
@@ -171,7 +174,7 @@ public class PrintBill extends JFrame {
             List<Double> subtotal, double totalAmount, double taxAmount, String date, String invoiceNumber) {
         int y = 20; // Điểm y ban đầu
         int yShift = 15; // Khoảng cách dòng
-        int billWidth = 220; // Chiều rộng hóa đơn (58mm ~ 220 pixels)
+        int billWidth = 230; // Chiều rộng hóa đơn (58mm ~ 220 pixels)
         int centerX = 75; // Điểm giữa chiều ngang của hóa đơn
 
         // Font in đậm và kích thước lớn hơn cho tiêu đề
@@ -212,11 +215,15 @@ public class PrintBill extends JFrame {
 
         // Danh sách sản phẩm
         g2d.setFont(regularFont);
+        int x = 0;
         for (int i = 0; i < itemName.size(); i++) {
-            g2d.drawString((i + 1) + " | " + itemName.get(i), 10, y);
-            g2d.drawString("    " + quantity.get(i) + " x " + String.format("%.0f", itemPrice.get(i)), 10, y+ yShift);
-            g2d.drawString(String.format("%.0f", subtotal.get(i)), billWidth - 80, y + yShift);
+            y+=5;
+            drawMultilineText(g2d, (i + 1) + " | " + itemName.get(i), 10, 200 + x, 160, 10);
+            System.out.println(itemName.get(i).length());
+            g2d.drawString("    " + quantity.get(i) + " x " + String.format("%.0f", itemPrice.get(i)), 10, y + yShift);
+            g2d.drawString(String.format("%.0f", subtotal.get(i)), billWidth - 120, y + yShift);
             y += yShift * 2;
+            x += 30;
         }
         g2d.drawString("------------------------------", 10, y);
         y += yShift;
@@ -299,30 +306,5 @@ public class PrintBill extends JFrame {
     private String formatText(String text, int maxChars) {
         return text.length() > maxChars ? text.substring(0, maxChars - 3) + "..." : text;
     }
-
-    // Phương thức main để chạy thử
-    public static void main(String[] args) {
-        ArrayList<String> itemName = new ArrayList<>();
-        ArrayList<String> quantity = new ArrayList<>();
-        ArrayList<String> itemPrice = new ArrayList<>();
-        ArrayList<String> subtotal = new ArrayList<>();
-
-        // Thêm dữ liệu mẫu
-        itemName.add("Giày thể thao");
-        quantity.add("2");
-        itemPrice.add("500000");
-        subtotal.add("1000000");
-        itemName.add("Giày thể thao");
-        quantity.add("2");
-        itemPrice.add("500000");
-        subtotal.add("1000000");
-
-        double totalAmount = 1000000;
-        double taxAmount = 100000;
-        String date = "01/12/2024 10:00:00";
-        String invoiceNumber = "HD123456";
-
-        new PrintBill(itemName, quantity, itemPrice, subtotal, totalAmount, taxAmount, date, invoiceNumber);
-        
-    }
+    
 }

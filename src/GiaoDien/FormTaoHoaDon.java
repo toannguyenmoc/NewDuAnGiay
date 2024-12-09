@@ -4,6 +4,7 @@
  */
 package GiaoDien;
 
+import com.sales.Utils.PrintBill;
 import com.sales.DAO.CustomerDAO;
 import com.sales.DAO.OrderDAO;
 import com.sales.DAO.Order_DetailDAO;
@@ -21,6 +22,8 @@ import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -338,7 +341,7 @@ public class FormTaoHoaDon extends javax.swing.JFrame {
             // Kiểm tra thông tin khách hàng và phương thức thanh toán
             if (!txtTenKhachHang.getText().isEmpty() && !txtTenKhachHang.getText().equalsIgnoreCase("Khách hàng chưa được tạo") && (chkTienMat.isSelected() || chkThanhToanOnline.isSelected())) {
 
-                int idUser = 1;   //user.getId();
+                int idUser = user.getId();
                 int idCustomer = customerDAO.selectByObject(txtSoDienThoai.getText()).get(0).getId();
                 Date createDate = new Date();
                 order.setUserId(idUser);
@@ -401,6 +404,33 @@ public class FormTaoHoaDon extends javax.swing.JFrame {
         model.setRowCount(0);
         loadOrCreateOrder();
         txtMaHoaDon.setText("Mã hóa đơn:" + order.getId());
+    }
+
+    public void printBill() {
+        Order_DetailDAO orderDetailDAO = new Order_DetailDAO();
+        int idOrder = order.getId();
+        List<Object[]> list = orderDetailDAO.selectByIDOrder(idOrder);
+        ArrayList<String> itemName = new ArrayList<>();
+        ArrayList<String> quantity = new ArrayList<>();
+        ArrayList<String> itemPrice = new ArrayList<>();
+        ArrayList<String> subtotal = new ArrayList<>();
+        double totalAmount = 0;
+        if (list.size() > 0) {
+            for (Object[] ob : list) {
+                itemName.add(ob[0].toString());
+                quantity.add(ob[1].toString());
+                itemPrice.add(ob[2].toString());
+                subtotal.add(((int) ob[1] * (int) ob[2]) + "");
+                totalAmount += (int) ob[1] * (int) ob[2];
+            }
+        }
+
+        LocalDateTime dateTime = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+        String date = dateTime.format(formatter);
+        String invoiceNumber = "HD" + String.format("%05d", idOrder);;
+
+        new PrintBill(itemName, quantity, itemPrice, subtotal, totalAmount, date, invoiceNumber);
     }
 
     @SuppressWarnings("unchecked")
@@ -662,6 +692,11 @@ public class FormTaoHoaDon extends javax.swing.JFrame {
         btnInHoaDon.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         btnInHoaDon.setForeground(new java.awt.Color(0, 102, 102));
         btnInHoaDon.setText("In đơn");
+        btnInHoaDon.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnInHoaDonActionPerformed(evt);
+            }
+        });
         pnlChucNang.add(btnInHoaDon);
 
         btnTaoHoaDon.setBackground(new java.awt.Color(255, 255, 0));
@@ -858,7 +893,6 @@ public class FormTaoHoaDon extends javax.swing.JFrame {
 
     private void btnThemKhachHangActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThemKhachHangActionPerformed
         SessionStorage.getInstance().setAttribute("SDTKhachHang", txtSoDienThoai.getText());
-
         new FormKhachHang().setVisible(true);
         setVisible(false);
     }//GEN-LAST:event_btnThemKhachHangActionPerformed
@@ -871,6 +905,14 @@ public class FormTaoHoaDon extends javax.swing.JFrame {
     private void btnGuiMailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuiMailActionPerformed
         new FormInBill().setVisible(true);
     }//GEN-LAST:event_btnGuiMailActionPerformed
+
+    private void btnInHoaDonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInHoaDonActionPerformed
+        if (!txtTenKhachHang.getText().isEmpty() && !txtTenKhachHang.getText().equalsIgnoreCase("Khách hàng chưa được tạo") && (chkTienMat.isSelected() || chkThanhToanOnline.isSelected())) {
+            printBill();
+        } else {
+            JOptionPane.showMessageDialog(this, "Vui lòng điền đầy đủ thông tin và thanh toán trước khi in bill");
+        }
+    }//GEN-LAST:event_btnInHoaDonActionPerformed
 
     /**
      * @param args the command line arguments

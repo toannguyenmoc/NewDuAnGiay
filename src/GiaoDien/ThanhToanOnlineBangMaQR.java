@@ -87,7 +87,7 @@ public class ThanhToanOnlineBangMaQR extends javax.swing.JFrame {
         
         
         VietQR vietQR = new VietQR();
-        vietQR.setTransactionAmount("5000")
+        vietQR.setTransactionAmount(SessionStorage.getInstance().getAttribute("TongTien").toString())
                 .setBeneficiaryOrganization("970436", "1046495917")
                 .setAdditionalDataFieldTemplate("Thanh toan hoa don");
         System.out.println(vietQR.build());

@@ -27,17 +27,15 @@ public class Product_VariantDAO extends SaleDAO<Product_Variant, Integer> {
     String SELECT_BYSQL_SQL = "";
     String SELECT_BY_OBJECT = "EXEC sp_SearchSanPham ?";
     String SELECT_NAME_BYID = "EXEC GetProductDetailsByVariantId ?";
-  
-     
-    
+
     public List<Product_Variant> selectByObject(String chuoi) {
-        List<Product_Variant> list = this.selectBySQL(SELECT_BY_OBJECT,'%' + chuoi + '%');
-        if(list.isEmpty()){
+        List<Product_Variant> list = this.selectBySQL(SELECT_BY_OBJECT, '%' + chuoi + '%');
+        if (list.isEmpty()) {
             return null;
         }
         return list;
     }
-  
+
     @Override
     public void insert(Product_Variant entity) {
         JdbcHelper.update(INSERT_SQL,
@@ -64,8 +62,8 @@ public class Product_VariantDAO extends SaleDAO<Product_Variant, Integer> {
                 entity.getActive(),
                 entity.getId());
     }
-    
-    public void update(Product_Variant entity,int id) {
+
+    public void update(Product_Variant entity, int id) {
         JdbcHelper.update(UPDATE_SQL,
                 entity.getColorId(),
                 entity.getSizeId(),
@@ -96,13 +94,21 @@ public class Product_VariantDAO extends SaleDAO<Product_Variant, Integer> {
         }
         return list.get(0);
     }
-    
+
     public List<Product_Variant> selectNameByID(Integer id) {
         List<Product_Variant> list = selectBySQL(SELECT_NAME_BYID, id);
         if (list.isEmpty()) {
             return null;
         }
         return list;
+    }
+
+    public String selectNameByID_ProVar(Integer id) {
+        try {
+            return JdbcHelper.value(SELECT_NAME_BYID, id).toString();
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     @Override

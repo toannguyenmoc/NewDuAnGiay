@@ -4,22 +4,27 @@
  */
 package GiaoDien;
 
+import com.sales.Utils.VietQR;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.WriterException;
 import com.google.zxing.client.j2se.MatrixToImageWriter;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
+import com.sales.Utils.SessionStorage;
 import com.sales.Utils.XImage;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import static java.lang.Integer.parseInt;
 import javax.swing.ImageIcon;
+import javax.swing.SwingUtilities;
 import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
 
 /**
  *
  * @author NganTTK_PC09494
  */
+
 public class ThanhToanOnlineBangMaQR extends javax.swing.JFrame {
 
     public ThanhToanOnlineBangMaQR() {
@@ -31,38 +36,64 @@ public class ThanhToanOnlineBangMaQR extends javax.swing.JFrame {
         createMaQR();
     }
 
-//    private static String generatePaymentContent(String bankName, String accountNumber, String accountName, int amount) {
-//        return String.format("Bank:%s|AccNo:%s|Name:%s|Amount:%d", bankName, accountNumber, accountName, amount);
-//    }
-//    private static BufferedImage generateQRCodeImage(String text, int width, int height) throws WriterException, IOException {
-//        QRCodeWriter qrCodeWriter = new QRCodeWriter();
-//        BitMatrix bitMatrix = qrCodeWriter.encode(text, BarcodeFormat.QR_CODE, width, height);
-//        return MatrixToImageWriter.toBufferedImage(bitMatrix);
-//    }
-    public static BufferedImage generateQRCodeImage(String text, int width, int height) {
-        QRCodeWriter qrCodeWriter = new QRCodeWriter();
+    private BufferedImage generateQRCodeImage(String content, int width, int height) {
         try {
-            BitMatrix bitMatrix = qrCodeWriter.encode(text, BarcodeFormat.QR_CODE, width, height);
+            QRCodeWriter qrCodeWriter = new QRCodeWriter();
+            BitMatrix bitMatrix = qrCodeWriter.encode(content, BarcodeFormat.QR_CODE, width, height);
             return MatrixToImageWriter.toBufferedImage(bitMatrix);
         } catch (WriterException e) {
             e.printStackTrace();
             return null;
         }
     }
+    
+     public static String calculateCRC(String data) {
+    int crc = 0xFFFF; // CRC ban đầu
+    int polynomial = 0x1021;
+
+    byte[] bytes = data.getBytes();
+    for (byte b : bytes) {
+        for (int i = 0; i < 8; i++) {
+            boolean bit = ((b >> (7 - i) & 1) == 1);
+            boolean c15 = ((crc >> 15 & 1) == 1);
+            crc <<= 1;
+            if (c15 ^ bit) crc ^= polynomial;
+        }
+    }
+    crc &= 0xFFFF;
+    return String.format("%04X", crc); // Trả về CRC dưới dạng HEX
+}
+
 
     public void createMaQR() {
-        // Thông tin giao dịch
-//            String bankName = "VIETCOMBANK";
-//            String accountNumber = "0146495917";
-//            String accountName = "TRAN THI KIM NGAN";
-//            int amount = 50000; // Số tiền tính bằng đồng
+//        // Nội dung QR chuẩn VietQR với các trường thông tin bắt buộc
+//        String qrContent = String.format(
+//            "000210" //phiên bản dữ liệu 
+//            +"010212" //phương thúc khởi tạo
+//            +"3854" //ID: 38 , độ dài tới chữ A: 54
+//            +"0010A000000727" //Định danh toàn cầu (GUID)
+//            +"0124" //ID: 01, độ dài tới số tài khoản là 24
+//            +"0006" //ID: 00, Dộ dài mã PIN ngân hàng 06
+//            +"970436" //mã BIN Vietcombank
+//            +"0110" //ID: 01, độ dài số tài khoản
+//            +"1046495917" //Số tài khoản
+//            +"0208QRIBFTTA" //dịch vụ chuyển nhanh NAPAS247
+//            +"5303704" //ID: 53, độ dài 03 , mã tiền tệ VN 704
+//            +"5404" + "5000"  //Số tiền 
+//            + "5802VN" //mã quốc gia
+//            + "62080804test" //nội dung chuyển khoản
+//            +"6304" + calculateCRC("0002010102123854...")
+//        );
+        
+        
+        VietQR vietQR = new VietQR();
+        vietQR.setTransactionAmount("5000")
+                .setBeneficiaryOrganization("970436", "1046495917")
+                .setAdditionalDataFieldTemplate("Thanh toan hoa don");
+        System.out.println(vietQR.build());
+        
+        BufferedImage qrCodeImage = generateQRCodeImage(vietQR.build(), 166, 166);
 
-        String transactionInfo = "STK:0146495917, Ten:TRAN THI KIM NGAN, So tien:10000, Noi dung:Thanh toan don hang";
-// Tạo nội dung QR Code
-//            String qrContent = generatePaymentContent(bankName, accountNumber, accountName, amount);
-// Tạo hình ảnh QR Code
-        BufferedImage qrCodeImage = generateQRCodeImage(transactionInfo, 166, 166);
-// Hiển thị trong JLabel
         lblMaQR.setIcon(new ImageIcon(qrCodeImage));
     }
 
@@ -161,36 +192,36 @@ public class ThanhToanOnlineBangMaQR extends javax.swing.JFrame {
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+    /* Set the Nimbus look and feel */
+    //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+    /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
          * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
+     */
+    try {
+        for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+            if ("Nimbus".equals(info.getName())) {
+                javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                break;
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ThanhToanOnlineBangMaQR.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ThanhToanOnlineBangMaQR.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ThanhToanOnlineBangMaQR.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ThanhToanOnlineBangMaQR.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new ThanhToanOnlineBangMaQR().setVisible(true);
-            }
-        });
+    } catch (ClassNotFoundException ex) {
+        java.util.logging.Logger.getLogger(ThanhToanOnlineBangMaQR.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+    } catch (InstantiationException ex) {
+        java.util.logging.Logger.getLogger(ThanhToanOnlineBangMaQR.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+    } catch (IllegalAccessException ex) {
+        java.util.logging.Logger.getLogger(ThanhToanOnlineBangMaQR.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+    } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+        java.util.logging.Logger.getLogger(ThanhToanOnlineBangMaQR.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
     }
+    //</editor-fold>
+
+    /* Create and display the form */
+    java.awt.EventQueue.invokeLater(new Runnable() {
+        public void run() {
+            new ThanhToanOnlineBangMaQR().setVisible(true);
+        }
+    });
+}
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;

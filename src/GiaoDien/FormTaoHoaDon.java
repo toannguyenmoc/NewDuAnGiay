@@ -868,7 +868,7 @@ public class FormTaoHoaDon extends javax.swing.JFrame {
     }//GEN-LAST:event_chkThanhToanOnlineActionPerformed
 
     private void btnGuiMailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuiMailActionPerformed
-        new FormInBill().setVisible(true);
+        new FormGuiBillQuaMail().setVisible(true);
     }//GEN-LAST:event_btnGuiMailActionPerformed
 
     /**

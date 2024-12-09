@@ -113,9 +113,7 @@ public class FormNguoiDung extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Thêm thất bại!");
             e.printStackTrace();
         }
-
     }
-
     public void update(User user) {
         try {
             userDAO.update(user);
